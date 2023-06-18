@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Controle de Estoque</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    input{
+      text-align: center;
+      width: 30%;
+    }
+  
+    /* Buttons */
+    .tab-button {
+      width: fit-content;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
+      font-size: 20px;
+      padding: 5px 10px;
+      margin-right: 5px;
+      border-radius: 10px;
+      background-color: darkgray;
+      border: 1px solid black;
+    }
+  
+    .tab-button:focus {
+      outline: none;
+    }
+  
+    .BTN {
+      width: fit-content;
+      font-size: 20px;
+      padding: 10px;
+    }
+  
+    button {
+      width: fit-content;
+      border-radius: 10px;
+      font-size: 80%;
+      padding: 8px;
+    }
+  
+    /* Tables */
+    table,
+    th,
+    td {
+      font-size: 1rem;
+      text-align: center;
+      background-color: darkgray;
+      margin: 0 auto;
+      border: 1px solid black;
+      border-collapse: collapse;
+      border-radius: 10px;
+      padding: 5px;
+    }
+  
+    /* Headings */
+    h1 {
+      font-size: 40px;
+    }
+  
+    h2 {
+      font-size: 30px;
+    }
+  
+    /* Excluir button */
+    #excluir {
+      width: fit-content;
+      padding: 8px;
+    }
+  
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+  
+    /* Content */
+    #estoque-content,
+    #retirada-content {
+      display: none;
+    }
+
+        #copiarButton {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    #copiadoDiv {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid black;
+      border-radius: 10px;
+      background-color: lightgray;
+    }
+
+  </style>
+  
+</head>
+<body>
+  <h1>CONTROLE DE ESTOQUE</h1>
+  <button class="BTN" onclick="mostrarRetirada()">Retirada do Estoque</button>
+  <button class="BTN" onclick="mostrarEstoque()">Estoque Atual</button>
+  <div id="estoqueDiv" style="display: none;">
+  
+  <table id="estoque">
+    <h2>Estoque Atual</h2>
+    <tr>
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Ações</th>
+    </tr>
+  </table>
+  <br>
+  <button class="BTN" onclick="adicionar()">Adicionar Produto</button>
+  </div>
+
+  <br><br>
+
+  
+  <div id="retiradaDiv" style="display: block;">
+  <table id="retirada">
+    <h2>Retirada de Estoque</h2>
+    <tr>
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Ações</th>
+    </tr>
+  </table>
+  <br>
+  <button class="BTN" onclick="enviar()">Enviar</button>
+  <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
+
+  </div>
+
+  <script>
+
+    // Função para exibir a seção do estoque e ocultar a seção de retirada
+    function mostrarEstoque() {
+      document.getElementById("estoqueDiv").style.display = "block";
+      document.getElementById("retiradaDiv").style.display = "none";
+    }
+
+    // Função para exibir a seção de retirada e ocultar a seção do estoque
+    function mostrarRetirada() {
+      document.getElementById("estoqueDiv").style.display = "none";
+      document.getElementById("retiradaDiv").style.display = "block";
+    }
+
+    // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
+    let produtos = JSON.parse(localStorage.getItem("produtos")) || [
+      { nome: "ONU", quantidade: 11 },
+      { nome: "AX2H", quantidade: 6 },
+      { nome: "AX2V", quantidade: 2 },
+      { nome: "APC", quantidade: 10 },
+      { nome: "UPC", quantidade: 4 },
+      { nome: "RJ45", quantidade: 10 },
+      { nome: "WS5200", quantidade: 3 },
+      { nome: "Q2", quantidade: 1 },
+      { nome: "TPlink", quantidade: 5 },
+      { nome: "46M", quantidade: 2 },
+      { nome: "V5", quantidade: 1 },
+      { nome: "TVBOX", quantidade: 1 },
+      { nome: "DROP", quantidade: 1000 },
+    ];
+
+    let retirada = JSON.parse(localStorage.getItem("retirada")) || [];
+
+
+    // Função para atualizar a tabela de estoque com os produtos e suas quantidades
+    function atualizarTabelaEstoque() {
+      let tabela = document.getElementById("estoque");
+      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+      for (let i = 0; i < produtos.length; i++) {
+        let linha = tabela.insertRow(-1);
+        let celulaNome = linha.insertCell(0);
+        let celulaQuantidade = linha.insertCell(1);
+        let celulaAcoes = linha.insertCell(2);
+        celulaNome.innerHTML = produtos[i].nome;
+        celulaQuantidade.innerHTML = `<input type="number" min="0" value="${produtos[i].quantidade}" onchange="atualizarQuantidadeEstoque(${i}, this.value)">`;
+        celulaAcoes.innerHTML = `<button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button>`;
+      }
+    }
+    
+
+    // Função para atualizar a tabela de retirada com os produtos e suas quantidades
+    function atualizarTabelaRetirada() {
+      let tabela = document.getElementById("retirada");
+      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+      for (let i = 0; i < retirada.length; i++) {
+        let linha = tabela.insertRow(-1);
+        let celulaNome = linha.insertCell(0);
+        let celulaQuantidade = linha.insertCell(1);
+        let celulaAcoes = linha.insertCell(2);
+        celulaNome.innerHTML = retirada[i].nome;
+        celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
+        celulaAcoes.innerHTML = `<button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button>`;
+      }
+    }
+
+    // Função para aumentar a quantidade de um produto no estoque
+    function aumentarEstoque(indice) {
+      produtos[indice].quantidade++;
+      atualizarTabelaEstoque();
+      salvarDados();
+    }
+
+    // Função para diminuir a quantidade de um produto no estoque
+    function diminuirEstoque(indice) {
+      if (produtos[indice].quantidade > 0) {
+        produtos[indice].quantidade--;
+        atualizarTabelaEstoque();
+        salvarDados();
+      }
+    }
+
+    // Função para aumentar a quantidade de um produto na retirada
+    function aumentarRetirada(indice) {
+      retirada[indice].quantidade++;
+      atualizarTabelaRetirada();
+      salvarDados();
+    }
+
+    
+    // Função para diminuir a quantidade de um produto na retirada
+    function diminuirRetirada(indice) {
+      if (retirada[indice].quantidade > 0) {
+        retirada[indice].quantidade--;
+        atualizarTabelaRetirada();
+        salvarDados();
+      }
+    }
+
+    // Função para adicionar um novo produto ao estoque e à retirada
+    function adicionar() {
+      let nome = prompt("Nome do produto:");
+      if (nome) {
+        produtos.push({ nome, quantidade: 0 });
+        retirada.push({ nome, quantidade: 0 });
+        atualizarTabelaEstoque();
+        atualizarTabelaRetirada();
+        salvarDados();
+      }
+    }
+
+    // Função para excluir um produto do estoque e da retirada
+    function excluir(indice) {
+      let nome = produtos[indice].nome;
+      produtos.splice(indice, 1);
+      for (let i = 0; i < retirada.length; i++) {
+        if (retirada[i].nome === nome) {
+          retirada.splice(i, 1);
+          break;
+        }
+      }
+      atualizarTabelaEstoque();
+      atualizarTabelaRetirada();
+      salvarDados();
+    }
+
+        // Função para processar a retirada de produtos
+      function enviar() {
+        for (let i = 0; i < retirada.length; i++) {
+          let produtoRetirado = retirada[i];
+          for (let j = 0; j < produtos.length; j++) {
+            if (produtos[j].nome === produtoRetirado.nome) {
+              produtos[j].quantidade -= produtoRetirado.quantidade;
+              break;
+            }
+          }
+          produtoRetirado.quantidade = 0;
+        }
+
+        atualizarTabelaEstoque();
+        atualizarTabelaRetirada();
+        salvarDados();
+
+        // Chamar a função para copiar o conteúdo após o envio
+        copiarConteudo();
+      }
+
+    // Função para copiar o conteúdo atualizado para a área de transferência
+function copiarConteudo() {
+  let copiado = '';
+
+  // Construir a string com a estrutura desejada
+  for (let i = 0; i < produtos.length; i++) {
+    copiado += `${produtos[i].nome}:${produtos[i].quantidade}\n`;
+  }
+
+  console.log('Conteúdo Atualizado:', copiado);
+
+  const clipboardInput = document.getElementById('clipboardInput');
+  clipboardInput.value = copiado;
+  clipboardInput.select();
+  document.execCommand('copy');
+
+  // Exibir o conteúdo copiado em um alert
+  alert(copiado);
+
+}
+
+
+
+
+
+
+
+    function atualizarQuantidadeEstoque(indice, quantidade) {
+      produtos[indice].quantidade = parseInt(quantidade);
+      salvarDados();
+    }
+
+    function atualizarQuantidadeRetirada(indice, quantidade) {
+      retirada[indice].quantidade = parseInt(quantidade);
+      salvarDados();
+    }
+
+    function salvarDados() {
+      localStorage.setItem("produtos", JSON.stringify(produtos));
+      localStorage.setItem("retirada", JSON.stringify(retirada));
+    }
+
+    // Inicializa a tabela de retirada com os mesmos produtos da tabela de estoque
+    if (retirada.length === 0) {
+      for (let i = 0; i < produtos.length; i++) {
+        retirada.push({ nome: produtos[i].nome, quantidade: 0 });
+      }
+    }
+
+    atualizarTabelaEstoque();
+    atualizarTabelaRetirada();
+  </script>
+</body>
+</html>
