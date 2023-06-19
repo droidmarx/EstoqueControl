@@ -102,6 +102,7 @@
       background-color: lightgray;
     }
 
+
   </style>
   
 </head>
@@ -114,7 +115,6 @@
   <table id="estoque">
     <h2>Estoque Atual</h2>
     <tr>
-      <th>Produto</th>
       <th>Quantidade</th>
       <th>Ações</th>
     </tr>
@@ -125,6 +125,89 @@
 
   <br><br>
 
+
+<table>
+  <tr>
+    <th>Técnico:</th>
+    <td><input type="text" id="tecnico"></td>
+  </tr>
+  <tr>
+    <th>Cliente:</th>
+    <td><input type="text" id="cliente"></td>
+  </tr>
+  <tr>
+    <th>Fibra metragem:</th>
+    <td><input type="number" id="fibraMetragem"></td>
+  </tr>
+  <tr>
+    <th>CTO:</th>
+    <td><input type="number" id="cto"></td>
+  </tr>
+  <tr>
+    <th>Porta:</th>
+    <td><input type="number" id="porta"></td>
+  </tr>
+  <tr>
+    <th>Sinal CTO:</th>
+    <td><input type="text" id="sinalCto"></td>
+  </tr>
+  <tr>
+    <th>Sinal Cliente:</th>
+    <td><input type="text" id="sinalCliente"></td>
+  </tr>
+  <tr>
+    <th>SC-APC:</th>
+    <td><input type="text" id="scApc"></td>
+  </tr>
+  <tr>
+    <th>SC-UPC:</th>
+    <td><input type="text" id="scUpc"></td>
+  </tr>
+  <tr>
+    <th>Esticadores:</th>
+    <td><input type="text" id="esticadores"></td>
+  </tr>
+  <tr>
+    <th>Roldana:</th>
+    <td><input type="text" id="roldana"></td>
+  </tr>
+  <tr>
+    <th>Fecho:</th>
+    <td><input type="text" id="fecho"></td>
+  </tr>
+  <tr>
+    <th>Anel:</th>
+    <td><input type="text" id="anel"></td>
+  </tr>
+  <tr>
+    <th>Fita aço:</th>
+    <td><input type="text" id="fitaAco"></td>
+  </tr>
+  <tr>
+    <th>Fixa fio:</th>
+    <td><input type="text" id="fixaFio"></td>
+  </tr>
+  <tr>
+    <th>Isolante:</th>
+    <td><input type="text" id="isolante"></td>
+  </tr>
+  <tr>
+    <th>Cabo de rede:</th>
+    <td><input type="text" id="caboRede"></td>
+  </tr>
+  <tr>
+    <th>Conc RJ45:</th>
+    <td><input type="text" id="concRj45"></td>
+  </tr>
+  <tr>
+    <th>Kit fusão:</th>
+    <td><input type="text" id="kitFusao"></td>
+  </tr>
+</table>
+
+
+  
+  
   
   <div id="retiradaDiv" style="display: block;">
   <table id="retirada">
@@ -154,10 +237,12 @@
       document.getElementById("estoqueDiv").style.display = "none";
       document.getElementById("retiradaDiv").style.display = "block";
     }
+    
+    
 
     // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
     let produtos = JSON.parse(localStorage.getItem("produtos")) || [
-      { nome: "ONU", quantidade: 11 },
+      { nome: "ONU", quantidade: 10 },
       { nome: "AX2H", quantidade: 6 },
       { nome: "AX2V", quantidade: 2 },
       { nome: "APC", quantidade: 10 },
@@ -278,23 +363,59 @@
           }
           produtoRetirado.quantidade = 0;
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         atualizarTabelaEstoque();
         atualizarTabelaRetirada();
         salvarDados();
 
         // Chamar a função para copiar o conteúdo após o envio
-        copiarConteudo();
-      }
+        setTimeout(copiarConteudo, 200)}
 
 // Função para copiar o conteúdo atualizado para a área de transferência
 function copiarConteudo() {
-  let copiado = 'Estoque Atual##';
+  let copiado = 'Meu estoque:#____________#';
 
   // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
   for (let i = 0; i < produtos.length; i++) {
     copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
   }
+  
+  
+  //estrututa da 1• tabela 
+  copiado += `#*Favor Habilitar*##Técnico: ${document.getElementById('tecnico').value}\n`;
+copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
+copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
+copiado += `CTO: ${document.getElementById('cto').value}\n`;
+copiado += `Porta: ${document.getElementById('porta').value}\n`;
+copiado += `Sinal CTO: ${document.getElementById('sinalCto').value}\n`;
+copiado += `Sinal Cliente: ${document.getElementById('sinalCliente').value}\n`;
+copiado += `SC-APC: ${document.getElementById('scApc').value}\n`;
+copiado += `SC-UPC: ${document.getElementById('scUpc').value}\n`;
+copiado += `Esticadores: ${document.getElementById('esticadores').value}\n`;
+copiado += `Roldana: ${document.getElementById('roldana').value}\n`;
+copiado += `Fecho: ${document.getElementById('fecho').value}\n`;
+copiado += `Anel: ${document.getElementById('anel').value}\n`;
+copiado += `Fita aço: ${document.getElementById('fitaAco').value}\n`;
+copiado += `Fixa fio: ${document.getElementById('fixaFio').value}\n`;
+copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
+copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
+copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
+copiado += `Kit fusão:##*Obrigado!* ${document.getElementById('kitFusao').value}\n`;
+
+
+
 
   // Substituir o "#" por quebras de linha (\n)
   copiado = copiado.replace(/#/g, '\n');
@@ -302,7 +423,7 @@ function copiarConteudo() {
   // Exiba o conteúdo da variável 'copiado' no console
   console.log('Conteúdo Atualizado:', copiado);
   
-  alert(copiado)
+
 
   // Crie um elemento de input temporário
   const tempInput = document.createElement('textarea');
@@ -321,6 +442,7 @@ function copiarConteudo() {
 
   // Remova o elemento de input temporário
   document.body.removeChild(tempInput);
+    alert(copiado)
 }
 
 
