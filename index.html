@@ -287,25 +287,40 @@
         copiarConteudo();
       }
 
-    // Função para copiar o conteúdo atualizado para a área de transferência
+// Função para copiar o conteúdo atualizado para a área de transferência
 function copiarConteudo() {
   let copiado = '';
 
-  // Construir a string com a estrutura desejada
+  // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
   for (let i = 0; i < produtos.length; i++) {
-    copiado += `${produtos[i].nome}:${produtos[i].quantidade}\n`;
+    copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
   }
 
-  console.log('Conteúdo Atualizado:', copiado);
+  // Substituir o "#" por quebras de linha (\n)
+  copiado = copiado.replace(/#/g, '\n');
 
-  const clipboardInput = document.getElementById('clipboardInput');
-  clipboardInput.value = copiado;
-  clipboardInput.select();
+  // Exiba o conteúdo da variável 'copiado' no console
+  console.log('Conteúdo Atualizado:', copiado);
+  
+  alert(copiado)
+
+  // Crie um elemento de input temporário
+  const tempInput = document.createElement('textarea');
+  tempInput.style.position = 'absolute';
+  tempInput.style.left = '-9999px';
+  tempInput.value = copiado;
+
+  // Anexe o elemento de input ao corpo do documento
+  document.body.appendChild(tempInput);
+
+  // Selecione o texto no elemento de input
+  tempInput.select();
+
+  // Copie o texto para a área de transferência
   document.execCommand('copy');
 
-  // Exibir o conteúdo copiado em um alert
-  alert(copiado);
-
+  // Remova o elemento de input temporário
+  document.body.removeChild(tempInput);
 }
 
 
