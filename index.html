@@ -101,6 +101,15 @@
       border-radius: 10px;
       background-color: lightgray;
     }
+    
+    #habilitar input{
+      width: fit-content;
+    }
+    
+    select{
+      width: 100%;
+      text-align: center;
+    }
 
 
   </style>
@@ -126,83 +135,93 @@
   <br><br>
 
 
-<table>
-  <tr>
-    <th>Técnico:</th>
-    <td><input type="text" id="tecnico"></td>
-  </tr>
+<table id="habilitar">
+<tr>
+  <th>Técnico:</th>
+  <td>
+    <select id="tecnico">
+      <option value="Andre">André Levi</option>
+      <option value="Elvis">Elvis</option>
+      <option value="Guilherme" selected>Guilherme</option>
+      <option value="Robson">Robson</option>
+      <option value="Sergio">Sérgio</option>
+    </select>
+  </td>
+</tr>
+
   <tr>
     <th>Cliente:</th>
     <td><input type="text" id="cliente"></td>
   </tr>
   <tr>
     <th>Fibra metragem:</th>
-    <td><input type="number" id="fibraMetragem"></td>
+    <td><input type="number" min="" value="" id="fibraMetragem"></td>
   </tr>
   <tr>
     <th>CTO:</th>
-    <td><input type="number" id="cto"></td>
+    <td><input type="number" value="" id="cto"></td>
   </tr>
   <tr>
     <th>Porta:</th>
-    <td><input type="number" id="porta"></td>
+    <td><input type="number" value="" id="porta"></td>
   </tr>
   <tr>
     <th>Sinal CTO:</th>
-    <td><input type="text" id="sinalCto"></td>
+    <td><input type="number" value="" id="sinalCto"></td>
   </tr>
   <tr>
     <th>Sinal Cliente:</th>
-    <td><input type="text" id="sinalCliente"></td>
+    <td><input type="number" value="" id="sinalCliente"></td>
   </tr>
   <tr>
     <th>SC-APC:</th>
-    <td><input type="text" id="scApc"></td>
+    <td><input type="number" value="" id="scApc"></td>
   </tr>
   <tr>
     <th>SC-UPC:</th>
-    <td><input type="text" id="scUpc"></td>
+    <td><input type="number" value="" id="scUpc"></td>
   </tr>
   <tr>
     <th>Esticadores:</th>
-    <td><input type="text" id="esticadores"></td>
+    <td><input type="number" value="" id="esticadores"></td>
   </tr>
   <tr>
     <th>Roldana:</th>
-    <td><input type="text" id="roldana"></td>
+    <td><input type="number" value="" id="roldana"></td>
   </tr>
   <tr>
     <th>Fecho:</th>
-    <td><input type="text" id="fecho"></td>
+    <td><input type="number" value="" id="fecho"></td>
   </tr>
   <tr>
     <th>Anel:</th>
-    <td><input type="text" id="anel"></td>
+    <td><input type="number" value="" id="anel"></td>
   </tr>
   <tr>
     <th>Fita aço:</th>
-    <td><input type="text" id="fitaAco"></td>
+    <td><input type="number" value="" id="fitaAco"></td>
   </tr>
   <tr>
     <th>Fixa fio:</th>
-    <td><input type="text" id="fixaFio"></td>
+    <td><input type="number" value="" id="fixaFio"></td>
   </tr>
   <tr>
     <th>Isolante:</th>
-    <td><input type="text" id="isolante"></td>
+    <td><input type="number" value="" id="isolante"></td>
   </tr>
   <tr>
     <th>Cabo de rede:</th>
-    <td><input type="text" id="caboRede"></td>
+    <td><input type="number" value="" id="caboRede"></td>
   </tr>
   <tr>
     <th>Conc RJ45:</th>
-    <td><input type="text" id="concRj45"></td>
+    <td><input type="number" value="" id="concRj45"></td>
   </tr>
   <tr>
     <th>Kit fusão:</th>
-    <td><input type="text" id="kitFusao"></td>
+    <td><input type="number" value="" id="kitFusao"></td>
   </tr>
+  <tr>
 </table>
 
 
@@ -225,6 +244,13 @@
   </div>
 
   <script>
+
+
+//funcao para apagar o valor de quando o imput é selecionado
+   function clearValue(inputId) {
+      document.getElementById(inputId).value = "";
+    }
+
 
     // Função para exibir a seção do estoque e ocultar a seção de retirada
     function mostrarEstoque() {
@@ -254,8 +280,11 @@
       { nome: "46M", quantidade: 2 },
       { nome: "V5", quantidade: 1 },
       { nome: "TVBOX", quantidade: 1 },
-      { nome: "DROP", quantidade: 1000 },
+      { nome: "DROP", quantidade: 1000 }
+      ,
     ];
+
+
 
     let retirada = JSON.parse(localStorage.getItem("retirada")) || [];
 
@@ -385,7 +414,7 @@
 
 // Função para copiar o conteúdo atualizado para a área de transferência
 function copiarConteudo() {
-  let copiado = 'Meu estoque:#____________#';
+  let copiado = '*Meu estoque:*#____________#';
 
   // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
   for (let i = 0; i < produtos.length; i++) {
@@ -412,7 +441,7 @@ copiado += `Fixa fio: ${document.getElementById('fixaFio').value}\n`;
 copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
 copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
 copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
-copiado += `Kit fusão:##*Obrigado!* ${document.getElementById('kitFusao').value}\n`;
+copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Obrigado !!*\n`;
 
 
 
