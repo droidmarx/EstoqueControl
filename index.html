@@ -135,7 +135,7 @@
   <br><br>
 
 
-<table id="habilitar">
+<table style="display: block" id="habilitar">
 <tr>
   <th>Técnico:</th>
   <td>
@@ -256,12 +256,19 @@
     function mostrarEstoque() {
       document.getElementById("estoqueDiv").style.display = "block";
       document.getElementById("retiradaDiv").style.display = "none";
+      
+      document.getElementById("habilitar").style.display = "block";
+      document.getElementById("habilitar").style.display = "none";
     }
 
     // Função para exibir a seção de retirada e ocultar a seção do estoque
     function mostrarRetirada() {
       document.getElementById("estoqueDiv").style.display = "none";
       document.getElementById("retiradaDiv").style.display = "block";
+      
+      document.getElementById("habilitar").style.display = "none";
+      document.getElementById("habilitar").style.display = "block";
+      
     }
     
     
