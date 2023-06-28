@@ -108,7 +108,7 @@
   <h1>CONTROLE DE ESTOQUE</h1>
   <button class="BTN" onclick="mostrarRetirada()">Retirada do Estoque</button>
   <button class="BTN" onclick="mostrarEstoque()">Estoque Atual</button>
-          <button type="button" id="clear-storage-btn">Limpar Local Storage</button>
+          <button style="display: none" type="button" id="clear-storage-btn">Limpar Local Storage</button>
 
   <div id="estoqueDiv" style="display: none;">
     
@@ -421,18 +421,7 @@
           produtoRetirado.quantidade = 0;
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
+    
         atualizarTabelaEstoque();
         atualizarTabelaRetirada();
         salvarDados();
@@ -472,15 +461,12 @@ copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
 copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Obrigado !!*\n`;
 
 
-
-
   // Substituir o "#" por quebras de linha (\n)
   copiado = copiado.replace(/#/g, '\n');
 
   // Exiba o conteúdo da variável 'copiado' no console
   console.log('Conteúdo Atualizado:', copiado);
   
-
 
   // Crie um elemento de input temporário
   const tempInput = document.createElement('textarea');
