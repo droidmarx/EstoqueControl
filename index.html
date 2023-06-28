@@ -132,107 +132,109 @@
   <th>Técnico:</th>
   <td>
     <select id="tecnico">
+
       <option value="Andre">André Levi</option>
       <option value="Elvis">Elvis</option>
-      <option value="Guilherme" selected>Guilherme</option>
+      <option value="Guilherme">Guilherme</option>
       <option value="Robson">Robson</option>
       <option value="Sergio">Sérgio</option>
+      
     </select>
   </td>
 </tr>
 
   <tr>
     <th>Cliente:</th>
-    <td><input type="text" id="cliente"></td>
+    <td><input type="text" placeholder="Nome do Cliente" id="cliente"></td>
   </tr>
   <tr>
     <th>Fibra metragem:</th>
-    <td><input type="number" min="" value="" onchange="atualizarQuantidadeRetirada(0, this.value)"  id="fibraMetragem"  ></td>
+    <td><input type="number" min="00" value="00" onchange="atualizarQuantidadeRetirada(0, this.value)"  id="fibraMetragem"  ></td>
   </tr>
   <tr>
     <th>CTO:</th>
-    <td><input type="number" value="0" id="cto"></td>
+    <td><input type="number" value="00" id="cto"></td>
   </tr>
   
  <tr>
   <th>Porta:</th>
   <td>
     <select id="porta" >
-      <option value="01">01</option>
-      <option value="02">02</option>
-      <option value="03">03</option>
-      <option value="04">04</option>
-      <option value="05">05</option>
-      <option value="06">06</option>
-      <option value="07">07</option>
-      <option value="08">08</option>
-      <option value="09">09</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
-      <option value="13">13</option>
-      <option value="14">14</option>
-      <option value="15">15</option>
-      <option value="16">16</option>
+      <option value="01">Porta 01</option>
+      <option value="02">Porta 02</option>
+      <option value="03">Porta 03</option>
+      <option value="04">Porta 04</option>
+      <option value="05">Porta 05</option>
+      <option value="06">Porta 06</option>
+      <option value="07">Porta 07</option>
+      <option value="08">Porta 08</option>
+      <option value="09">Porta 09</option>
+      <option value="10">Porta 10</option>
+      <option value="11">Porta 11</option>
+      <option value="12">Porta 12</option>
+      <option value="13">Porta 13</option>
+      <option value="14">Porta 14</option>
+      <option value="15">Porta 15</option>
+      <option value="16">Porta 16</option>
     </select>
   </td>
 </tr>
 
   <tr>
     <th>Sinal CTO:</th>
-    <td><input type="number" value="0" id="sinalCto"></td>
+    <td><input type="number" value="-00.00" id="sinalCto"></td>
   </tr>
   <tr>
     <th>Sinal Cliente:</th>
-    <td><input type="number" value="0" id="sinalCliente"></td>
+    <td><input type="number" value="-00.00" id="sinalCliente"></td>
   </tr>
   <tr>
     <th>SC-APC:</th>
-    <td><input type="number" value="0" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)" ></td>
+    <td><input type="number" value="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)" ></td>
   </tr>
   <tr>
     <th>SC-UPC:</th>
-    <td><input type="number" value="" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)" ></td>
+    <td><input type="number" value="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)" ></td>
   </tr>
   <tr>
     <th>Esticadores:</th>
-    <td><input type="number" value="" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)" ></td>
+    <td><input type="number" value="00" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)" ></td>
   </tr>
   <tr>
     <th>Roldana:</th>
-    <td><input type="number" value="" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)" ></td>
+    <td><input type="number" value="00" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)" ></td>
   </tr>
   <tr>
     <th>Fecho:</th>
-    <td><input type="number" value="" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)" ></td>
+    <td><input type="number" value="00" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)" ></td>
   </tr>
   <tr>
     <th>Anel:</th>
-    <td><input type="number" value="" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)" ></td>
+    <td><input type="number" value="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)" ></td>
   </tr>
   <tr>
     <th>Fita aço:</th>
-    <td><input type="number" value="" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)" ></td>
+    <td><input type="number" value="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)" ></td>
   </tr>
   <tr>
     <th>Fixa fio:</th>
-    <td><input type="number" value="" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)" ></td>
+    <td><input type="number" value="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)" ></td>
   </tr>
   <tr>
     <th>Isolante:</th>
-    <td><input type="number" value="" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)" ></td>
+    <td><input type="number" value="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)" ></td>
   </tr>
   <tr>
     <th>Cabo de rede:</th>
-    <td><input type="number" value="" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)" ></td>
+    <td><input type="number" value="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)" ></td>
   </tr>
   <tr>
     <th>Conc RJ45:</th>
-    <td><input type="number" value="" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)" ></td>
+    <td><input type="number" value="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)" ></td>
   </tr>
   <tr>
     <th>Kit fusão:</th>
-    <td><input type="number" value="" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)" ></td>
+    <td><input type="number" value="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)" ></td>
   </tr>
   <tr>
 </table>
@@ -291,24 +293,23 @@
 
     // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
     let produtos = JSON.parse(localStorage.getItem("produtos")) || [
-  { nome: "DROP", quantidade: 1000 },
-  { nome: "SC-APC", quantidade: 20 },
-  { nome: "SC-UPC", quantidade: 20 },
-  { nome: "Esticadores", quantidade: 100 },
-  { nome: "Roldana", quantidade: 100 },
-  { nome: "Fecho", quantidade: 50 },
-  { nome: "Anel", quantidade: 50 },
-  { nome: "Fita aço", quantidade: 50 },
-  { nome: "Fixa fio", quantidade: 100 },
-  { nome: "Isolante", quantidade: 30 },
-  { nome: "Cabo de rede", quantidade: 300 },
-  { nome: "Conc RJ45", quantidade: 20 },
-      { nome: "WS5200", quantidade: 3 },
-      { nome: "Q2", quantidade: 1 },
-      { nome: "TPlink", quantidade: 5 },
-      { nome: "46M", quantidade: 2 },
-      { nome: "V5", quantidade: 1 },
-      { nome: "TVBOX", quantidade: 1 },
+ { nome: "DROP", quantidade: 1000 },
+ { nome: "SC-APC", quantidade: 20 },
+ { nome: "SC-UPC", quantidade: 20 },
+ { nome: "Esticadores", quantidade: 100 },
+ { nome: "Roldana", quantidade: 100 },
+ { nome: "Fecho", quantidade: 50 },
+ { nome: "Anel", quantidade: 50 },
+ { nome: "Fita aço", quantidade: 50 },
+ { nome: "Fixa fio", quantidade: 100 },
+ { nome: "Cabo de rede", quantidade: 300 },
+ { nome: "Conc RJ45", quantidade: 20 },
+ { nome: "WS5200", quantidade: 3 },
+ { nome: "Q2", quantidade: 1 },
+ { nome: "TPlink", quantidade: 5 },
+ { nome: "46M", quantidade: 2 },
+ { nome: "V5", quantidade: 1 },
+ { nome: "TVBOX", quantidade: 1 },
     ];
 
 
@@ -502,24 +503,24 @@ copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Obrigado 
     
     
             document.getElementById("tecnico").selectedIndex = 0;
-            document.getElementById("cliente").value = "";
-            document.getElementById("fibraMetragem").value = "";
-            document.getElementById("cto").value = "0";
+            document.getElementById("cliente").value = "Nome do Cliente";
+            document.getElementById("fibraMetragem").value = "00";
+            document.getElementById("cto").value = "00";
             document.getElementById("porta").selectedIndex = 0;
-            document.getElementById("sinalCto").value = "0";
-            document.getElementById("sinalCliente").value = "0";
-            document.getElementById("scApc").value = "0";
-            document.getElementById("scUpc").value = "";
-            document.getElementById("esticadores").value = "";
-            document.getElementById("roldana").value = "";
-            document.getElementById("fecho").value = "";
-            document.getElementById("anel").value = "";
-            document.getElementById("fitaAco").value = "";
-            document.getElementById("fixaFio").value = "";
-            document.getElementById("isolante").value = "";
-            document.getElementById("caboRede").value = "";
-            document.getElementById("concRj45").value = "";
-            document.getElementById("kitFusao").value = "";
+            document.getElementById("sinalCto").value = "-00.00";
+            document.getElementById("sinalCliente").value = "-00.00";
+            document.getElementById("scApc").value = "00";
+            document.getElementById("scUpc").value = "00";
+            document.getElementById("esticadores").value = "00";
+            document.getElementById("roldana").value = "00";
+            document.getElementById("fecho").value = "00";
+            document.getElementById("anel").value = "00";
+            document.getElementById("fitaAco").value = "00";
+            document.getElementById("fixaFio").value = "00";
+            document.getElementById("isolante").value = "00";
+            document.getElementById("caboRede").value = "00";
+            document.getElementById("concRj45").value = "00";
+            document.getElementById("kitFusao").value = "00";
           
 }
 
@@ -556,6 +557,21 @@ copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Obrigado 
       // Realiza a ação de envio aqui (por exemplo, enviar dados para o servidor)
 
     });
+    
+    // Obtém todos os elementos de entrada
+var inputs = document.getElementsByTagName('input');
+
+// Itera sobre todos os elementos de entrada e adiciona o manipulador de eventos
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('focus', clearInput);
+}
+
+// Função para limpar o valor do input
+function clearInput(event) {
+  event.target.value = '';
+}
+
+
     
     
   </script>
