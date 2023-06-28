@@ -108,7 +108,10 @@
   <h1>CONTROLE DE ESTOQUE</h1>
   <button class="BTN" onclick="mostrarRetirada()">Retirada do Estoque</button>
   <button class="BTN" onclick="mostrarEstoque()">Estoque Atual</button>
+          <button type="button" id="clear-storage-btn">Limpar Local Storage</button>
+
   <div id="estoqueDiv" style="display: none;">
+    
   
   <table id="estoque">
     <h2>Estoque Atual</h2>
@@ -254,6 +257,13 @@
   </div>
 
   <script>
+  
+    const clearStorageBtn = document.querySelector("#clear-storage-btn"); 
+  
+ clearStorageBtn.addEventListener("click", () => { 
+   localStorage.clear(); 
+   alert("Dados do Local Storage foram removidos com sucesso!"); 
+ });
 
 
 
@@ -512,6 +522,8 @@ copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Obrigado 
             document.getElementById("kitFusao").value = "";
           
 }
+
+
 
 
     function atualizarQuantidadeEstoque(indice, quantidade) {
