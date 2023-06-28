@@ -572,6 +572,23 @@ function clearInput(event) {
 }
 
 
+//Função para deixar negativo o sinal do cliente e da CTO mesmo se digitar ele positivo
+var input = document.getElementById("sinalCto");
+var input1 = document.getElementById("sinalCliente");
+
+input.addEventListener('input', function() {
+  if (parseFloat(input.value) >= 0) {
+    input.value = '-' + input.value;
+  }
+});
+
+input1.addEventListener('input', function() {
+  if (parseFloat(input1.value) >= 0) {
+    input1.value = '-' + input1.value;
+  }
+});
+
+
     
     
   </script>
