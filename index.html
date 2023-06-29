@@ -26,13 +26,29 @@
       justify-content: space-evenly;
     }
   
+  #adicionar, #enviar{
+     font-weight: bold; 
+     text-align: center; 
+     color: #fff; 
+     background-color: #0077cc; 
+     text-align: center;
+     width: 80%;
+     max-width: 450px;
+  }
+  
     button {
-      width: fit-content;
+      
+     font-weight: bold; 
+     text-align: center; 
+     color: #fff; 
+     background-color: #0077cc; 
+     text-align: center; 
+      
+      width: 40px;
       border-radius: 5px;
       font-size: 80%;
       padding: 10px;
       color: white;
-      background: green;
       border: 1px black;
     }
     
@@ -79,10 +95,15 @@
     /* Headings */
     h1 {
       font-size: 40px;
+      color: white;
     }
   
     h2 {
       font-size: 30px;
+    }
+    
+    h4{
+      color: red;
     }
   
     /* Excluir button */
@@ -90,7 +111,7 @@
       width: fit-content;
       padding: 8px;
     }
-  
+    
     /* Tabs */
     .tabs {
       display: flex;
@@ -110,6 +131,7 @@
     /* Content */
     #habilitar{
       width: fit-content;
+      margin: 0 auto;
     }
     
     
@@ -122,37 +144,187 @@
       text-align: center;
     }
 
+
+nav { 
+   background-color: #0060a7; 
+   padding: 1rem; 
+   display: flex; 
+   flex-wrap: wrap; 
+   justify-content: space-between; 
+   position: relative; 
+   z-index: 1;
+ }
+ 
+  
+ li a { 
+   text-decoration: none; 
+   padding: 10px; 
+   border-radius: 5px; 
+   border: none; 
+   color: #fff; 
+   cursor: pointer; 
+   transition: 0.3s ease; 
+ } 
+  
+ li a:hover { 
+   background-color: white; 
+   color: #0060a7; 
+ } 
+  
+ #menu { 
+   display: flex; 
+   list-style: none; 
+   gap: 1.5rem; 
+   align-items: center; 
+ } 
+  
+ #menu a { 
+   display: block; 
+   padding: 0.5rem; 
+ } 
+  
+ #btn-mobile { 
+   display: none; 
+ } 
+  
+ @media (max-width: 640px) { 
+   h1 { 
+     display: none; 
+   } 
+ } 
+  
+ @media (max-width: 600px) { 
+   h1 { 
+     display: none; 
+   } 
+   #seletor-limpar { 
+     display: none; 
+   } 
+   #seletor-migrar { 
+     display: none; 
+   } 
+  
+   li a { 
+     font-weight: bold; 
+     text-align: center; 
+     color: #fff; 
+     background-color: #0077cc; 
+     text-align: center; 
+   } 
+  
+   #menu { 
+     display: block; 
+     position: absolute; 
+     width: 100%; 
+     top: 3rem; 
+     right: 0px; 
+     background: #0077cc; 
+     transition: 0.6s; 
+     z-index: 1000; 
+     height: 0px; 
+     visibility: hidden; 
+     overflow-y: hidden; 
+   } 
+   #nav.active #menu { 
+     height: calc(100vh - 4rem); 
+     visibility: visible; 
+     overflow-y: auto; 
+   } 
+   #menu a { 
+     padding: 1rem 0; 
+     margin: 0 1rem; 
+     border-bottom: 2px solid rgba(0, 0, 0, 0.05); 
+   } 
+   #btn-mobile { 
+     display: flex; 
+     padding: 0.5rem 1rem; 
+     font-size: 1rem; 
+     border: none; 
+     background: none; 
+     cursor: pointer; 
+     gap: 0.5rem; 
+     align-items: center; 
+   } 
+   #hamburger { 
+     border-top: 2px solid; 
+     width: 20px; 
+   } 
+   #hamburger::after, 
+   #hamburger::before { 
+     content: ""; 
+     display: block; 
+     width: 20px; 
+     height: 2px; 
+     background: currentColor; 
+     margin-top: 5px; 
+     transition: 0.3s; 
+     position: relative; 
+   } 
+   #nav.active #hamburger { 
+     border-top-color: transparent; 
+   } 
+   #nav.active #hamburger::before { 
+     transform: rotate(135deg); 
+   } 
+   #nav.active #hamburger::after { 
+     transform: rotate(-135deg); 
+     top: -7px; 
+   } 
+ }
+
+
+
+
   </style>
   
 </head>
 <body>
-  <h1>CONTROLE DE ESTOQUE</h1>
   
-  <div class="botoes" >
+    <nav id="nav"> 
+     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false"> 
+       <span id="hamburger"></span> 
+     </button> 
+     
+     <h1>Controle de Estoque</h1> 
+  
+     <ul id="menu" role="menu"> 
+       
+       <li><a onclick="mostrarRetirada()" >Lançar</a></li> 
+       <li><a onclick="mostrarEstoque()" >Meu estoque</a></li> 
+       <li><a id="clear-storage-btn" >Resetar estoque</a></li> 
+     </ul>  
+   </nav>
 
-  <button class="BTN" onclick="mostrarRetirada()">Retirada do Estoque</button>
-  <button class="BTN" onclick="mostrarEstoque()">Estoque Atual</button>
-  <button class="BTN" type="button" id="clear-storage-btn">Resetar estoque</button>
- </div>
+
+
+
+
 
   <div id="estoqueDiv" style="display: none;">
     
+   <h1>CONTROLE DE ESTOQUE</h1>
+
   
   <table id="estoque">
-    <h2>Estoque Atual</h2>
+    <h2>Meu estoque</h2>
+    <h4>Exclua somente se tiver total certeza</h4>
+
     <tr>
       <th>Quantidade</th>
       <th>Ações</th>
     </tr>
   </table>
   <br>
-  <button class="BTN" onclick="adicionar()">Adicionar Produto</button>
+  <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar Produto</button>
   </div>
 
-  <br><br>
+  <br>
 
+<div class="habilitar" style="display: block" id="habilitar">
 
-<table style="display: block" id="habilitar">
+<h2>Lançar</h2>
+
+<table>
 <tr>
   <th>Técnico:</th>
   <td>
@@ -167,7 +339,6 @@
     </select>
   </td>
 </tr>
-
   <tr>
     <th>Cliente:</th>
     <td><input type="text" placeholder="Nome do Cliente" id="cliente"></td>
@@ -264,14 +435,19 @@
   </tr>
   <tr>
 </table>
+<br>
+  <button id="enviar" class="BTN"  onclick="enviar()">Enviar</button>
+</div>
 
 
-  
-  
+<br>
+
+
   
   <div id="retiradaDiv" style="display: block;">
   <table id="retirada">
     <h2>Retirada de Estoque</h2>
+    <h4>Lançe mais itens de necessário</h4>
     <tr>
       <th>Produto</th>
       <th>Quantidade</th>
@@ -279,7 +455,6 @@
     </tr>
   </table>
   <br>
-  <button class="BTN"  onclick="enviar()">Enviar</button>
   <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
 
   </div>
@@ -604,6 +779,63 @@ input1.addEventListener('input', function() {
   }
 });
 
+
+//botão toogle menu
+
+const btnMobile = document.getElementById("btn-mobile");
+
+function toggleMenu(event) {
+  if (event.type === "touchstart") event.preventDefault();
+  const nav = document.getElementById("nav");
+  nav.classList.toggle("active");
+  const active = nav.classList.contains("active");
+  event.currentTarget.setAttribute("aria-expanded", active);
+  if (active) {
+    event.currentTarget.setAttribute("aria-label", "Fechar Menu");
+  } else {
+    event.currentTarget.setAttribute("aria-label", "Abrir Menu");
+  }
+}
+
+btnMobile.addEventListener("click", toggleMenu);
+btnMobile.addEventListener("touchstart", toggleMenu);
+
+// Obtém os itens do menu
+const menuItems = document.querySelectorAll("#menu li a");
+
+// Função para remover a classe "active" do elemento de navegação
+function removeActiveClass() {
+  const nav = document.getElementById("nav");
+  nav.classList.remove("active");
+}
+
+// Adiciona o evento de clique a cada item do menu
+menuItems.forEach(function (item) {
+  item.addEventListener("click", removeActiveClass);
+});
+
+
+
+//Mendagem no WhatsApp para pedir material
+function verificarTercaFeira() {
+  var dataAtual = new Date();
+  var diaSemana = dataAtual.getDay();
+  
+  if (diaSemana === 1) {
+    var alertaExibido = sessionStorage.getItem('alertaExibido');
+    
+    if (!alertaExibido) {
+      alert("Hoje é segunfa-feira!, dia de pedir material");
+      sessionStorage.setItem('alertaExibido', 'true');
+      
+      // Redirecionar o usuário para o link após pressionar OK
+      window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+!!'; // Substitua o link com a URL desejada
+    }
+  }
+}
+
+// Chamando a função
+verificarTercaFeira();
     
     
   </script>
