@@ -18,36 +18,40 @@
       width: 30%;
     }
   
-    /* Buttons */
-    .tab-button {
-      width: fit-content;
-      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7);
-      font-size: 20px;
-      padding: 5px 10px;
-      margin-right: 5px;
-      border-radius: 10px;
-      background-color: darkgray;
-      border: 1px solid black;
-    }
-  
-    .tab-button:focus {
-      outline: none;
-    }
   
     .BTN {
       width: fit-content;
-      font-size: 20px;
+      font-size: 10px;
       padding: 10px;
+      justify-content: space-evenly;
     }
   
     button {
       width: fit-content;
-      border-radius: 10px;
+      border-radius: 5px;
       font-size: 80%;
-      padding: 8px;
+      padding: 10px;
       color: white;
       background: green;
       border: 1px black;
+    }
+    
+    .botoes{
+      margin: 0 auto;
+      align-items: center;
+      background:grey;
+      display: flex;
+      gap: 10px;
+      width: fit-content;
+      height: fit-content;
+    }
+    
+    tbody button{
+      margin: 5px;
+      justify-content: space-evenly;
+      gap: 10px;
+      background: blue;
+      width: 40px;
     }
   
     /* Tables */
@@ -58,10 +62,18 @@
       text-align: center;
       background-color: darkgray;
       margin: 0 auto;
-      border: 1px solid black;
-      border-collapse: collapse;
-      border-radius: 10px;
+      border-bottom: 1px solid black;
+     /* border-collapse: collapse;*/
+      border-radius: 1px;
       padding: 5px;
+    }
+    
+    td button{
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      text-align: center;
+      justify-content: center;
     }
   
     /* Headings */
@@ -85,6 +97,15 @@
       justify-content: center;
       margin-bottom: 10px;
     }
+    
+    table#retirada{
+      background: white;
+    }
+    
+    .acoes{
+      display: flex;
+    }
+    
   
     /* Content */
     #habilitar{
@@ -106,9 +127,13 @@
 </head>
 <body>
   <h1>CONTROLE DE ESTOQUE</h1>
+  
+  <div class="botoes" >
+
   <button class="BTN" onclick="mostrarRetirada()">Retirada do Estoque</button>
   <button class="BTN" onclick="mostrarEstoque()">Estoque Atual</button>
-          <button style="display: " type="button" id="clear-storage-btn">Limpar Local Storage</button>
+  <button class="BTN" type="button" id="clear-storage-btn">Resetar estoque</button>
+ </div>
 
   <div id="estoqueDiv" style="display: none;">
     
@@ -132,8 +157,8 @@
   <th>Técnico:</th>
   <td>
     <select id="tecnico">
-
-      <option value="Andre">André Levi</option>
+      <option disabled selected value="">Selecione o técnico</option>
+      <option value="Andre">André</option>
       <option value="Elvis">Elvis</option>
       <option value="Guilherme">Guilherme</option>
       <option value="Robson">Robson</option>
@@ -149,17 +174,18 @@
   </tr>
   <tr>
     <th>Fibra metragem:</th>
-    <td><input type="number" min="00" value="00" onchange="atualizarQuantidadeRetirada(0, this.value)"  id="fibraMetragem"  ></td>
+    <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)"  id="fibraMetragem"  ></td>
   </tr>
   <tr>
     <th>CTO:</th>
-    <td><input type="number" value="00" id="cto"></td>
+    <td><input placeholder="00" type="number" id="cto"></td>
   </tr>
   
  <tr>
   <th>Porta:</th>
   <td>
     <select id="porta" >
+      <option disabled selected value="">Selecione a porta</option>
       <option value="01">Porta 01</option>
       <option value="02">Porta 02</option>
       <option value="03">Porta 03</option>
@@ -182,59 +208,59 @@
 
   <tr>
     <th>Sinal CTO:</th>
-    <td><input type="number" value="-00.00" id="sinalCto"></td>
+    <td><input type="number" placeholder="-00.00" id="sinalCto"></td>
   </tr>
   <tr>
     <th>Sinal Cliente:</th>
-    <td><input type="number" value="-00.00" id="sinalCliente"></td>
+    <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
   </tr>
   <tr>
     <th>SC-APC:</th>
-    <td><input type="number" value="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)" ></td>
   </tr>
   <tr>
     <th>SC-UPC:</th>
-    <td><input type="number" value="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)" ></td>
   </tr>
   <tr>
     <th>Esticadores:</th>
-    <td><input type="number" value="00" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)" ></td>
   </tr>
   <tr>
     <th>Roldana:</th>
-    <td><input type="number" value="00" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)" ></td>
   </tr>
   <tr>
     <th>Fecho:</th>
-    <td><input type="number" value="00" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)" ></td>
   </tr>
   <tr>
     <th>Anel:</th>
-    <td><input type="number" value="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)" ></td>
   </tr>
   <tr>
     <th>Fita aço:</th>
-    <td><input type="number" value="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)" ></td>
   </tr>
   <tr>
     <th>Fixa fio:</th>
-    <td><input type="number" value="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)" ></td>
   </tr>
   <tr>
     <th>Isolante:</th>
-    <td><input type="number" value="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)" ></td>
   </tr>
   <tr>
     <th>Cabo de rede:</th>
-    <td><input type="number" value="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)" ></td>
   </tr>
   <tr>
     <th>Conc RJ45:</th>
-    <td><input type="number" value="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)" ></td>
   </tr>
   <tr>
     <th>Kit fusão:</th>
-    <td><input type="number" value="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)" ></td>
+    <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)" ></td>
   </tr>
   <tr>
 </table>
@@ -260,12 +286,17 @@
 
   <script>
   
-    const clearStorageBtn = document.querySelector("#clear-storage-btn"); 
-  
- clearStorageBtn.addEventListener("click", () => { 
-   localStorage.clear(); 
-   alert("Dados do Local Storage foram removidos com sucesso!"); 
- });
+const clearStorageBtn = document.querySelector("#clear-storage-btn");
+
+clearStorageBtn.addEventListener("click", () => {
+  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
+
+  if (confirmReset) {
+    localStorage.clear();
+    alert("Estoque resetado com sucesso!");
+  }
+});
+
 
 
 
@@ -322,15 +353,17 @@
         let celulaAcoes = linha.insertCell(2);
         celulaNome.innerHTML = produtos[i].nome;
         celulaQuantidade.innerHTML = `<input type="number" min="0" value="${produtos[i].quantidade}" onchange="atualizarQuantidadeEstoque(${i}, this.value)">`;
-        celulaAcoes.innerHTML = `<button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button>`;
+        celulaAcoes.innerHTML = `<div class='acoes'><button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button></div>`;
       }
     }
+    
+    
     
 
     // Função para atualizar a tabela de retirada com os produtos e suas quantidades
     function atualizarTabelaRetirada() {
       let tabela = document.getElementById("retirada");
-      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th class='acoes'>Ações</th></tr>";
       for (let i = 0; i < retirada.length; i++) {
         let linha = tabela.insertRow(-1);
         let celulaNome = linha.insertCell(0);
@@ -402,7 +435,7 @@
       salvarDados();
     }
 
-        // Função para processar a retirada de produtos
+// Função para processar a retirada de produtos
       function enviar() {
         for (let i = 0; i < retirada.length; i++) {
           let produtoRetirado = retirada[i];
@@ -478,6 +511,7 @@ copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##*Meu Estoq
   tempInput.select();
 
   // Copie o texto para a área de transferência
+document.execCommand('copy')
 
   // Remova o elemento de input temporário
   document.body.removeChild(tempInput);
