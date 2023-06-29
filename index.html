@@ -83,9 +83,9 @@
       background-color: darkgray;
       margin: 0 auto;
       border-bottom: 1px solid black;
-     /* border-collapse: collapse;*/
       border-radius: 1px;
       padding: 5px;
+      font-size: small;
     }
     
     td button{
@@ -311,8 +311,6 @@ nav {
   
   <table id="estoque">
     <h2>Meu estoque</h2>
-    <h4>Exclua somente se tiver total certeza</h4>
-
     <tr>
       <th>Quantidade</th>
       <th>Ações</th>
@@ -832,7 +830,7 @@ function verificarTercaFeira() {
   var dataAtual = new Date();
   var diaSemana = dataAtual.getDay();
   
-  if (diaSemana === 4) {
+  if (diaSemana === 1) {
     var alertaExibido = sessionStorage.getItem('alertaExibido');
     
     if (!alertaExibido) {
