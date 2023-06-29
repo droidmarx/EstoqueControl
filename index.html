@@ -10,12 +10,11 @@
   <title>Controle de Estoque</title>
   <style>
     body {
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       text-align: center;
-      background-color: grey; 
-
     }
 
     input{
@@ -99,18 +98,16 @@
   
     /* Headings */
     h1 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 40px;
-    color: white;
+      font-size: 40px;
+      color: white;
     }
   
     h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
+      font-size: 30px;
     }
     
     h4{
-      color: darkred ;
+      color: red;
     }
   
     /* Excluir button */
@@ -590,40 +587,39 @@ clearStorageBtn.addEventListener("click", () => {
       }
     }
 
-    // Função para adicionar um novo produto ao estoque e à retirada
-    function adicionar() {
-  let nome = prompt("Nome do produto:");
-  if (nome) {
-    let quantidade = prompt("Quantidade do produto:");
-    quantidade = parseInt(quantidade); // Converter a quantidade para um número inteiro
 
-    if (!isNaN(quantidade)) { // Verificar se a quantidade é um número válido
-      produtos.push({ nome, quantidade });
-      retirada.push({ nome, quantidade });
-      atualizarTabelaEstoque();
-      atualizarTabelaRetirada();
-      salvarDados();
-    } else {
-      alert("Quantidade inválida. Por favor, insira um número válido.");
+
+ // Função para adicionar um novo produto ao estoque e à retirada
+function adicionar() {
+  let nome = prompt("Nome do produto:"); // Solicita o nome do produto ao usuário
+  if (nome) {
+    produtos.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de produtos com quantidade inicial 0 e a propriedade "adicionado" definida como true
+    retirada.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de retirada com quantidade inicial 0 e a propriedade "adicionado" definida como true
+    atualizarTabelaEstoque(); // Atualiza a tabela de estoque
+    atualizarTabelaRetirada(); // Atualiza a tabela de retirada
+    salvarDados(); // Salva os dados
+  }
+}
+
+// Função para excluir um produto do estoque e da retirada
+function excluir(indice) {
+  let produto = produtos[indice]; // Obtém o produto correspondente ao índice fornecido
+  if (produto && produto.adicionado) { // Verifica se o produto existe e se a propriedade "adicionado" é true
+    let nome = produto.nome; // Obtém o nome do produto
+    produtos.splice(indice, 1); // Remove o produto da lista de produtos
+    for (let i = 0; i < retirada.length; i++) {
+      if (retirada[i].nome === nome) {
+        retirada.splice(i, 1); // Remove o produto correspondente da lista de retirada
+        break;
+      }
     }
+    atualizarTabelaEstoque(); // Atualiza a tabela de estoque
+    atualizarTabelaRetirada(); // Atualiza a tabela de retirada
+    salvarDados(); // Salva os dados
   }
 }
 
 
-    // Função para excluir um produto do estoque e da retirada
-    function excluir(indice) {
-      let nome = produtos[indice].nome;
-      produtos.splice(indice, 1);
-      for (let i = 0; i < retirada.length; i++) {
-        if (retirada[i].nome === nome) {
-          retirada.splice(i, 1);
-          break;
-        }
-      }
-      atualizarTabelaEstoque();
-      atualizarTabelaRetirada();
-      salvarDados();
-    }
 
 // Função para processar a retirada de produtos
       function enviar() {
@@ -836,15 +832,18 @@ function verificarTercaFeira() {
   var dataAtual = new Date();
   var diaSemana = dataAtual.getDay();
   
-  if (diaSemana === 1) {
+  if (diaSemana === 4) {
     var alertaExibido = sessionStorage.getItem('alertaExibido');
     
     if (!alertaExibido) {
-      alert("Hoje é segunfa-feira!, dia de pedir material");
-      sessionStorage.setItem('alertaExibido', 'true');
+      var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
       
-      // Redirecionar o usuário para o link após pressionar OK
-      window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+!!'; // Substitua o link com a URL desejada
+      if (confirmacao) {
+        sessionStorage.setItem('alertaExibido', 'true');
+        
+        // Redirecionar o usuário para o link após pressionar OK
+        window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+seu bixa loka!!'; // Substitua o link com a URL desejada
+      }
     }
   }
 }
