@@ -10,11 +10,12 @@
   <title>Controle de Estoque</title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       text-align: center;
+      background-color: grey; 
+
     }
 
     input{
@@ -98,16 +99,18 @@
   
     /* Headings */
     h1 {
-      font-size: 40px;
-      color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    color: white;
     }
   
     h2 {
-      font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
     }
     
     h4{
-      color: red;
+      color: darkred ;
     }
   
     /* Excluir button */
@@ -589,15 +592,23 @@ clearStorageBtn.addEventListener("click", () => {
 
     // Função para adicionar um novo produto ao estoque e à retirada
     function adicionar() {
-      let nome = prompt("Nome do produto:");
-      if (nome) {
-        produtos.push({ nome, quantidade: 0 });
-        retirada.push({ nome, quantidade: 0 });
-        atualizarTabelaEstoque();
-        atualizarTabelaRetirada();
-        salvarDados();
-      }
+  let nome = prompt("Nome do produto:");
+  if (nome) {
+    let quantidade = prompt("Quantidade do produto:");
+    quantidade = parseInt(quantidade); // Converter a quantidade para um número inteiro
+
+    if (!isNaN(quantidade)) { // Verificar se a quantidade é um número válido
+      produtos.push({ nome, quantidade });
+      retirada.push({ nome, quantidade });
+      atualizarTabelaEstoque();
+      atualizarTabelaRetirada();
+      salvarDados();
+    } else {
+      alert("Quantidade inválida. Por favor, insira um número válido.");
     }
+  }
+}
+
 
     // Função para excluir um produto do estoque e da retirada
     function excluir(indice) {
