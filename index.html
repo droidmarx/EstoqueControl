@@ -363,7 +363,7 @@ clearStorageBtn.addEventListener("click", () => {
     // Função para atualizar a tabela de retirada com os produtos e suas quantidades
     function atualizarTabelaRetirada() {
       let tabela = document.getElementById("retirada");
-      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th class='acoes'>Ações</th></tr>";
+      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
       for (let i = 0; i < retirada.length; i++) {
         let linha = tabela.insertRow(-1);
         let celulaNome = linha.insertCell(0);
@@ -371,7 +371,7 @@ clearStorageBtn.addEventListener("click", () => {
         let celulaAcoes = linha.insertCell(2);
         celulaNome.innerHTML = retirada[i].nome;
         celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
-        celulaAcoes.innerHTML = `<button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button>`;
+        celulaAcoes.innerHTML = `<div class="acoes"><button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button><div>`;
       }
     }
 
