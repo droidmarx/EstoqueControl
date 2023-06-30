@@ -32,6 +32,7 @@
     }
   
   #adicionar, #enviar{
+     font-size: 15px;
      font-weight: bold; 
      text-align: center; 
      color: #fff; 
@@ -705,10 +706,6 @@ document.execCommand('copy')
   document.body.removeChild(tempInput);
     alert(copiado)
     
-
-//Abre o WhatsApp para colar o conteúdo copiado
-  window.open('https://wa.me/?text=*Favor Habilitar*');
- 
             document.getElementById("tecnico").selectedIndex = 0;
             document.getElementById("cliente").value = "Nome do Cliente";
             document.getElementById("fibraMetragem").value = "00";
@@ -728,10 +725,14 @@ document.execCommand('copy')
             document.getElementById("caboRede").value = "00";
             document.getElementById("concRj45").value = "00";
             document.getElementById("kitFusao").value = "00";
+   
+   
+// Abra o WhatsApp e cole o conteúdo copiado
+window.open('https://wa.me/?text=' + encodeURIComponent('*Favor Habilitar*\n' + copiado + '\n\n*Obrigado!*'));
+
+ 
           
 }
-
-
 
 
     function atualizarQuantidadeEstoque(indice, quantidade) {
