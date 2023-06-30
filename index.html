@@ -652,7 +652,7 @@ function copiarConteudo() {
   
   
   //estrututa da 1• tabela (copiar)
-  copiado += `#*Favor Habilitar*##Técnico: ${document.getElementById('tecnico').value}\n`;
+  copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
 copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
 copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
 copiado += `CTO: ${document.getElementById('cto').value}\n`;
@@ -707,7 +707,7 @@ document.execCommand('copy')
     
 
 //Abre o WhatsApp para colar o conteúdo copiado
-  window.open('https://wa.me/?text= .');
+  window.open('https://wa.me/?text=*Favor Habilitar*');
  
             document.getElementById("tecnico").selectedIndex = 0;
             document.getElementById("cliente").value = "Nome do Cliente";
