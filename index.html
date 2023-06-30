@@ -703,7 +703,8 @@ document.execCommand('copy')
     
 
 //Abre o WhatsApp para colar o conteúdo copiado
-  window.location.href = 'https://wa.me/?text=. ';    
+  window.open('https://wa.me/?text=. ', '_blank');
+ 
             document.getElementById("tecnico").selectedIndex = 0;
             document.getElementById("cliente").value = "Nome do Cliente";
             document.getElementById("fibraMetragem").value = "00";
