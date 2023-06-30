@@ -2,7 +2,8 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible"content="IE=edge">
+   <link rel="icon" href="/favicon/favicon.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -449,7 +450,7 @@ nav {
   <div id="retiradaDiv" style="display: block;">
   <table id="retirada">
     <h2>Retirada de Estoque</h2>
-    <h4>Lançe mais itens se necessário</h4>
+    <h4>Selecione o equipamento utilizado</h4>
     <tr>
       <th>Produto</th>
       <th>Quantidade</th>
@@ -538,19 +539,22 @@ clearStorageBtn.addEventListener("click", () => {
     
 
     // Função para atualizar a tabela de retirada com os produtos e suas quantidades
-    function atualizarTabelaRetirada() {
-      let tabela = document.getElementById("retirada");
-      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
-      for (let i = 0; i < retirada.length; i++) {
-        let linha = tabela.insertRow(-1);
-        let celulaNome = linha.insertCell(0);
-        let celulaQuantidade = linha.insertCell(1);
-        let celulaAcoes = linha.insertCell(2);
-        celulaNome.innerHTML = retirada[i].nome;
-        celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
-        celulaAcoes.innerHTML = `<div class="acoes"><button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button><div>`;
-      }
+  function atualizarTabelaRetirada() {
+  let tabela = document.getElementById("retirada");
+  tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+  for (let i = 0; i < retirada.length; i++) {
+    if (retirada[i].adicionado) { // Verifica se o produto foi adicionado
+      let linha = tabela.insertRow(-1);
+      let celulaNome = linha.insertCell(0);
+      let celulaQuantidade = linha.insertCell(1);
+      let celulaAcoes = linha.insertCell(2);
+      celulaNome.innerHTML = retirada[i].nome;
+      celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
+      celulaAcoes.innerHTML = `<div class="acoes"><button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button><div>`;
     }
+  }
+}
+
 
     // Função para aumentar a quantidade de um produto no estoque
     function aumentarEstoque(indice) {
