@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible"content="IE=edge">
-   <link rel="icon" href="/favicon/favicon.png" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="/favicon/favicon.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   <title>Controle de Estoque</title>
   <style>
     body {
@@ -18,294 +19,318 @@
       text-align: center;
     }
 
-    input{
+    input {
       text-align: center;
       width: 30%;
     }
-  
-  
+
+
     .BTN {
       width: fit-content;
       font-size: 10px;
       padding: 10px;
       justify-content: space-evenly;
     }
-  
-  #adicionar, #enviar{
-     font-size: 15px;
-     font-weight: bold; 
-     text-align: center; 
-     color: #fff; 
-     background-color: #0077cc; 
-     text-align: center;
-     width: 80%;
-     max-width: 450px;
-  }
-  
-    button {
-      
-     font-weight: bold; 
-     text-align: center; 
-     color: #fff; 
-     background-color: #0077cc; 
-     text-align: center; 
-      
-      width: 40px;
-      border-radius: 5px;
-      font-size: 80%;
-      padding: 10px;
-      color: white;
-      border: 1px black;
+
+    #adicionar,
+    #enviar,
+    #clear-storage-btn {
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      background-color: #0077cc;
+      text-align: center;
+      width: 80%;
+      max-width: 350px;
     }
     
-    .botoes{
+     #btn-historico{
+     margin-bottom: 10px;
+    }
+    
+    #enviar{
+      margin-bottom: 20px;
+    }
+
+  button {
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #0077cc;
+  text-align: center;
+  width: 40px;
+  border-radius: 5px;
+  font-size: 80%;
+  padding: 10px;
+  color: white;
+  border: 1px black;
+    }
+
+    .botoes {
       margin: 0 auto;
       align-items: center;
-      background:grey;
+      background: grey;
       display: flex;
       gap: 10px;
       width: fit-content;
       height: fit-content;
     }
-    
-    tbody button{
+
+    tbody button {
       margin: 5px;
       justify-content: space-evenly;
       gap: 10px;
-      background: blue;
+      background: #0077cc;
       width: 40px;
     }
-  
+
     /* Tables */
-    table,
+    
     th,
     td {
       font-size: 1rem;
       text-align: center;
       background-color: darkgray;
       margin: 0 auto;
-      border-bottom: 1px solid black;
-      border-radius: 1px;
+      border: 1px solid black;
+      border-radius: 4px 0px 4px;
       padding: 5px;
       font-size: small;
     }
-    
-    td button{
+
+    td button {
       width: 30px;
       height: 30px;
       border-radius: 5px;
       text-align: center;
       justify-content: center;
     }
-  
+
     /* Headings */
     h1 {
       font-size: 40px;
       color: white;
     }
-  
+
     h2 {
       font-size: 30px;
     }
-    
-    h4{
-      color: red;
+
+    h4 {
+      color: black;
     }
-  
+
     /* Excluir button */
     #excluir {
       width: fit-content;
       padding: 8px;
     }
     
+
     /* Tabs */
     .tabs {
       display: flex;
       justify-content: center;
       margin-bottom: 10px;
     }
-    
-    table#retirada{
-      background: white;
+
+    table#retirada {
+    background: none;
+
     }
-    
-    .acoes{
+
+    .acoes {
       display: flex;
     }
-    
-  
+
+
     /* Content */
-    #habilitar{
+    #habilitar {
       width: fit-content;
       margin: 0 auto;
     }
-    
-    
-    #habilitar input{
+
+
+    #habilitar input {
       width: fit-content;
     }
-    
-    select{
+
+    select {
       width: 100%;
       text-align: center;
     }
 
 
-nav { 
-   background-color: #0060a7; 
-   padding: 1rem; 
-   display: flex; 
-   flex-wrap: wrap; 
-   justify-content: space-between; 
-   position: relative; 
-   z-index: 1;
- }
- 
-  
- li a { 
-   text-decoration: none; 
-   padding: 10px; 
-   border-radius: 5px; 
-   border: none; 
-   color: #fff; 
-   cursor: pointer; 
-   transition: 0.3s ease; 
- } 
-  
- li a:hover { 
-   background-color: white; 
-   color: #0060a7; 
- } 
-  
- #menu { 
-   display: flex; 
-   list-style: none; 
-   gap: 1.5rem; 
-   align-items: center; 
- } 
-  
- #menu a { 
-   display: block; 
-   padding: 0.5rem; 
- } 
-  
- #btn-mobile { 
-   display: none; 
- } 
-  
- @media (max-width: 640px) { 
-   h1 { 
-     display: none; 
-   } 
- } 
-  
- @media (max-width: 600px) { 
-   h1 { 
-     display: none; 
-   } 
-   #seletor-limpar { 
-     display: none; 
-   } 
-   #seletor-migrar { 
-     display: none; 
-   } 
-  
-   li a { 
-     font-weight: bold; 
-     text-align: center; 
-     color: #fff; 
-     background-color: #0077cc; 
-     text-align: center; 
-   } 
-  
-   #menu { 
-     display: block; 
-     position: absolute; 
-     width: 100%; 
-     top: 3rem; 
-     right: 0px; 
-     background: #0077cc; 
-     transition: 0.6s; 
-     z-index: 1000; 
-     height: 0px; 
-     visibility: hidden; 
-     overflow-y: hidden; 
-   } 
-   #nav.active #menu { 
-     height: calc(100vh - 4rem); 
-     visibility: visible; 
-     overflow-y: auto; 
-   } 
-   #menu a { 
-     padding: 1rem 0; 
-     margin: 0 1rem; 
-     border-bottom: 2px solid rgba(0, 0, 0, 0.05); 
-   } 
-   #btn-mobile { 
-     display: flex; 
-     padding: 0.5rem 1rem; 
-     font-size: 1rem; 
-     border: none; 
-     background: none; 
-     cursor: pointer; 
-     gap: 0.5rem; 
-     align-items: center; 
-   } 
-   #hamburger { 
-     border-top: 2px solid; 
-     width: 20px; 
-   } 
-   #hamburger::after, 
-   #hamburger::before { 
-     content: ""; 
-     display: block; 
-     width: 20px; 
-     height: 2px; 
-     background: currentColor; 
-     margin-top: 5px; 
-     transition: 0.3s; 
-     position: relative; 
-   } 
-   #nav.active #hamburger { 
-     border-top-color: transparent; 
-   } 
-   #nav.active #hamburger::before { 
-     transform: rotate(135deg); 
-   } 
-   #nav.active #hamburger::after { 
-     transform: rotate(-135deg); 
-     top: -7px; 
-   } 
- }
- 
- ul{
-   font-size: .7rem
- }
+    nav {
+      background-color: #0060a7;
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
 
 
+    li a {
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
 
+    li a:hover {
+      background-color: white;
+      color: #0060a7;
+    }
 
+    #menu {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    #menu a {
+      display: block;
+      padding: 0.5rem;
+    }
+
+    #btn-mobile {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      li a {
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        background-color: #0077cc;
+        text-align: center;
+      }
+
+      #menu {
+        display: block;
+        position: absolute;
+        width: 100%;
+        top: 4.3rem;
+        right: 0px;
+        background: #0077cc;
+        transition: 0.6s;
+        z-index: 1000;
+        height: 0px;
+        visibility: hidden;
+        overflow-y: hidden;
+      }
+
+      #nav.active #menu {
+        height: calc(100vh - 4rem);
+        visibility: visible;
+        overflow-y: auto;
+      }
+
+      #menu a {
+        padding: 1rem 0;
+        margin: 0 1rem;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      }
+
+      #btn-mobile {
+        display: flex;
+        padding: 1rem;
+        font-size: 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #hamburger {
+        border-top: 2px solid;
+        width: 20px;
+      }
+
+      #hamburger::after,
+      #hamburger::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        margin-top: 5px;
+        transition: 0.3s;
+        position: relative;
+      }
+
+      #nav.active #hamburger {
+        border-top-color: transparent;
+      }
+
+      #nav.active #hamburger::before {
+        transform: rotate(135deg);
+      }
+
+      #nav.active #hamburger::after {
+        transform: rotate(-135deg);
+        top: -7px;
+      }
+    }
+
+    ul {
+      font-size: .7rem
+    }
+
+    .instalacoes {
+      background: darkgray;
+      border-radius: 5px;
+    }
+    
+    .instalacoes li{
+      text-align: left;
+      list-style: none;
+    }
+
+    .btnEstoque {
+      width: 90%;
+      justify-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      gap: 20px;
+      display: flex;
+    }
   </style>
-  
+
 </head>
+
 <body>
-  
-    <nav id="nav"> 
-     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false"> 
-       <span id="hamburger"></span> 
-     </button> 
-     
-     <h1>Controle de Estoque</h1> 
-  
-     <ul id="menu" role="menu"> 
-       
-       <li><a onclick="mostrarRetirada()" >Lançar</a></li> 
-       <li><a onclick="mostrarEstoque()" >Meu estoque</a></li> 
-       <li><a id="clear-storage-btn" >Resetar estoque</a></li> 
-       <li><a onclick="exibirConfirmacaoExclusao()">Resetar histórico de instalações</button></a></li>
-       
-     </ul>  
-   </nav>
+
+  <nav id="nav">
+    <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
+      <span id="hamburger"></span>
+    </button>
+
+    <h1>Controle de Estoque</h1>
+
+    <ul id="menu" role="menu">
+
+      <li><a onclick="mostrarRetirada()">Lançar</a></li>
+      <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
+
+    </ul>
+  </nav>
 
 
 
@@ -313,178 +338,196 @@ nav {
 
 
   <div id="estoqueDiv" style="display: none;">
-    
-   <h1>CONTROLE DE ESTOQUE</h1>
 
-  
-  <table id="estoque">
-    <h2>Meu estoque</h2>
-    <tr>
-      <th>Quantidade</th>
-      <th>Ações</th>
-    </tr>
-  </table>
-  <br>
-  <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar Produto</button>
+    <h1>CONTROLE DE ESTOQUE</h1>
+
+
+    <table id="estoque">
+      <h2>Meu estoque</h2>
+      <tr>
+        <th>Quantidade</th>
+        <th>Ações</th>
+      </tr>
+    </table>
+    <br>
+
+    <div class="btnEstoque">
+
+
+      <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar Produto</button>
+
+      <button id="clear-storage-btn" class="BTN">Resetar Estoque</button>
+
+    </div>
+
   </div>
 
   <br>
- <ul id="lista-dados-copiados"></ul>
-<p>Total de Instalações: <span id="total-elementos"></span></p>
 
 
 
-<div class="habilitar" style="display: block" id="habilitar">
 
-<h2>Lançar</h2>
+  <div class="habilitar" style="display: block" id="habilitar">
 
-<table>
-<tr>
-  <th>Técnico:</th>
-  <td>
-    <select id="tecnico">
-      <option disabled selected value="">Selecione o técnico</option>
-      <option value="Andre">André</option>
-      <option value="Elvis">Elvis</option>
-      <option value="Guilherme">Guilherme</option>
-      <option value="Robson">Robson</option>
-      <option value="Sergio">Sérgio</option>
-      
-    </select>
-  </td>
-</tr>
-  <tr>
-    <th>Cliente:</th>
-    <td><input type="text" placeholder="Nome do Cliente" id="cliente"></td>
-  </tr>
-  <tr>
-    <th>Fibra metragem:</th>
-    <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)"  id="fibraMetragem"  ></td>
-  </tr>
-  <tr>
-    <th>CTO:</th>
-    <td><input placeholder="00" type="number" id="cto"></td>
-  </tr>
-  
- <tr>
-  <th>Porta:</th>
-  <td>
-    <select id="porta" >
-      <option disabled selected value="">Selecione a porta</option>
-      <option value="01">Porta 01</option>
-      <option value="02">Porta 02</option>
-      <option value="03">Porta 03</option>
-      <option value="04">Porta 04</option>
-      <option value="05">Porta 05</option>
-      <option value="06">Porta 06</option>
-      <option value="07">Porta 07</option>
-      <option value="08">Porta 08</option>
-      <option value="09">Porta 09</option>
-      <option value="10">Porta 10</option>
-      <option value="11">Porta 11</option>
-      <option value="12">Porta 12</option>
-      <option value="13">Porta 13</option>
-      <option value="14">Porta 14</option>
-      <option value="15">Porta 15</option>
-      <option value="16">Porta 16</option>
-    </select>
-  </td>
-</tr>
-
-  <tr>
-    <th>Sinal CTO:</th>
-    <td><input type="number" placeholder="-00.00" id="sinalCto"></td>
-  </tr>
-  <tr>
-    <th>Sinal Cliente:</th>
-    <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
-  </tr>
-  <tr>
-    <th>SC-APC:</th>
-    <td><input type="number" placeholder="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>SC-UPC:</th>
-    <td><input type="number" placeholder="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Esticadores:</th>
-    <td><input type="number" placeholder="00" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Roldana:</th>
-    <td><input type="number" placeholder="00" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Fecho:</th>
-    <td><input type="number" placeholder="00" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Anel:</th>
-    <td><input type="number" placeholder="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Fita aço:</th>
-    <td><input type="number" placeholder="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Fixa fio:</th>
-    <td><input type="number" placeholder="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Isolante:</th>
-    <td><input type="number" placeholder="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Cabo de rede:</th>
-    <td><input type="number" placeholder="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Conc RJ45:</th>
-    <td><input type="number" placeholder="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)" ></td>
-  </tr>
-  <tr>
-    <th>Kit fusão:</th>
-    <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)" ></td>
-  </tr>
-  <tr>
-</table>
-<br>
-  <button id="enviar" class="BTN"  onclick="enviar()">Enviar</button>
-</div>
+    <div class="instalacoes">
 
 
-<br>
+      <p>Total de Instalações: <span id="total-elementos"></span></p>
+
+      <ul id="lista-dados-copiados"></ul>
+
+      <button id="btn-historico" class="BTN" onclick="exibirConfirmacaoExclusao()">Resetar histórico de instalações</button>
+
+    </div>
 
 
-  
+    <h2>Lançar</h2>
+
+    <table>
+      <tr>
+        <th>Técnico:</th>
+        <td>
+          <select id="tecnico">
+            <option disabled selected value="">Selecione o técnico</option>
+            <option value="Andre">André</option>
+            <option value="Elvis">Elvis</option>
+            <option value="Guilherme">Guilherme</option>
+            <option value="Robson">Robson</option>
+            <option value="Sergio">Sérgio</option>
+
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>Cliente:</th>
+        <td><input type="text" placeholder="Nome do Cliente" id="cliente"></td>
+      </tr>
+      <tr>
+        <th>Fibra metragem:</th>
+        <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)" id="fibraMetragem"></td>
+      </tr>
+      <tr>
+        <th>CTO:</th>
+        <td><input placeholder="00" type="number" id="cto"></td>
+      </tr>
+
+      <tr>
+        <th>Porta:</th>
+        <td>
+          <select id="porta">
+            <option disabled selected value="">Selecione a porta</option>
+            <option value="01">Porta 01</option>
+            <option value="02">Porta 02</option>
+            <option value="03">Porta 03</option>
+            <option value="04">Porta 04</option>
+            <option value="05">Porta 05</option>
+            <option value="06">Porta 06</option>
+            <option value="07">Porta 07</option>
+            <option value="08">Porta 08</option>
+            <option value="09">Porta 09</option>
+            <option value="10">Porta 10</option>
+            <option value="11">Porta 11</option>
+            <option value="12">Porta 12</option>
+            <option value="13">Porta 13</option>
+            <option value="14">Porta 14</option>
+            <option value="15">Porta 15</option>
+            <option value="16">Porta 16</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Sinal CTO:</th>
+        <td><input type="number" placeholder="-00.00" id="sinalCto"></td>
+      </tr>
+      <tr>
+        <th>Sinal Cliente:</th>
+        <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
+      </tr>
+      <tr>
+        <th>SC-APC:</th>
+        <td><input type="number" placeholder="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)"></td>
+      </tr>
+      <tr>
+        <th>SC-UPC:</th>
+        <td><input type="number" placeholder="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Esticadores:</th>
+        <td><input type="number" placeholder="00" id="esticadores" onchange="atualizarQuantidadeRetirada(3, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Roldana:</th>
+        <td><input type="number" placeholder="00" id="roldana" onchange="atualizarQuantidadeRetirada(4, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Fecho:</th>
+        <td><input type="number" placeholder="00" id="fecho" onchange="atualizarQuantidadeRetirada(5, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Anel:</th>
+        <td><input type="number" placeholder="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Fita aço:</th>
+        <td><input type="number" placeholder="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Fixa fio:</th>
+        <td><input type="number" placeholder="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Isolante:</th>
+        <td><input type="number" placeholder="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Cabo de rede:</th>
+        <td><input type="number" placeholder="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Conc RJ45:</th>
+        <td><input type="number" placeholder="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)"></td>
+      </tr>
+      <tr>
+        <th>Kit fusão:</th>
+        <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
+      </tr>
+      <tr>
+    </table>
+    <br>
+  </div>
+
+
+
+
+
   <div id="retiradaDiv" style="display: block;">
-  <table id="retirada">
-    <h2>Retirada de Estoque</h2>
-    <h4>Selecione o equipamento utilizado</h4>
-    <tr>
-      <th>Produto</th>
-      <th>Quantidade</th>
-      <th>Ações</th>
-    </tr>
-  </table>
-  <br>
-  <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
-
+    <table id="retirada">
+      <h4>Equipamento utilizado</h4>
+      <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Ações</th>
+      </tr>
+    </table>
+    <br>
+  
+  
+    <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
+        <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
   </div>
 
   <script>
-  
-const clearStorageBtn = document.querySelector("#clear-storage-btn");
+    const clearStorageBtn = document.querySelector("#clear-storage-btn");
 
-clearStorageBtn.addEventListener("click", () => {
-  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
+    clearStorageBtn.addEventListener("click", () => {
+      const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
 
-  if (confirmReset) {
-    localStorage.clear();
-    alert("Estoque resetado com sucesso!");
-  }
-});
+      if (confirmReset) {
+        localStorage.clear();
+        alert("Estoque resetado com sucesso!");
+      }
+    });
 
 
 
@@ -493,7 +536,7 @@ clearStorageBtn.addEventListener("click", () => {
     function mostrarEstoque() {
       document.getElementById("estoqueDiv").style.display = "block";
       document.getElementById("retiradaDiv").style.display = "none";
-      
+
       document.getElementById("habilitar").style.display = "block";
       document.getElementById("habilitar").style.display = "none";
     }
@@ -503,27 +546,27 @@ clearStorageBtn.addEventListener("click", () => {
     function mostrarRetirada() {
       document.getElementById("estoqueDiv").style.display = "none";
       document.getElementById("retiradaDiv").style.display = "block";
-      
+
       document.getElementById("habilitar").style.display = "none";
       document.getElementById("habilitar").style.display = "block";
-      
+
     }
-    
-    
+
+
 
     // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
     let produtos = JSON.parse(localStorage.getItem("produtos")) || [
- { nome: "DROP", quantidade: 1000 },
- { nome: "SC-APC", quantidade: 20 },
- { nome: "SC-UPC", quantidade: 20 },
- { nome: "Esticadores", quantidade: 100 },
- { nome: "Roldana", quantidade: 100 },
- { nome: "Fecho", quantidade: 50 },
- { nome: "Anel", quantidade: 50 },
- { nome: "Fita aço", quantidade: 50 },
- { nome: "Fixa fio", quantidade: 100 },
- { nome: "Cabo de rede", quantidade: 300 },
- { nome: "Conc RJ45", quantidade: 20 },
+      { nome: "DROP", quantidade: 1000 },
+      { nome: "SC-APC", quantidade: 20 },
+      { nome: "SC-UPC", quantidade: 20 },
+      { nome: "Esticadores", quantidade: 100 },
+      { nome: "Roldana", quantidade: 100 },
+      { nome: "Fecho", quantidade: 50 },
+      { nome: "Anel", quantidade: 50 },
+      { nome: "Fita aço", quantidade: 50 },
+      { nome: "Fixa fio", quantidade: 100 },
+      { nome: "Cabo de rede", quantidade: 300 },
+      { nome: "Conc RJ45", quantidade: 20 },
     ];
 
 
@@ -545,26 +588,26 @@ clearStorageBtn.addEventListener("click", () => {
         celulaAcoes.innerHTML = `<div class='acoes'><button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button></div>`;
       }
     }
-    
-    
-    
+
+
+
 
     // Função para atualizar a tabela de retirada com os produtos e suas quantidades
-  function atualizarTabelaRetirada() {
-  let tabela = document.getElementById("retirada");
-  tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
-  for (let i = 0; i < retirada.length; i++) {
-    if (retirada[i].adicionado) { // Verifica se o produto foi adicionado
-      let linha = tabela.insertRow(-1);
-      let celulaNome = linha.insertCell(0);
-      let celulaQuantidade = linha.insertCell(1);
-      let celulaAcoes = linha.insertCell(2);
-      celulaNome.innerHTML = retirada[i].nome;
-      celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
-      celulaAcoes.innerHTML = `<div class="acoes"><button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button><div>`;
+    function atualizarTabelaRetirada() {
+      let tabela = document.getElementById("retirada");
+      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+      for (let i = 0; i < retirada.length; i++) {
+        if (retirada[i].adicionado) { // Verifica se o produto foi adicionado
+          let linha = tabela.insertRow(-1);
+          let celulaNome = linha.insertCell(0);
+          let celulaQuantidade = linha.insertCell(1);
+          let celulaAcoes = linha.insertCell(2);
+          celulaNome.innerHTML = retirada[i].nome;
+          celulaQuantidade.innerHTML = `<input type="number" min="0" value="${retirada[i].quantidade}" onchange="atualizarQuantidadeRetirada(${i}, this.value)">`;
+          celulaAcoes.innerHTML = `<div class="acoes"><button onclick="aumentarRetirada(${i})">+</button> <button onclick="diminuirRetirada(${i})">-</button><div>`;
+        }
+      }
     }
-  }
-}
 
 
     // Função para aumentar a quantidade de um produto no estoque
@@ -590,7 +633,7 @@ clearStorageBtn.addEventListener("click", () => {
       salvarDados();
     }
 
-    
+
     // Função para diminuir a quantidade de um produto na retirada
     function diminuirRetirada(indice) {
       if (retirada[indice].quantidade > 0) {
@@ -602,206 +645,214 @@ clearStorageBtn.addEventListener("click", () => {
 
 
 
- // Função para adicionar um novo produto ao estoque e à retirada
-function adicionar() {
-  let nome = prompt("Nome do produto:"); // Solicita o nome do produto ao usuário
-  if (nome) {
-    produtos.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de produtos com quantidade inicial 0 e a propriedade "adicionado" definida como true
-    retirada.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de retirada com quantidade inicial 0 e a propriedade "adicionado" definida como true
-    atualizarTabelaEstoque(); // Atualiza a tabela de estoque
-    atualizarTabelaRetirada(); // Atualiza a tabela de retirada
-    salvarDados(); // Salva os dados
-  }
-}
-
-// Função para excluir um produto do estoque e da retirada
-function excluir(indice) {
-  let produto = produtos[indice]; // Obtém o produto correspondente ao índice fornecido
-  if (produto && produto.adicionado) { // Verifica se o produto existe e se a propriedade "adicionado" é true
-    let nome = produto.nome; // Obtém o nome do produto
-    produtos.splice(indice, 1); // Remove o produto da lista de produtos
-    for (let i = 0; i < retirada.length; i++) {
-      if (retirada[i].nome === nome) {
-        retirada.splice(i, 1); // Remove o produto correspondente da lista de retirada
-        break;
+    // Função para adicionar um novo produto ao estoque e à retirada
+    function adicionar() {
+      let nome = prompt("Nome do produto:"); // Solicita o nome do produto ao usuário
+      if (nome) {
+        produtos.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de produtos com quantidade inicial 0 e a propriedade "adicionado" definida como true
+        retirada.push({ nome, quantidade: 0, adicionado: true }); // Adiciona o produto à lista de retirada com quantidade inicial 0 e a propriedade "adicionado" definida como true
+        atualizarTabelaEstoque(); // Atualiza a tabela de estoque
+        atualizarTabelaRetirada(); // Atualiza a tabela de retirada
+        salvarDados(); // Salva os dados
       }
     }
-    atualizarTabelaEstoque(); // Atualiza a tabela de estoque
-    atualizarTabelaRetirada(); // Atualiza a tabela de retirada
-    salvarDados(); // Salva os dados
-  }
-}
 
-
-
-// Função para processar a retirada de produtos
-      function enviar() {
+    // Função para excluir um produto do estoque e da retirada
+    function excluir(indice) {
+      let produto = produtos[indice]; // Obtém o produto correspondente ao índice fornecido
+      if (produto && produto.adicionado) { // Verifica se o produto existe e se a propriedade "adicionado" é true
+        let nome = produto.nome; // Obtém o nome do produto
+        produtos.splice(indice, 1); // Remove o produto da lista de produtos
         for (let i = 0; i < retirada.length; i++) {
-          let produtoRetirado = retirada[i];
-          for (let j = 0; j < produtos.length; j++) {
-            if (produtos[j].nome === produtoRetirado.nome) {
-              produtos[j].quantidade -= produtoRetirado.quantidade;
-              break;
-            }
+          if (retirada[i].nome === nome) {
+            retirada.splice(i, 1); // Remove o produto correspondente da lista de retirada
+            break;
           }
-          produtoRetirado.quantidade = 0;
         }
-        
-    
-        atualizarTabelaEstoque();
-        atualizarTabelaRetirada();
-        salvarDados();
-        
-        // Chamar a função para copiar o conteúdo após o envio
-        setTimeout(copiarConteudo, 200)}
-
-// Array para armazenar os dados copiados
-let dadosCopiados = [];
-
-// Função para copiar o conteúdo atualizado para a área de transferência
-function copiarConteudo() {
-  let copiado = '';
+        atualizarTabelaEstoque(); // Atualiza a tabela de estoque
+        atualizarTabelaRetirada(); // Atualiza a tabela de retirada
+        salvarDados(); // Salva os dados
+      }
+    }
 
 
-  
-  
-  //estrututa da 1• tabela (copiar)
-  copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
-copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
-copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
-copiado += `CTO: ${document.getElementById('cto').value}\n`;
-copiado += `Porta: ${document.getElementById('porta').value}\n`;
-copiado += `Sinal CTO: ${document.getElementById('sinalCto').value}\n`;
-copiado += `Sinal Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `SC-APC: ${document.getElementById('scApc').value}\n`;
-copiado += `SC-UPC: ${document.getElementById('scUpc').value}\n`;
-copiado += `Esticadores: ${document.getElementById('esticadores').value}\n`;
-copiado += `Roldana: ${document.getElementById('roldana').value}\n`;
-copiado += `Fecho: ${document.getElementById('fecho').value}\n`;
-copiado += `Anel: ${document.getElementById('anel').value}\n`;
-copiado += `Fita aço: ${document.getElementById('fitaAco').value}\n`;
-copiado += `Fixa fio: ${document.getElementById('fixaFio').value}\n`;
-copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
-copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
-copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
-copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##________________#*Meu Estoque*#\n`;
 
-  // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
-  //esse é o que copia *favor habilitar
-  for (let i = 0; i < produtos.length; i++) {
-    copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
-  }
+    // Função para processar a retirada de produtos
+    function enviar() {
+      for (let i = 0; i < retirada.length; i++) {
+        let produtoRetirado = retirada[i];
+        for (let j = 0; j < produtos.length; j++) {
+          if (produtos[j].nome === produtoRetirado.nome) {
+            produtos[j].quantidade -= produtoRetirado.quantidade;
+            break;
+          }
+        }
+        produtoRetirado.quantidade = 0;
+      }
 
-  // Substituir o "#" por quebras de linha (\n)
-  copiado = copiado.replace(/#/g, '\n');
 
-  // Exiba o conteúdo da variável 'copiado' no console
-  console.log('Conteúdo Atualizado:', copiado);
-  
+      atualizarTabelaEstoque();
+      atualizarTabelaRetirada();
+      salvarDados();
 
-  // Crie um elemento de input temporário
-  const tempInput = document.createElement('textarea');
-  tempInput.style.position = 'absolute';
-  tempInput.style.left = '-9999px';
-  tempInput.value = copiado;
+      // Chamar a função para copiar o conteúdo após o envio
+      setTimeout(copiarConteudo, 200)
+    }
 
-  // Anexe o elemento de input ao corpo do documento
-  document.body.appendChild(tempInput);
+    // Array para armazenar os dados copiados
+    let dadosCopiados = [];
 
-  // Selecione o texto no elemento de input
-  tempInput.select();
+    // Função para copiar o conteúdo atualizado para a área de transferência
+    function copiarConteudo() {
+      let copiado = '';
 
-  // Copie o texto para a área de transferência
-document.execCommand('copy')
 
-  // Remova o elemento de input temporário
-  document.body.removeChild(tempInput);
-    alert(copiado)
-    
-            document.getElementById("tecnico").selectedIndex = 0;
-            document.getElementById("cliente").value = "Nome do Cliente";
-            document.getElementById("fibraMetragem").value = "00";
-            document.getElementById("cto").value = "00";
-            document.getElementById("porta").selectedIndex = 0;
-            document.getElementById("sinalCto").value = "-00.00";
-            document.getElementById("sinalCliente").value = "-00.00";
-            document.getElementById("scApc").value = "00";
-            document.getElementById("scUpc").value = "00";
-            document.getElementById("esticadores").value = "00";
-            document.getElementById("roldana").value = "00";
-            document.getElementById("fecho").value = "00";
-            document.getElementById("anel").value = "00";
-            document.getElementById("fitaAco").value = "00";
-            document.getElementById("fixaFio").value = "00";
-            document.getElementById("isolante").value = "00";
-            document.getElementById("caboRede").value = "00";
-            document.getElementById("concRj45").value = "00";
-            document.getElementById("kitFusao").value = "00";
-   
-   
-// Abra o WhatsApp e cole o conteúdo copiado
-window.open('https://wa.me/?text=' + encodeURIComponent('*Favor Habilitar*\n' + copiado + '\n\n*Obrigado!*'));
 
-  // Adicionar a string copiada ao array de dadosCopiados
-  dadosCopiados.push({
-    data: new Date().toLocaleString(), // Data e hora atual
-    conteudo: copiado
+
+      //estrututa da 1• tabela (copiar)
+      copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
+      copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
+      copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
+      copiado += `CTO: ${document.getElementById('cto').value}\n`;
+      copiado += `Porta: ${document.getElementById('porta').value}\n`;
+      copiado += `Sinal CTO: ${document.getElementById('sinalCto').value}\n`;
+      copiado += `Sinal Cliente: ${document.getElementById('sinalCliente').value}\n`;
+      copiado += `SC-APC: ${document.getElementById('scApc').value}\n`;
+      copiado += `SC-UPC: ${document.getElementById('scUpc').value}\n`;
+      copiado += `Esticadores: ${document.getElementById('esticadores').value}\n`;
+      copiado += `Roldana: ${document.getElementById('roldana').value}\n`;
+      copiado += `Fecho: ${document.getElementById('fecho').value}\n`;
+      copiado += `Anel: ${document.getElementById('anel').value}\n`;
+      copiado += `Fita aço: ${document.getElementById('fitaAco').value}\n`;
+      copiado += `Fixa fio: ${document.getElementById('fixaFio').value}\n`;
+      copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
+      copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
+      copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
+      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##________________#*Meu Estoque*#\n`;
+
+      // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
+      //esse é o que copia *favor habilitar
+      for (let i = 0; i < produtos.length; i++) {
+        copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
+      }
+
+      // Substituir o "#" por quebras de linha (\n)
+      copiado = copiado.replace(/#/g, '\n');
+
+      // Exiba o conteúdo da variável 'copiado' no console
+      console.log('Conteúdo Atualizado:', copiado);
+
+
+      // Crie um elemento de input temporário
+      const tempInput = document.createElement('textarea');
+      tempInput.style.position = 'absolute';
+      tempInput.style.left = '-9999px';
+      tempInput.value = copiado;
+
+      // Anexe o elemento de input ao corpo do documento
+      document.body.appendChild(tempInput);
+
+      // Selecione o texto no elemento de input
+      tempInput.select();
+
+      // Copie o texto para a área de transferência
+      document.execCommand('copy')
+
+      // Remova o elemento de input temporário
+      document.body.removeChild(tempInput);
+      alert(copiado)
+
+      document.getElementById("tecnico").selectedIndex = 0;
+      document.getElementById("cliente").value = "Nome do Cliente";
+      document.getElementById("fibraMetragem").value = "00";
+      document.getElementById("cto").value = "00";
+      document.getElementById("porta").selectedIndex = 0;
+      document.getElementById("sinalCto").value = "-00.00";
+      document.getElementById("sinalCliente").value = "-00.00";
+      document.getElementById("scApc").value = "00";
+      document.getElementById("scUpc").value = "00";
+      document.getElementById("esticadores").value = "00";
+      document.getElementById("roldana").value = "00";
+      document.getElementById("fecho").value = "00";
+      document.getElementById("anel").value = "00";
+      document.getElementById("fitaAco").value = "00";
+      document.getElementById("fixaFio").value = "00";
+      document.getElementById("isolante").value = "00";
+      document.getElementById("caboRede").value = "00";
+      document.getElementById("concRj45").value = "00";
+      document.getElementById("kitFusao").value = "00";
+
+
+      // Abra o WhatsApp e cole o conteúdo copiado
+      window.open('https://wa.me/?text=' + encodeURIComponent('*Favor Habilitar*\n' + copiado + '\n\n*Obrigado!*'));
+
+      // Adicionar a string copiada ao array de dadosCopiados
+      dadosCopiados.push({
+        data: new Date().toLocaleString(), // Data e hora atual
+        conteudo: copiado
+      });
+
+
+      // Salvar os dados copiados no armazenamento local
+      salvarDadosCopiados();
+
+      // Exibir a lista de dados copiados na tela
+      exibirDadosCopiados();
+    }
+
+    // Função para exibir a lista de dados copiados na tela
+    function exibirDadosCopiados() {
+      // Limpar o conteúdo atual da lista
+      const listaElement = document.getElementById('lista-dados-copiados');
+      listaElement.innerHTML = '';
+
+      // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
+      for (let i = 0; i < dadosCopiados.length; i++) {
+  const item = dadosCopiados[i];
+  const listItemElement = document.createElement('li');
+  const dataHora = new Date(item.data).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   });
-  
-  
- // Salvar os dados copiados no armazenamento local
-  salvarDadosCopiados();
- 
- // Exibir a lista de dados copiados na tela
-  exibirDadosCopiados();
-}
-          
-// Função para exibir a lista de dados copiados na tela
-function exibirDadosCopiados() {
-  // Limpar o conteúdo atual da lista
-  const listaElement = document.getElementById('lista-dados-copiados');
-  listaElement.innerHTML = '';
-
- // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
-  for (let i = 0; i < dadosCopiados.length; i++) {
-    const item = dadosCopiados[i];
-    const listItemElement = document.createElement('li');
-    const dataHora = new Date(item.data).toLocaleDateString();
-    const nomeCliente = extrairNomeCliente(item.conteudo);
-    listItemElement.textContent = `${dataHora} - ${nomeCliente}`;
-    listaElement.appendChild(listItemElement);
-  }
-  // Atualizar o número total de elementos
-  const totalElement = document.getElementById('total-elementos');
-  totalElement.textContent = dadosCopiados.length;
+  const nomeCliente = extrairNomeCliente(item.conteudo);
+  listItemElement.textContent = `${dataHora} - ${nomeCliente}`;
+  listaElement.appendChild(listItemElement);
 }
 
-// Função para extrair o nome do cliente do conteúdo copiado
-function extrairNomeCliente(conteudo) {
-  // Encontrar o índice inicial do nome do cliente
-  const indiceInicio = conteudo.indexOf('Cliente: ') + 9;
-  // Encontrar o índice final do nome do cliente
-  const indiceFim = conteudo.indexOf('\n', indiceInicio);
-  // Extrair o nome do cliente usando os índices
-  const nomeCliente = conteudo.substring(indiceInicio, indiceFim);
-  return nomeCliente;
- 
-}
+      // Atualizar o número total de elementos
+      const totalElement = document.getElementById('total-elementos');
+      totalElement.textContent = dadosCopiados.length;
+    }
 
-// Função para salvar os dados copiados no armazenamento local
-function salvarDadosCopiados() {
-  localStorage.setItem('dadosCopiados', JSON.stringify(dadosCopiados));
-}
+    // Função para extrair o nome do cliente do conteúdo copiado
+    function extrairNomeCliente(conteudo) {
+      // Encontrar o índice inicial do nome do cliente
+      const indiceInicio = conteudo.indexOf('Cliente: ') + 9;
+      // Encontrar o índice final do nome do cliente
+      const indiceFim = conteudo.indexOf('\n', indiceInicio);
+      // Extrair o nome do cliente usando os índices
+      const nomeCliente = conteudo.substring(indiceInicio, indiceFim);
+      return nomeCliente;
 
-// Função para carregar os dados copiados do armazenamento local
-function carregarDadosCopiados() {
-  const dadosSalvos = localStorage.getItem('dadosCopiados');
-  if (dadosSalvos) {
-    dadosCopiados = JSON.parse(dadosSalvos);
-    exibirDadosCopiados();
-  }
-}
-  // Função para exibir o alerta de confirmação de exclusão
+    }
+
+    // Função para salvar os dados copiados no armazenamento local
+    function salvarDadosCopiados() {
+      localStorage.setItem('dadosCopiados', JSON.stringify(dadosCopiados));
+    }
+
+    // Função para carregar os dados copiados do armazenamento local
+    function carregarDadosCopiados() {
+      const dadosSalvos = localStorage.getItem('dadosCopiados');
+      if (dadosSalvos) {
+        dadosCopiados = JSON.parse(dadosSalvos);
+        exibirDadosCopiados();
+      }
+    }
+    // Função para exibir o alerta de confirmação de exclusão
     function exibirConfirmacaoExclusao() {
       const confirmacao = confirm('Tem certeza que deseja excluir o histórico de instalações ?');
 
@@ -824,37 +875,37 @@ function carregarDadosCopiados() {
     // Chamar a função carregarDadosCopiados() quando a página for carregada
     window.addEventListener('load', carregarDadosCopiados);
 
-// Chamar a função carregarDadosCopiados() ao abrir a página
-carregarDadosCopiados();
+    // Chamar a função carregarDadosCopiados() ao abrir a página
+    carregarDadosCopiados();
 
 
 
-// Função para limpar os dados copiados do mês vigente após 5 dias do mês terem passado
-function limparDadosAntigos() {
-  const dataAtual = new Date();
-  const diaAtual = dataAtual.getDate();
-  const mesAtual = dataAtual.getMonth();
-  const anoAtual = dataAtual.getFullYear();
+    // Função para limpar os dados copiados do mês vigente após 5 dias do mês terem passado
+    function limparDadosAntigos() {
+      const dataAtual = new Date();
+      const diaAtual = dataAtual.getDate();
+      const mesAtual = dataAtual.getMonth();
+      const anoAtual = dataAtual.getFullYear();
 
-  const dataLimite = new Date(anoAtual, mesAtual, 5); // Data limite: 5 dias do mês vigente
+      const dataLimite = new Date(anoAtual, mesAtual, 5); // Data limite: 5 dias do mês vigente
 
-  // Verificar se a data atual é posterior à data limite
-  if (dataAtual > dataLimite) {
-    dadosCopiados = dadosCopiados.filter(item => {
-      const dataItem = new Date(item.data);
-      const diaItem = dataItem.getDate();
-      const mesItem = dataItem.getMonth();
-      const anoItem = dataItem.getFullYear();
+      // Verificar se a data atual é posterior à data limite
+      if (dataAtual > dataLimite) {
+        dadosCopiados = dadosCopiados.filter(item => {
+          const dataItem = new Date(item.data);
+          const diaItem = dataItem.getDate();
+          const mesItem = dataItem.getMonth();
+          const anoItem = dataItem.getFullYear();
 
-      // Verificar se o item pertence ao mês vigente
-      return diaItem < 5 || (diaItem >= 5 && mesItem !== mesAtual) || anoItem !== anoAtual;
-    });
+          // Verificar se o item pertence ao mês vigente
+          return diaItem < 5 || (diaItem >= 5 && mesItem !== mesAtual) || anoItem !== anoAtual;
+        });
 
-    // Salvar os dados copiados atualizados no armazenamento local
-    salvarDadosCopiados();
-    exibirDadosCopiados();
-  }
-}
+        // Salvar os dados copiados atualizados no armazenamento local
+        salvarDadosCopiados();
+        exibirDadosCopiados();
+      }
+    }
 
 
 
@@ -885,105 +936,104 @@ function limparDadosAntigos() {
 
     atualizarTabelaEstoque();
     atualizarTabelaRetirada();
-    
+
     document.getElementById("habilitar").addEventListener("submit", function(event) {
       event.preventDefault(); // Impede o envio padrão do formulário
       // Realiza a ação de envio aqui (por exemplo, enviar dados para o servidor)
 
     });
-    
+
     // Obtém todos os elementos de entrada
-var inputs = document.getElementsByTagName('input');
+    var inputs = document.getElementsByTagName('input');
 
-// Itera sobre todos os elementos de entrada e adiciona o manipulador de eventos
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('focus', clearInput);
-}
+    // Itera sobre todos os elementos de entrada e adiciona o manipulador de eventos
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('focus', clearInput);
+    }
 
-// Função para limpar o valor do input
-function clearInput(event) {
-  event.target.value = '';
-}
-
-
-//Função para deixar negativo o sinal do cliente e da CTO mesmo se digitar ele positivo
-var input = document.getElementById("sinalCto");
-var input1 = document.getElementById("sinalCliente");
-
-input.addEventListener('input', function() {
-  if (parseFloat(input.value) >= 0) {
-    input.value = '-' + input.value;
-  }
-});
-
-input1.addEventListener('input', function() {
-  if (parseFloat(input1.value) >= 0) {
-    input1.value = '-' + input1.value;
-  }
-});
+    // Função para limpar o valor do input
+    function clearInput(event) {
+      event.target.value = '';
+    }
 
 
-//botão toogle menu
+    //Função para deixar negativo o sinal do cliente e da CTO mesmo se digitar ele positivo
+    var input = document.getElementById("sinalCto");
+    var input1 = document.getElementById("sinalCliente");
 
-const btnMobile = document.getElementById("btn-mobile");
+    input.addEventListener('input', function() {
+      if (parseFloat(input.value) >= 0) {
+        input.value = '-' + input.value;
+      }
+    });
 
-function toggleMenu(event) {
-  if (event.type === "touchstart") event.preventDefault();
-  const nav = document.getElementById("nav");
-  nav.classList.toggle("active");
-  const active = nav.classList.contains("active");
-  event.currentTarget.setAttribute("aria-expanded", active);
-  if (active) {
-    event.currentTarget.setAttribute("aria-label", "Fechar Menu");
-  } else {
-    event.currentTarget.setAttribute("aria-label", "Abrir Menu");
-  }
-}
-
-btnMobile.addEventListener("click", toggleMenu);
-btnMobile.addEventListener("touchstart", toggleMenu);
-
-// Obtém os itens do menu
-const menuItems = document.querySelectorAll("#menu li a");
-
-// Função para remover a classe "active" do elemento de navegação
-function removeActiveClass() {
-  const nav = document.getElementById("nav");
-  nav.classList.remove("active");
-}
-
-// Adiciona o evento de clique a cada item do menu
-menuItems.forEach(function (item) {
-  item.addEventListener("click", removeActiveClass);
-});
+    input1.addEventListener('input', function() {
+      if (parseFloat(input1.value) >= 0) {
+        input1.value = '-' + input1.value;
+      }
+    });
 
 
+    //botão toogle menu
 
-//Mendagem no WhatsApp para pedir material
-function verificarTercaFeira() {
-  var dataAtual = new Date();
-  var diaSemana = dataAtual.getDay();
-  
-  if (diaSemana === 1) {
-    var alertaExibido = sessionStorage.getItem('alertaExibido');
-    
-    if (!alertaExibido) {
-      var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
-      
-      if (confirmacao) {
-        sessionStorage.setItem('alertaExibido', 'true');
-        
-        // Redirecionar o usuário para o link após pressionar OK
-        window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+seu bixa loka!!'; // Substitua o link com a URL desejada
+    const btnMobile = document.getElementById("btn-mobile");
+
+    function toggleMenu(event) {
+      if (event.type === "touchstart") event.preventDefault();
+      const nav = document.getElementById("nav");
+      nav.classList.toggle("active");
+      const active = nav.classList.contains("active");
+      event.currentTarget.setAttribute("aria-expanded", active);
+      if (active) {
+        event.currentTarget.setAttribute("aria-label", "Fechar Menu");
+      } else {
+        event.currentTarget.setAttribute("aria-label", "Abrir Menu");
       }
     }
-  }
-}
 
-// Chamando a função
-verificarTercaFeira();
-    
-    
+    btnMobile.addEventListener("click", toggleMenu);
+    btnMobile.addEventListener("touchstart", toggleMenu);
+
+    // Obtém os itens do menu
+    const menuItems = document.querySelectorAll("#menu li a");
+
+    // Função para remover a classe "active" do elemento de navegação
+    function removeActiveClass() {
+      const nav = document.getElementById("nav");
+      nav.classList.remove("active");
+    }
+
+    // Adiciona o evento de clique a cada item do menu
+    menuItems.forEach(function(item) {
+      item.addEventListener("click", removeActiveClass);
+    });
+
+
+
+    //Mendagem no WhatsApp para pedir material
+    function verificarTercaFeira() {
+      var dataAtual = new Date();
+      var diaSemana = dataAtual.getDay();
+
+      if (diaSemana === 1) {
+        var alertaExibido = sessionStorage.getItem('alertaExibido');
+
+        if (!alertaExibido) {
+          var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
+
+          if (confirmacao) {
+            sessionStorage.setItem('alertaExibido', 'true');
+
+            // Redirecionar o usuário para o link após pressionar OK
+            window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+seu bixa loka!!'; // Substitua o link com a URL desejada
+          }
+        }
+      }
+    }
+
+    // Chamando a função
+    verificarTercaFeira();
   </script>
 </body>
+
 </html>
