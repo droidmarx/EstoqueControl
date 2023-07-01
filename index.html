@@ -358,6 +358,8 @@
 
       <button id="clear-storage-btn" class="BTN">Resetar Estoque</button>
 
+     <button onclick="enviarMensagemWhatsApp()"class="BTN">Verificar</button>
+
     </div>
 
   </div>
@@ -1008,6 +1010,24 @@
       item.addEventListener("click", removeActiveClass);
     });
 
+
+ // Função para enviar mensagem pelo WhatsApp
+ function enviarMensagemWhatsApp() {
+   // Construir a mensagem com produtos e quantidades
+   var mensagem = 'Hoje é dia de pedir material, poderia verificar meu estoque?\n\n'+'*Meu estoque:*'+'\n\n';
+   for (let i = 0; i < produtos.length; i++) {
+     mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
+   }
+
+   // Codificar a mensagem para uso na URL
+   var mensagemCodificada = encodeURIComponent(mensagem);
+
+   // Montar o link para o WhatsApp
+   var linkWhatsApp = 'whatsapp://send?text=' + mensagemCodificada;
+
+   // Abrir o WhatsApp no navegador
+   window.open(linkWhatsApp);
+ }
 
 
 // Mensagem no WhatsApp para pedir material
