@@ -277,6 +277,10 @@ nav {
      top: -7px; 
    } 
  }
+ 
+ ul{
+   font-size: .7rem
+ }
 
 
 
@@ -298,6 +302,8 @@ nav {
        <li><a onclick="mostrarRetirada()" >Lançar</a></li> 
        <li><a onclick="mostrarEstoque()" >Meu estoque</a></li> 
        <li><a id="clear-storage-btn" >Resetar estoque</a></li> 
+       <li><a></a></li>
+       
      </ul>  
    </nav>
 
@@ -323,6 +329,10 @@ nav {
   </div>
 
   <br>
+ <ul id="lista-dados-copiados"></ul>
+<p>Total de Instalações: <span id="total-elementos"></span></p>
+
+
 
 <div class="habilitar" style="display: block" id="habilitar">
 
@@ -645,6 +655,9 @@ function excluir(indice) {
         // Chamar a função para copiar o conteúdo após o envio
         setTimeout(copiarConteudo, 200)}
 
+// Array para armazenar os dados copiados
+let dadosCopiados = [];
+
 // Função para copiar o conteúdo atualizado para a área de transferência
 function copiarConteudo() {
   let copiado = '';
@@ -674,7 +687,6 @@ copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
 copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##________________#*Meu Estoque*#\n`;
 
   // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
-  
   //esse é o que copia *favor habilitar
   for (let i = 0; i < produtos.length; i++) {
     copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
@@ -730,9 +742,101 @@ document.execCommand('copy')
 // Abra o WhatsApp e cole o conteúdo copiado
 window.open('https://wa.me/?text=' + encodeURIComponent('*Favor Habilitar*\n' + copiado + '\n\n*Obrigado!*'));
 
+  // Adicionar a string copiada ao array de dadosCopiados
+  dadosCopiados.push({
+    data: new Date().toLocaleString(), // Data e hora atual
+    conteudo: copiado
+  });
+  
+  
+ // Salvar os dados copiados no armazenamento local
+  salvarDadosCopiados();
  
-          
+ // Exibir a lista de dados copiados na tela
+  exibirDadosCopiados();
 }
+          
+// Função para exibir a lista de dados copiados na tela
+function exibirDadosCopiados() {
+  // Limpar o conteúdo atual da lista
+  const listaElement = document.getElementById('lista-dados-copiados');
+  listaElement.innerHTML = '';
+
+ // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
+  for (let i = 0; i < dadosCopiados.length; i++) {
+    const item = dadosCopiados[i];
+    const listItemElement = document.createElement('li');
+    const dataHora = new Date(item.data).toLocaleDateString();
+    const nomeCliente = extrairNomeCliente(item.conteudo);
+    listItemElement.textContent = `${dataHora} - ${nomeCliente}`;
+    listaElement.appendChild(listItemElement);
+  }
+  // Atualizar o número total de elementos
+  const totalElement = document.getElementById('total-elementos');
+  totalElement.textContent = dadosCopiados.length;
+}
+
+// Função para extrair o nome do cliente do conteúdo copiado
+function extrairNomeCliente(conteudo) {
+  // Encontrar o índice inicial do nome do cliente
+  const indiceInicio = conteudo.indexOf('Cliente: ') + 9;
+  // Encontrar o índice final do nome do cliente
+  const indiceFim = conteudo.indexOf('\n', indiceInicio);
+  // Extrair o nome do cliente usando os índices
+  const nomeCliente = conteudo.substring(indiceInicio, indiceFim);
+  return nomeCliente;
+ 
+}
+
+// Função para salvar os dados copiados no armazenamento local
+function salvarDadosCopiados() {
+  localStorage.setItem('dadosCopiados', JSON.stringify(dadosCopiados));
+}
+
+// Função para carregar os dados copiados do armazenamento local
+function carregarDadosCopiados() {
+  const dadosSalvos = localStorage.getItem('dadosCopiados');
+  if (dadosSalvos) {
+    dadosCopiados = JSON.parse(dadosSalvos);
+    exibirDadosCopiados();
+  }
+}
+
+// Chamar a função carregarDadosCopiados() ao abrir a página
+carregarDadosCopiados();
+
+
+
+// Função para limpar os dados copiados do mês vigente após 5 dias do mês terem passado
+function limparDadosAntigos() {
+  const dataAtual = new Date();
+  const diaAtual = dataAtual.getDate();
+  const mesAtual = dataAtual.getMonth();
+  const anoAtual = dataAtual.getFullYear();
+
+  const dataLimite = new Date(anoAtual, mesAtual, 5); // Data limite: 5 dias do mês vigente
+
+  // Verificar se a data atual é posterior à data limite
+  if (dataAtual > dataLimite) {
+    dadosCopiados = dadosCopiados.filter(item => {
+      const dataItem = new Date(item.data);
+      const diaItem = dataItem.getDate();
+      const mesItem = dataItem.getMonth();
+      const anoItem = dataItem.getFullYear();
+
+      // Verificar se o item pertence ao mês vigente
+      return diaItem < 5 || (diaItem >= 5 && mesItem !== mesAtual) || anoItem !== anoAtual;
+    });
+
+    // Salvar os dados copiados atualizados no armazenamento local
+    salvarDadosCopiados();
+    exibirDadosCopiados();
+  }
+}
+
+
+
+
 
 
     function atualizarQuantidadeEstoque(indice, quantidade) {
