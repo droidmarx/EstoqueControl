@@ -302,7 +302,7 @@ nav {
        <li><a onclick="mostrarRetirada()" >Lançar</a></li> 
        <li><a onclick="mostrarEstoque()" >Meu estoque</a></li> 
        <li><a id="clear-storage-btn" >Resetar estoque</a></li> 
-       <li><a></a></li>
+       <li><a onclick="exibirConfirmacaoExclusao()">Resetar histórico de instalações</button></a></li>
        
      </ul>  
    </nav>
@@ -801,6 +801,28 @@ function carregarDadosCopiados() {
     exibirDadosCopiados();
   }
 }
+  // Função para exibir o alerta de confirmação de exclusão
+    function exibirConfirmacaoExclusao() {
+      const confirmacao = confirm('Tem certeza que deseja excluir o histórico de instalações ?');
+
+      if (confirmacao) {
+        limparDadosCopiados();
+        alert('O histórico foi excluído com sucesso.');
+      }
+    }
+
+
+
+
+    // Função para limpar os dados copiados
+    function limparDadosCopiados() {
+      dadosCopiados = [];
+      salvarDadosCopiados();
+      exibirDadosCopiados();
+    }
+
+    // Chamar a função carregarDadosCopiados() quando a página for carregada
+    window.addEventListener('load', carregarDadosCopiados);
 
 // Chamar a função carregarDadosCopiados() ao abrir a página
 carregarDadosCopiados();
