@@ -1010,29 +1010,36 @@
 
 
 
-    //Mendagem no WhatsApp para pedir material
-    function verificarTercaFeira() {
-      var dataAtual = new Date();
-      var diaSemana = dataAtual.getDay();
+// Mensagem no WhatsApp para pedir material
+function verificarTercaFeira() {
+  var dataAtual = new Date();
+  var diaSemana = dataAtual.getDay();
 
-      if (diaSemana === 1) {
-        var alertaExibido = sessionStorage.getItem('alertaExibido');
+  if (diaSemana === 1) {
+    var alertaExibido = sessionStorage.getItem('alertaExibido');
 
-        if (!alertaExibido) {
-          var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
+    if (!alertaExibido) {
+      var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
 
-          if (confirmacao) {
-            sessionStorage.setItem('alertaExibido', 'true');
+      if (confirmacao) {
+        sessionStorage.setItem('alertaExibido', 'true');
 
-            // Redirecionar o usuário para o link após pressionar OK
-            window.location.href = 'https://wa.me/5519920036857?text=O+seu+baitola,+preciso+de+material+seu bixa loka!!'; // Substitua o link com a URL desejada
-          }
+        // Construir a mensagem com produtos e quantidades
+        var mensagem = 'Hoje é dia de pedir material, poderia verificar meu estoque?' + '\n\n'+'*Meu Estoque Atual:*'+'\n\n';
+        for (let i = 0; i < produtos.length; i++) {
+          mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
         }
+
+        // Redirecionar o usuário para o link após pressionar OK
+        var url = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
+        window.location.href = url;
       }
     }
+  }
+}
 
-    // Chamando a função
-    verificarTercaFeira();
+// Chamando a função
+verificarTercaFeira();
   </script>
 </body>
 
