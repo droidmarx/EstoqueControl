@@ -107,10 +107,11 @@
 
     /* Headings */
     h1 {
-      font-size: 30px;
+      font-size: 20px;
       color: white;
       align-items: center;
-      font-weight: 500;
+      font-weight: 900;
+      width: 20%;
     }
 
     h2 {
@@ -216,6 +217,7 @@
         display: none;
       }
     }
+    
 
     @media (max-width: 600px) {
 .logo{
@@ -227,7 +229,6 @@
 
       li a {
         font-size: 15px;
-        
         text-align: center;
         color: #fff;
         background-color: #0077cc;
@@ -304,7 +305,7 @@
     }
 
     ul {
-      font-size: .7rem;
+      font-size: .5rem;
     }
 
     .instalacoes {
@@ -316,15 +317,44 @@
       text-align: left;
       list-style: none;
     }
+    
+    li a{
+      scale: 1;
+      font-size: 15px;
+      font-weight: 600;
+    }
 
     .btnEstoque {
       width: 90%;
       justify-items: center;
       justify-content: center;
       margin: 0 auto;
-      gap: 20px;
+      gap: 15px;
       display: flex;
     }
+    
+    span{
+      font-size: 12px;
+      border-bottom: 1px dashed #0077CC;
+    }
+    
+input.checkbox-item{
+  width: 30px;
+}
+
+li.item-lista{
+  width: 100%
+  justify-items: center;
+  justify-content: left ;
+  display: flex;
+}
+
+#lista-dados-copiados{
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+
+}
     
   </style>
 
@@ -351,6 +381,7 @@
 
       <li><a onclick="mostrarRetirada()">Lançar</a></li>
       <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
+      <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
 
     </ul>
   </nav>
@@ -394,17 +425,6 @@
 
   <div class="habilitar" style="display: block" id="habilitar">
 
-    <div class="instalacoes">
-
-
-
-      <p>Total de Instalações: <span id="total-elementos"></span></p>
-
-      <ul id="lista-dados-copiados"></ul>
-
-      <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
-
-    </div>
 
 
     <h2>Lançar</h2>
@@ -542,13 +562,20 @@
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
         <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
         
-        
-        
-    
-        
-        
-        
   </div>
+
+    <div id="instalacoes" class="instalacoes" style="display: none">
+
+
+
+      <p>Total de Instalações: <span id="total-elementos"></span></p>
+
+      <ul id="lista-dados-copiados"></ul>
+
+      <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
+
+    </div>
+
 
   <script>
     const clearStorageBtn = document.querySelector("#clear-storage-btn");
@@ -565,26 +592,29 @@
 
 
 
-    // Função para exibir a seção do estoque e ocultar a seção de retirada
-    function mostrarEstoque() {
-      document.getElementById("estoqueDiv").style.display = "block";
-      document.getElementById("retiradaDiv").style.display = "none";
+// Função para exibir a seção do estoque e ocultar a seção de retirada
+function mostrarEstoque() {
+  document.getElementById("estoqueDiv").style.display = "block";
+  document.getElementById("retiradaDiv").style.display = "none";
+  document.getElementById("habilitar").style.display = "none";
+  document.getElementById("instalacoes").style.display = "none";
+}
 
-      document.getElementById("habilitar").style.display = "block";
-      document.getElementById("habilitar").style.display = "none";
-    }
+// Função para exibir a seção de retirada e ocultar a seção do estoque
+function mostrarRetirada() {
+  document.getElementById("estoqueDiv").style.display = "none";
+  document.getElementById("retiradaDiv").style.display = "block";
+  document.getElementById("habilitar").style.display = "block";
+  document.getElementById("instalacoes").style.display = "none";
+}
 
-
-    // Função para exibir a seção de retirada e ocultar a seção do estoque
-    function mostrarRetirada() {
-      document.getElementById("estoqueDiv").style.display = "none";
-      document.getElementById("retiradaDiv").style.display = "block";
-
-      document.getElementById("habilitar").style.display = "none";
-      document.getElementById("habilitar").style.display = "block";
-
-    }
-
+// Função para exibir a seção de instalações e ocultar as outras seções
+function mostrarInstalacoes() {
+  document.getElementById("estoqueDiv").style.display = "none";
+  document.getElementById("retiradaDiv").style.display = "none";
+  document.getElementById("habilitar").style.display = "none";
+  document.getElementById("instalacoes").style.display = "block";
+}
 
 
     // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
