@@ -402,7 +402,7 @@
 
       <ul id="lista-dados-copiados"></ul>
 
-      <button id="btn-historico" class="BTN" onclick="exibirConfirmacaoExclusao()">Resetar histórico de instalações</button>
+      <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
 
     </div>
 
@@ -833,7 +833,7 @@
       exibirDadosCopiados();
     }
 
-    // Função para exibir a lista de dados copiados na tela
+   // Função para exibir a lista de dados copiados na tela
     function exibirDadosCopiados() {
       // Limpar o conteúdo atual da lista
       const listaElement = document.getElementById('lista-dados-copiados');
@@ -841,23 +841,40 @@
 
       // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
       for (let i = 0; i < dadosCopiados.length; i++) {
-  const item = dadosCopiados[i];
-  const listItemElement = document.createElement('li');
-  const dataHora = new Date(item.data).toLocaleString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  const nomeCliente = extrairNomeCliente(item.conteudo);
-  listItemElement.textContent = `${dataHora} - ${nomeCliente}`;
-  listaElement.appendChild(listItemElement);
-}
+        const item = dadosCopiados[i];
 
-      // Atualizar o número total de elementos
-      const totalElement = document.getElementById('total-elementos');
+        // Criar um elemento de lista e adicionar a classe 'item-lista'
+        const listItemElement = document.createElement('li');
+        listItemElement.classList.add('item-lista');
+
+        // Criar um elemento de caixa de seleção e adicionar a classe 'checkbox-item'
+        const checkboxElement = document.createElement('input');
+        checkboxElement.type = 'checkbox';
+        checkboxElement.classList.add('checkbox-item');
+        checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
+        listItemElement.appendChild(checkboxElement);
+
+        // Criar um elemento de texto com as informações do item
+        const dataHora = new Date(item.data).toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        const nomeCliente = extrairNomeCliente(item.conteudo);
+        const textElement = document.createElement('span');
+        textElement.textContent = `${dataHora} - ${nomeCliente}`;
+        listItemElement.appendChild(textElement);
+
+        // Adicionar o item à lista
+        listaElement.appendChild(listItemElement);
+        
+        // Atualizar o número total de elementos
+        const totalElement = document.getElementById('total-elementos');
       totalElement.textContent = dadosCopiados.length;
+        
+      }
     }
 
     // Função para extrair o nome do cliente do conteúdo copiado
@@ -869,7 +886,41 @@
       // Extrair o nome do cliente usando os índices
       const nomeCliente = conteudo.substring(indiceInicio, indiceFim);
       return nomeCliente;
+    }
 
+    // Função para excluir os itens selecionados
+    function excluirItensSelecionados() {
+      const checkboxes = document.querySelectorAll('.checkbox-item');
+      const indicesSelecionados = [];
+
+      checkboxes.forEach((checkbox, index) => {
+        if (checkbox.checked) {
+          indicesSelecionados.push(parseInt(checkbox.value));
+        }
+      });
+
+      if (indicesSelecionados.length === 0) {
+        alert('Nenhum item selecionado para exclusão.');
+        return;
+      }
+
+      // Exibir a confirmação de exclusão
+      const confirmacao = confirm('Tem certeza que deseja excluir os itens selecionados?');
+
+      if (confirmacao) {
+        // Ordenar os índices em ordem decrescente
+        indicesSelecionados.sort((a, b) => b - a);
+
+        // Excluir os itens selecionados do array de dadosCopiados
+        indicesSelecionados.forEach((indice) => {
+          dadosCopiados.splice(indice, 1);
+        });
+
+        salvarDadosCopiados(); // Salvar os dados atualizados no armazenamento local
+        exibirDadosCopiados(); // Atualizar a exibição dos dados copiados na tela
+
+        alert('Itens selecionados foram excluídos com sucesso.');
+      }
     }
 
     // Função para salvar os dados copiados no armazenamento local
@@ -885,15 +936,9 @@
         exibirDadosCopiados();
       }
     }
-    // Função para exibir o alerta de confirmação de exclusão
-    function exibirConfirmacaoExclusao() {
-      const confirmacao = confirm('Tem certeza que deseja excluir o histórico de instalações ?');
 
-      if (confirmacao) {
-        limparDadosCopiados();
-        alert('O histórico foi excluído com sucesso.');
-      }
-    }
+    // Carregar os dados copiados ao carregar a página
+    carregarDadosCopiados();
 
 
 
