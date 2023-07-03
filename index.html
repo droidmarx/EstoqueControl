@@ -1,58 +1,62 @@
-<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-     <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
+  <!-- Ícone da página -->
+  <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
 
-  
-
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
+  
+  
   <title>Controle de Estoque</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      text-align: center;
-    }
+</head>
 
-    input {
-      text-align: center;
-      width: 30%;
-    }
+<style>
+  /* Estilos gerais */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
 
+/* Estilos para inputs */
+input {
+  text-align: center;
+  width: 30%;
+}
 
-    .BTN {
-      width: fit-content;
-      padding: 10px;
-      justify-content: space-evenly;
-      font-size: 10px;
-      font-weight: bold;
-      text-align: center;
-      color: #fff;
-      background-color: #0077cc;
-      text-align: center;
-      width: 80%;
-      max-width: 350px;
-    }
-    
-     #btn-historico{
-     margin-bottom: 10px;
-    }
-    
-    #enviar{
-      margin-bottom: 20px;
-    }
+/* Estilos para botões */
+.BTN {
+  width: fit-content;
+  padding: 10px;
+  justify-content: space-evenly;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #0077cc;
+  text-align: center;
+  width: 80%;
+  max-width: 350px;
+}
 
-  button {
+#btn-historico {
+  margin-bottom: 10px;
+}
+
+#enviar {
+  margin-bottom: 20px;
+}
+
+button {
   font-weight: bold;
   text-align: center;
   color: #fff;
@@ -63,339 +67,323 @@
   padding: 10px;
   color: white;
   border: none;
-    }
+}
 
-    .botoes {
-      margin: 0 auto;
-      align-items: center;
-      background: grey;
-      display: flex;
-      gap: 10px;
-      width: fit-content;
-      height: fit-content;
-    }
+.botoes {
+  margin: 0 auto;
+  align-items: center;
+  background: grey;
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+  height: fit-content;
+}
 
-    tbody button {
-      margin: 5px;
-      justify-content: space-evenly;
-      gap: 10px;
-      background: #0077cc;
-      width: 40px;
-    }
-
-    /* Tables */
-    
-    th,
-    td {
-      font-size: 1rem;
-      text-align: center;
-      background-color: darkgray;
-      margin: 0 auto;
-      border: 1px solid black;
-      border-radius: 4px 0px 4px;
-      padding: 5px;
-      font-size: small;
-    }
-
-    td button {
-      width: 30px;
-      height: 30px;
-      border-radius: 5px;
-      text-align: center;
-      justify-content: center;
-    }
-
-    /* Headings */
-    h1 {
-      font-size: 20px;
-      color: white;
-      align-items: center;
-      font-weight: 900;
-      width: 20%;
-    }
-
-    h2 {
-      font-size: 30px;
-    }
-
-    h4 {
-      color: black;
-    }
-    
-
-    /* Excluir button */
-    #excluir {
-      width: fit-content;
-      padding: 8px;
-    }
-    
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    table#retirada, table#estoque {
-    background: none;
-    margin: 0 auto;
-
-    }
-
-    .acoes {
-      display: flex;
-    }
-
-    /* Content */
-    #habilitar {
-      width: fit-content;
-      margin: 0 auto;
-    }
-
-
-    #habilitar input {
-      width: fit-content;
-    }
-
-    select {
-      width: 100%;
-      text-align: center;
-    }
-
-
-    nav {
-      background-color: #0060a7;
-      padding: rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      position: relative;
-      z-index: 1;
-    }
-    
-    #nav h1{
-     margin-top: 30px;
-    }
-
-
-    li a {
-      font-size: 20px;
-      background: gray;
-      text-decoration: none;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    li a:hover {
-      background-color: white;
-      color: #0060a7;
-    }
-
-    #menu {
-      display: flex;
-      list-style: none;
-      gap: 1.5rem;
-      align-items: center;
-    }
-
-    #menu a {
-      display: block;
-      padding: 1rem;
-    }
-
-    #btn-mobile {
-      display: none;
-    }
-
-    @media (max-width: 640px) {
-      h1 {
-        display: none;
-      }
-    }
-    
-
-    @media (max-width: 600px) {
-.logo{
-  height: 40px;
+tbody button {
+  margin: 5px;
+  justify-content: space-evenly;
+  gap: 10px;
+  background: #0077cc;
   width: 40px;
-  margin:15px;
 }
 
+/* Estilos para tabelas */
+th,
+td {
+  font-size: 1rem;
+  text-align: center;
+  background-color: darkgray;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 4px 0px 4px;
+  padding: 5px;
+  font-size: small;
+}
 
-      li a {
-        font-size: 15px;
-        text-align: center;
-        color: #fff;
-        background-color: #0077cc;
-        text-align: center;
-      }
-
-      #menu {
-        display: block;
-        position: absolute;
-        width: 100%;
-        top: 3.4rem;
-        right: 0px;
-        background: #0077cc;
-        transition: 0.6s;
-        z-index: 1000;
-        height: 0px;
-        visibility: hidden;
-        overflow-y: hidden;
-      }
-
-      #nav.active #menu {
-        height: calc(100vh - 4rem);
-        visibility: visible;
-        overflow-y: auto;
-      }
-
-      #menu a {
-        padding: 1rem 0;
-        margin: 0 1rem;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-      }
-
-      #btn-mobile {
-        display: flex;
-        padding: 1rem;
-        font-size: 1rem;
-        border: none;
-        background: none;
-        cursor: pointer;
-        gap: 0.5rem;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #hamburger {
-        border-top: 2px solid;
-        width: 20px;
-      }
-
-      #hamburger::after,
-      #hamburger::before {
-        content: "";
-        display: block;
-        width: 20px;
-        height: 2px;
-        background: currentColor;
-        margin-top: 5px;
-        transition: 0.3s;
-        position: relative;
-      }
-
-      #nav.active #hamburger {
-        border-top-color: transparent;
-      }
-
-      #nav.active #hamburger::before {
-        transform: rotate(135deg);
-      }
-
-      #nav.active #hamburger::after {
-        transform: rotate(-135deg);
-        top: -7px;
-      }
-    }
-
-    ul {
-      font-size: .5rem;
-    }
-
-    .instalacoes {
-      background: darkgray;
-      border-radius: 5px;
-    }
-    
-    .instalacoes li{
-      text-align: left;
-      list-style: none;
-    }
-    
-    li a{
-      scale: 1;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .btnEstoque {
-      width: 90%;
-      justify-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      gap: 15px;
-      display: flex;
-    }
-    
-    span{
-      font-size: 12px;
-      border-bottom: 1px dashed #0077CC;
-    }
-    
-input.checkbox-item{
+td button {
   width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  justify-content: center;
 }
 
-li.item-lista{
-  width: 100%
-  justify-items: center;
-  justify-content: left ;
+/* Estilos para títulos */
+h1 {
+  font-size: 20px;
+  color: white;
+  align-items: center;
+  font-weight: 900;
+  width: 20%;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h4 {
+  color: black;
+}
+
+/* Estilos para botão de exclusão */
+#excluir {
+  width: fit-content;
+  padding: 8px;
+}
+
+/* Estilos para abas */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+table#retirada,
+table#estoque {
+  background: none;
+  margin: 0 auto;
+}
+
+.acoes {
   display: flex;
 }
 
-#lista-dados-copiados{
+/* Estilos para conteúdo */
+#habilitar {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+#habilitar input {
+  width: fit-content;
+}
+
+select {
+  width: 100%;
+  text-align: center;
+}
+
+/* Estilos para navegação */
+nav {
+  background-color: #0060a7;
+  padding: rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+#nav h1 {
+  margin-top: 30px;
+}
+
+li a {
+  font-size: 20px;
+  background: gray;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+li a:hover {
+  background-color: white;
+  color: #0060a7;
+}
+
+#menu {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+#menu a {
+  display: block;
+  padding: 1rem;
+}
+
+#btn-mobile {
+  display: none;
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 640px) {
+  h1 {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    height: 40px;
+    width: 40px;
+    margin: 15px;
+  }
+
+  li a {
+    font-size: 15px;
+    text-align: center;
+    color: #fff;
+    background-color: #0077cc;
+    text-align: center;
+  }
+
+  #menu {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 3.4rem;
+    right: 0px;
+    background: #0077cc;
+    transition: 0.6s;
+    z-index: 1000;
+    height: 0px;
+    visibility: hidden;
+    overflow-y: hidden;
+  }
+
+  #nav.active #menu {
+    height: calc(100vh - 4rem);
+    visibility: visible;
+    overflow-y: auto;
+  }
+
+  #menu a {
+    padding: 1rem 0;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  }
+
+  #btn-mobile {
+    display: flex;
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #hamburger {
+    border-top: 2px solid;
+    width: 20px;
+  }
+
+  #hamburger::after,
+  #hamburger::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px;
+    transition: 0.3s;
+    position: relative;
+  }
+
+  #nav.active #hamburger {
+    border-top-color: transparent;
+  }
+
+  #nav.active #hamburger::before {
+    transform: rotate(135deg);
+  }
+
+  #nav.active #hamburger::after {
+    transform: rotate(-135deg);
+    top: -7px;
+  }
+}
+
+ul {
+  font-size: 0.5rem;
+}
+
+.instalacoes {
+  background: darkgray;
+  border-radius: 5px;
+}
+
+.instalacoes li {
+  text-align: left;
+  list-style: none;
+}
+
+li a {
+  scale: 1;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.btnEstoque {
+  width: 90%;
+  justify-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 15px;
+  display: flex;
+}
+
+span {
+  font-size: 12px;
+  border-bottom: 1px dashed #0077CC;
+}
+
+input.checkbox-item {
+  width: 30px;
+}
+
+li.item-lista {
+  width: 100%;
+  justify-items: center;
+  justify-content: left;
+  display: flex;
+}
+
+#lista-dados-copiados {
   text-align: center;
   justify-content: center;
   padding: 0;
-
 }
-    
-  </style>
-
-</head>
+  
+</style>
 
 <body>
 
+  <!-- Barra de navegação -->
   <nav id="nav">
-    
-
-          <a><img class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar" ></a>
-          
-          <h1>Controle de Estoque</h1>
-
-
+    <a><img class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
+    <h1>Controle de Estoque</h1>
+    <!-- Botão para abrir o menu em dispositivos móveis -->
     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
       <span id="hamburger"></span>
     </button>
-
-
     <ul id="menu" role="menu">
-      
-     
-
-      <li><a onclick="mostrarRetirada()">Lançar</a></li>
+      <li><a onclick="mostrarRetirada()">Instalação</a></li>
+      <li><a onclick="mostrarManutencao()">Manutenção</a></li>
       <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
       <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
-
     </ul>
   </nav>
+  
+  
+  <div id="manutencaoDiv" style="display: none;">
+  <h1>MANUTENÇÃO</h1>
+  <!-- Conteúdo da seção de manutenção -->
+  <p>Em breve<p>
+  </div>
+  
 
-
-
-
-
-
+  <!-- Div para a seção de estoque -->
   <div id="estoqueDiv" style="display: none;">
-
     <h1>CONTROLE DE ESTOQUE</h1>
-
-
     <table id="estoque">
       <h2>Meu estoque</h2>
       <tr>
@@ -404,31 +392,17 @@ li.item-lista{
       </tr>
     </table>
     <br>
-
     <div class="btnEstoque">
-
-
       <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar<br>Produto</button>
-
       <button id="clear-storage-btn" class="BTN">Resetar<br>Estoque</button>
-
-     <button onclick="enviarMensagemWhatsApp()"class="BTN">Pedir<br>Material</button>
-
+      <button onclick="enviarMensagemWhatsApp()" class="BTN">Pedir<br>Material</button>
     </div>
-
   </div>
-
   <br>
 
-
-
-
+  <!-- Div para a seção de lançamento -->
   <div class="habilitar" style="display: block" id="habilitar">
-
-
-
     <h2>Lançar</h2>
-
     <table>
       <tr>
         <th>Técnico:</th>
@@ -440,7 +414,6 @@ li.item-lista{
             <option value="Guilherme">Guilherme</option>
             <option value="Robson">Robson</option>
             <option value="Sergio">Sérgio</option>
-
           </select>
         </td>
       </tr>
@@ -456,7 +429,6 @@ li.item-lista{
         <th>CTO:</th>
         <td><input placeholder="00" type="number" id="cto"></td>
       </tr>
-
       <tr>
         <th>Porta:</th>
         <td>
@@ -481,7 +453,6 @@ li.item-lista{
           </select>
         </td>
       </tr>
-
       <tr>
         <th>Sinal CTO:</th>
         <td><input type="number" placeholder="-00.00" id="sinalCto"></td>
@@ -538,14 +509,9 @@ li.item-lista{
         <th>Kit fusão:</th>
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
-      <tr>
     </table>
     <br>
   </div>
-
-
-
-
 
   <div id="retiradaDiv" style="display: block;">
     <table id="retirada">
@@ -558,104 +524,146 @@ li.item-lista{
     </table>
     <br>
   
-  
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
-        <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
-        
+    <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
   </div>
 
-    <div id="instalacoes" class="instalacoes" style="display: none">
-
-
-
-      <p>Total de Instalações: <span id="total-elementos"></span></p>
-
-      <ul id="lista-dados-copiados"></ul>
-
-      <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
-
-    </div>
-
-
+  <div id="instalacoes" class="instalacoes" style="display: none">
+    <p>Total de Instalações: <span id="total-elementos"></span></p>
+    <ul id="lista-dados-copiados"></ul>
+    <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
+  </div>
   <script>
-    const clearStorageBtn = document.querySelector("#clear-storage-btn");
+    
+     // Seleciona o botão de limpar armazenamento do DOM
+const clearStorageBtn = document.querySelector("#clear-storage-btn");
 
-    clearStorageBtn.addEventListener("click", () => {
-      const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
+// Adiciona um ouvinte de evento de clique ao botão
+clearStorageBtn.addEventListener("click", () => {
+  // Exibe uma mensagem de confirmação ao usuário
+  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
 
-      if (confirmReset) {
-        localStorage.clear();
-        alert("Estoque resetado com sucesso!");
-      }
-    });
+  // Verifica se o usuário confirmou o reset
+  if (confirmReset) {
+    // Limpa o armazenamento local
+    localStorage.clear();
+    
+    // Exibe uma mensagem de sucesso ao usuário
+    alert("Estoque resetado com sucesso!");
+  }
+});
 
 
 
 
-// Função para exibir a seção do estoque e ocultar a seção de retirada
 function mostrarEstoque() {
-  document.getElementById("estoqueDiv").style.display = "block";
-  document.getElementById("retiradaDiv").style.display = "none";
-  document.getElementById("habilitar").style.display = "none";
-  document.getElementById("instalacoes").style.display = "none";
-}
+      const estoqueDiv = document.getElementById("estoqueDiv");
+      const retiradaDiv = document.getElementById("retiradaDiv");
+      const habilitar = document.getElementById("habilitar");
+      const instalacoes = document.getElementById("instalacoes");
 
-// Função para exibir a seção de retirada e ocultar a seção do estoque
-function mostrarRetirada() {
-  document.getElementById("estoqueDiv").style.display = "none";
-  document.getElementById("retiradaDiv").style.display = "block";
-  document.getElementById("habilitar").style.display = "block";
-  document.getElementById("instalacoes").style.display = "none";
-}
+      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
+        estoqueDiv.style.display = "block";
+        retiradaDiv.style.display = "none";
+        habilitar.style.display = "none";
+        instalacoes.style.display = "none";
+        manutencaoDiv.style.display = "none";
+      }
+    }
 
-// Função para exibir a seção de instalações e ocultar as outras seções
-function mostrarInstalacoes() {
-  document.getElementById("estoqueDiv").style.display = "none";
-  document.getElementById("retiradaDiv").style.display = "none";
-  document.getElementById("habilitar").style.display = "none";
-  document.getElementById("instalacoes").style.display = "block";
-}
+    function mostrarRetirada() {
+      const estoqueDiv = document.getElementById("estoqueDiv");
+      const retiradaDiv = document.getElementById("retiradaDiv");
+      const habilitar = document.getElementById("habilitar");
+      const instalacoes = document.getElementById("instalacoes");
 
+      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
+        estoqueDiv.style.display = "none";
+        retiradaDiv.style.display = "block";
+        habilitar.style.display = "block";
+        instalacoes.style.display = "none";
+        manutencaoDiv.style.display = "none";
+      }
+    }
 
-    // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
-    let produtos = JSON.parse(localStorage.getItem("produtos")) || [
-      { nome: "DROP", quantidade: 1000 },
-      { nome: "SC-APC", quantidade: 20 },
-      { nome: "SC-UPC", quantidade: 20 },
-      { nome: "Esticadores", quantidade: 100 },
-      { nome: "Roldana", quantidade: 100 },
-      { nome: "Fecho", quantidade: 50 },
-      { nome: "Anel", quantidade: 50 },
-      { nome: "Fita aço", quantidade: 50 },
-      { nome: "Fixa fio", quantidade: 100 },
-      { nome: "Cabo de rede", quantidade: 300 },
-      { nome: "Conc RJ45", quantidade: 20 },
-    ];
+    function mostrarInstalacoes() {
+      const estoqueDiv = document.getElementById("estoqueDiv");
+      const retiradaDiv = document.getElementById("retiradaDiv");
+      const habilitar = document.getElementById("habilitar");
+      const instalacoes = document.getElementById("instalacoes");
 
+      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
+        estoqueDiv.style.display = "none";
+        retiradaDiv.style.display = "none";
+        habilitar.style.display = "none";
+        instalacoes.style.display = "block";
+        manutencaoDiv.style.display = "none";
+      }
+    }
 
+    function mostrarManutencao() {
+      const estoqueDiv = document.getElementById("estoqueDiv");
+      const retiradaDiv = document.getElementById("retiradaDiv");
+      const habilitar = document.getElementById("habilitar");
+      const instalacoes = document.getElementById("instalacoes");
+      const manutencaoDiv = document.getElementById("manutencaoDiv");
 
-    let retirada = JSON.parse(localStorage.getItem("retirada")) || [];
-
-
-    // Função para atualizar a tabela de estoque com os produtos e suas quantidades
-    function atualizarTabelaEstoque() {
-      let tabela = document.getElementById("estoque");
-      tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
-      for (let i = 0; i < produtos.length; i++) {
-        let linha = tabela.insertRow(-1);
-        let celulaNome = linha.insertCell(0);
-        let celulaQuantidade = linha.insertCell(1);
-        let celulaAcoes = linha.insertCell(2);
-        celulaNome.innerHTML = produtos[i].nome;
-        celulaQuantidade.innerHTML = `<input type="number" min="0" value="${produtos[i].quantidade}" onchange="atualizarQuantidadeEstoque(${i}, this.value)">`;
-        celulaAcoes.innerHTML = `<div class='acoes'><button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button></div>`;
+      if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv) {
+        estoqueDiv.style.display = "none";
+        retiradaDiv.style.display = "none";
+        habilitar.style.display = "none";
+        instalacoes.style.display = "none";
+        manutencaoDiv.style.display = "block";
       }
     }
 
 
 
 
-    // Função para atualizar a tabela de retirada com os produtos e suas quantidades
+// Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
+let produtos = JSON.parse(localStorage.getItem("produtos")) || [
+  { nome: "DROP", quantidade: 1000 },
+  { nome: "SC-APC", quantidade: 20 },
+  { nome: "SC-UPC", quantidade: 20 },
+  { nome: "Esticadores", quantidade: 100 },
+  { nome: "Roldana", quantidade: 100 },
+  { nome: "Fecho", quantidade: 50 },
+  { nome: "Anel", quantidade: 50 },
+  { nome: "Fita aço", quantidade: 50 },
+  { nome: "Fixa fio", quantidade: 100 },
+  { nome: "Isolante", quantidade: 100 },
+
+  { nome: "Cabo de rede", quantidade: 300 },
+  { nome: "Conc RJ45", quantidade: 20 },
+  { nome: "Kit-Fusao", quantidade: 10 },
+];
+
+let retirada = JSON.parse(localStorage.getItem("retirada")) || [];
+
+
+// Função para atualizar a tabela de estoque com os produtos e suas quantidades
+function atualizarTabelaEstoque() {
+  // Obtém a referência para a tabela de estoque
+  let tabela = document.getElementById("estoque");
+  
+  // Limpa o conteúdo atual da tabela
+  tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
+  
+  // Popula a tabela com os produtos
+  for (let i = 0; i < produtos.length; i++) {
+    let linha = tabela.insertRow(-1); // Insere uma nova linha na tabela
+    let celulaNome = linha.insertCell(0); // Insere uma nova célula na coluna 0 (Produto)
+    let celulaQuantidade = linha.insertCell(1); // Insere uma nova célula na coluna 1 (Quantidade)
+    let celulaAcoes = linha.insertCell(2); // Insere uma nova célula na coluna 2 (Ações)
+    
+    // Preenche as células com os valores correspondentes
+    celulaNome.innerHTML = produtos[i].nome;
+    celulaQuantidade.innerHTML = `<input type="number" min="0" value="${produtos[i].quantidade}" onchange="atualizarQuantidadeEstoque(${i}, this.value)">`;
+    celulaAcoes.innerHTML = `<div class='acoes'><button onclick="aumentarEstoque(${i})">+</button> <button onclick="diminuirEstoque(${i})">-</button> <button id="excluir" onclick="excluir(${i})">Excluir</button></div>`;
+  }
+}
+
+  // Função para atualizar a tabela de retirada com os produtos e suas quantidades
     function atualizarTabelaRetirada() {
       let tabela = document.getElementById("retirada");
       tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
@@ -1136,6 +1144,8 @@ function mostrarInstalacoes() {
  }
 
 
+verificarTercaFeira()
+
 // Mensagem no WhatsApp para pedir material
 function verificarTercaFeira() {
   var dataAtual = new Date();
@@ -1151,22 +1161,26 @@ function verificarTercaFeira() {
         sessionStorage.setItem('alertaExibido', 'true');
 
         // Construir a mensagem com produtos e quantidades
-        var mensagem = 'Hoje é dia de pedir material, poderia verificar meu estoque?' + '\n\n'+'*Meu Estoque Atual:*'+'\n\n';
+        var mensagem = 'Hoje é dia de pedir material, poderia verificar meu estoque?' + '\n\n' + '*Meu Estoque Atual:*' + '\n\n';
         for (let i = 0; i < produtos.length; i++) {
           mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
         }
 
-        // Redirecionar o usuário para o link após pressionar OK
-        var url = 'https://wa.me/?text=' + encodeURIComponent(mensagem);
-        window.location.href = url;
+        // Codificar a mensagem para uso na URL
+        var mensagemCodificada = encodeURIComponent(mensagem);
+
+   // Montar o link para o WhatsApp
+           var linkWhatsApp = 'whatsapp://send?text=' + mensagemCodificada;
+
+        // Abrir o WhatsApp no navegador
+        window.open(linkWhatsApp);
       }
     }
   }
 }
 
-// Chamando a função
-verificarTercaFeira();
+
+    
   </script>
 </body>
-
 </html>
