@@ -322,6 +322,13 @@ li.item-lista {
   display: flex;
 }
 
+select#registros{
+ width: 80%;
+ caret-color: grey;
+ outline: #55576B;
+ border: 1px solid #000000;
+}
+
 #estoqueDiv{
  margin-top: 2px;
 }
@@ -387,28 +394,36 @@ li.item-lista {
    
 
 <div id="manutencaoDiv" style="display: none;">
- 
-   <p> Total de Manutenções: <span id="totalRegistros" style="color: black"></span></p>
-  <!-- Conteúdo da seção de manutenção -->
-  <p>Manutenção</p>
-  
-      <td><input type="text" placeholder="Nome do Cliente" id="cliente1"></td>
-      
-      <br><br>
-  
-  
-  <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="5" cols="40"></textarea>
-  
-  <br><br>
-  
+
+ <p> Total de Manutenções: <span id="totalRegistros" style="color: black"></span></p>
+ <!-- Conteúdo da seção de manutenção -->
+ <p>Manutenção</p>
+
+ <td><input type="text" placeholder="Nome do Cliente" id="cliente1"></td>
+
+ <br><br>
+
+
+ <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="5" cols="40"></textarea>
+
+ <br><br>
+
+ <select id="registros" onchange="selecionarRegistro()">
+  <option value="" disabled selected>Selecione um registro</option>
+ </select>
+
+
+ <br><br>
+
+ <div class="btnEstoque">
   <button class="BTN" onclick="enviarComentario()" type="submit">Enviar</button>
 
+  <button class="BTN" onclick="excluirRegistro()" type="button">Excluir</button>
+ </div>
 
-  <select id="registros" onchange="selecionarRegistro()">
-    <option value="" disabled selected>Selecione um registro</option>
-  </select>
 
-  <button onclick="excluirRegistro()" type="button">Excluir</button>
+
+
 </div>
 
   
