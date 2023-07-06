@@ -23,12 +23,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   text-align: center;
-  filter: blur(5px);
 }
 
-.blur-effect {
-  filter: blur(0px);
-}
 
 
 /* Estilos para inputs */
@@ -384,8 +380,7 @@ li.item-lista {
       <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
      
       <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
-      
-       <li onclick="handleLogout()"><a>Sair</a></li>
+
     </ul>
   </nav>
   
@@ -1367,22 +1362,6 @@ function verificarTercaFeira() {
 
 
 
-const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-  
-  if (loggedInUser) {
-   verificarTercaFeira()
-   const welcomeMessage = document.querySelector("#welcome-message");
-   welcomeMessage.textContent = `Bem-vindo, ${loggedInUser.nome} !`;
-          document.body.classList.add("blur-effect");
-
-  } else {
-   alert("Voce precisa estar logado.");
-   window.location.href = "index.html";
-  }
-  
-  function handleLogout() { 
-     window.location.href = "./index.html";
-   } 
 
   </script>
   
