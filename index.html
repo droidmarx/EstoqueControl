@@ -1,5 +1,3 @@
-<html lang="pt-br">
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,12 +23,18 @@ body {
   padding: 0;
   box-sizing: border-box;
   text-align: center;
+  filter: blur(5px);
 }
+
+.blur-effect {
+  filter: blur(0px);
+}
+
 
 /* Estilos para inputs */
 input {
   text-align: center;
-  width: 30%;
+  width: 80%;
 }
 
 /* Estilos para botões */
@@ -42,7 +46,7 @@ input {
   font-weight: bold;
   text-align: center;
   color: #fff;
-  background-color: #0077cc;
+  background-color: #0077CC;
   text-align: center;
   width: 80%;
   max-width: 350px;
@@ -108,21 +112,9 @@ td button {
   justify-content: center;
 }
 
-/* Estilos para títulos */
-h1 {
-  font-size: 20px;
-  color: white;
-  align-items: center;
-  font-weight: 900;
-  width: 20%;
-}
 
-h2 {
-  font-size: 30px;
-}
-
-h4 {
-  color: black;
+p{
+ color: black;
 }
 
 /* Estilos para botão de exclusão */
@@ -166,17 +158,13 @@ select {
 /* Estilos para navegação */
 nav {
   background-color: #0060a7;
-  padding: rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
   z-index: 1;
 }
-
-#nav h1 {
-  margin-top: 30px;
-}
+ 
 
 li a {
   font-size: 20px;
@@ -212,13 +200,8 @@ li a:hover {
 }
 
 /* Estilos para dispositivos móveis */
-@media (max-width: 640px) {
-  h1 {
-    display: none;
-  }
-}
-
 @media (max-width: 600px) {
+ 
   .logo {
     height: 40px;
     width: 40px;
@@ -316,11 +299,6 @@ ul {
   list-style: none;
 }
 
-li a {
-  scale: 1;
-  font-size: 15px;
-  font-weight: 600;
-}
 
 .btnEstoque {
   width: 90%;
@@ -333,7 +311,8 @@ li a {
 
 span {
   font-size: 12px;
-  border-bottom: 1px dashed #0077CC;
+  font-weight: 400;
+  color: white;
 }
 
 input.checkbox-item {
@@ -347,10 +326,40 @@ li.item-lista {
   display: flex;
 }
 
+#estoqueDiv{
+ margin-top: 2px;
+}
+
+#welcome-message{
+ color: white ;
+ margin-top: 25px;
+}
+
 #lista-dados-copiados {
   text-align: center;
   justify-content: center;
   padding: 0;
+}
+
+#comentarios{
+ animation: blink 2s linear infinite;
+ caret-color: grey;
+ outline: #55576B;
+ border: 1px solid #000000;
+
+}
+
+@keyframes blink {
+  0% {
+    border-color: #FFFFFF;
+  }
+  50% {
+    border-color: #0077CC;
+    color: #0077CC;
+  }
+  100% {
+    border-color: #FFFFFF;
+  }
 }
   
 </style>
@@ -360,32 +369,59 @@ li.item-lista {
   <!-- Barra de navegação -->
   <nav id="nav">
     <a><img class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
-    <h1>Controle de Estoque</h1>
+   
+   <span id="welcome-message"></span>
     <!-- Botão para abrir o menu em dispositivos móveis -->
     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
       <span id="hamburger"></span>
     </button>
     <ul id="menu" role="menu">
+    
       <li><a onclick="mostrarRetirada()">Instalação</a></li>
+    
       <li><a onclick="mostrarManutencao()">Manutenção</a></li>
+      
       <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
+     
       <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
+      
+       <li onclick="handleLogout()"><a>Sair</a></li>
     </ul>
   </nav>
   
-  
-  <div id="manutencaoDiv" style="display: none;">
-  <h1>MANUTENÇÃO</h1>
+   
+
+<div id="manutencaoDiv" style="display: none;">
+ 
+   <p> Total de Manutenções: <span id="totalRegistros" style="color: black"></span></p>
   <!-- Conteúdo da seção de manutenção -->
-  <p>Em breve<p>
-  </div>
+  <p>Manutenção</p>
+  
+      <td><input type="text" placeholder="Nome do Cliente" id="cliente1"></td>
+      
+      <br><br>
+  
+  
+  <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="5" cols="40"></textarea>
+  
+  <br><br>
+  
+  <button class="BTN" onclick="enviarComentario()" type="submit">Enviar</button>
+
+
+  <select id="registros" onchange="selecionarRegistro()">
+    <option value="" disabled selected>Selecione um registro</option>
+  </select>
+
+  <button onclick="excluirRegistro()" type="button">Excluir</button>
+</div>
+
   
 
   <!-- Div para a seção de estoque -->
   <div id="estoqueDiv" style="display: none;">
-    <h1>CONTROLE DE ESTOQUE</h1>
     <table id="estoque">
-      <h2>Meu estoque</h2>
+      <p>Meu estoque</p>
       <tr>
         <th>Quantidade</th>
         <th>Ações</th>
@@ -402,7 +438,8 @@ li.item-lista {
 
   <!-- Div para a seção de lançamento -->
   <div class="habilitar" style="display: block" id="habilitar">
-    <h2>Lançar</h2>
+    
+    <p>Instalação</p>
     <table>
       <tr>
         <th>Técnico:</th>
@@ -515,7 +552,7 @@ li.item-lista {
 
   <div id="retiradaDiv" style="display: block;">
     <table id="retirada">
-      <h4>Equipamento utilizado</h4>
+      <p>Equipamento utilizado</p>
       <tr>
         <th>Produto</th>
         <th>Quantidade</th>
@@ -529,10 +566,12 @@ li.item-lista {
   </div>
 
   <div id="instalacoes" class="instalacoes" style="display: none">
-    <p>Total de Instalações: <span id="total-elementos"></span></p>
+   
+     <p>Total de Instalações: <span id="total-elementos"></span></p>
     <ul id="lista-dados-copiados"></ul>
     <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
   </div>
+
   <script>
     
      // Seleciona o botão de limpar armazenamento do DOM
@@ -618,6 +657,153 @@ function mostrarEstoque() {
         manutencaoDiv.style.display = "block";
       }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+function atualizarListaRegistros() {
+  // Obter a referência do elemento select
+  const select = document.getElementById('registros');
+
+  // Limpar as opções existentes
+  select.innerHTML = '<option value="" disabled selected>Selecione um registro</option>';
+
+  // Obter os registros do Local Storage
+  const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+  // Adicionar cada registro como uma opção no select
+  registros.forEach((registro, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = registro.cliente + ' - ' + registro.dataHora;
+    select.appendChild(option);
+  });
+
+  // Atualizar o número total de registros
+  contarRegistros();
+}
+
+function contarRegistros() {
+  // Obter os registros do Local Storage
+  const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+  // Obter a referência do elemento para exibir o número de registros
+  const contador = document.getElementById('contador-registros');
+
+  // Exibir o número de registros
+  contador.textContent = registros.length;
+}
+
+function enviarComentario() {
+  // Obter os valores do nome do cliente e comentários
+  const cliente = document.getElementById('cliente1').value;
+  const comentarios = document.getElementById('comentarios').value;
+
+  // Verificar se os campos não estão vazios
+  if (cliente !== '' && comentarios !== '') {
+    // Criar um objeto com as informações do registro
+    const registro = {
+      cliente: cliente,
+      comentarios: comentarios,
+      dataHora: new Date().toLocaleString()
+    };
+
+    // Obter os registros existentes do Local Storage
+    let registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+    // Adicionar o novo registro à lista de registros
+    registros.push(registro);
+
+    // Armazenar a lista atualizada no Local Storage
+    localStorage.setItem('registros', JSON.stringify(registros));
+
+    // Limpar os campos do formulário
+    document.getElementById('cliente1').value = '';
+    document.getElementById('comentarios').value = '';
+
+    // Atualizar a lista de registros selecionáveis
+    atualizarListaRegistros();
+  }
+}
+
+function selecionarRegistro() {
+  // Obter o índice do registro selecionado
+  const index = document.getElementById('registros').value;
+
+  // Obter os registros do Local Storage
+  const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+  // Verificar se o índice é válido
+  if (index >= 0 && index < registros.length) {
+    // Obter o registro selecionado
+    const registro = registros[index];
+
+    // Preencher os campos do formulário com as informações do registro
+    document.getElementById('cliente1').value = registro.cliente;
+    document.getElementById('comentarios').value = registro.comentarios;
+  }
+}
+
+function excluirRegistro() {
+  // Obter o índice do registro selecionado
+  const index = document.getElementById('registros').value;
+
+  // Obter os registros do Local Storage
+  let registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+  // Verificar se o índice é válido
+  if (index >= 0 && index < registros.length) {
+    // Remover o registro da lista
+    registros.splice(index, 1);
+
+    // Armazenar a lista atualizada no Local Storage
+    localStorage.setItem('registros', JSON.stringify(registros));
+
+    // Limpar os campos do formulário
+    document.getElementById('cliente1').value = '';
+    document.getElementById('comentarios').value = '';
+
+    // Atualizar a lista de registros selecionáveis
+    atualizarListaRegistros();
+    // Atualizar o número total de registros
+    contarRegistros();
+  }
+}
+
+
+  // Atualizar a lista de registros selecionáveis ao carregar a página
+  atualizarListaRegistros();
+
+function contarRegistros() {
+    // Obter os registros do Local Storage
+    const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+    // Exibir o total de registros
+    const totalRegistros = registros.length;
+    document.getElementById('totalRegistros').textContent = totalRegistros.toString();
+  }
+
+  // Atualizar a lista de registros selecionáveis e o total de registros ao carregar a página
+  atualizarListaRegistros();
+  contarRegistros();
+
+
+
+
+
+
+
+
+
 
 
 
@@ -913,7 +1099,6 @@ function atualizarTabelaEstoque() {
         // Atualizar o número total de elementos
         const totalElement = document.getElementById('total-elementos');
       totalElement.textContent = dadosCopiados.length;
-        
       }
     }
 
@@ -1146,7 +1331,6 @@ function atualizarTabelaEstoque() {
  }
 
 
-verificarTercaFeira()
 
 // Mensagem no WhatsApp para pedir material
 function verificarTercaFeira() {
@@ -1182,7 +1366,26 @@ function verificarTercaFeira() {
 }
 
 
-    
+
+const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+  
+  if (loggedInUser) {
+   verificarTercaFeira()
+   const welcomeMessage = document.querySelector("#welcome-message");
+   welcomeMessage.textContent = `Bem-vindo, ${loggedInUser.nome} !`;
+          document.body.classList.add("blur-effect");
+
+  } else {
+   alert("Voce precisa estar logado.");
+   window.location.href = "index.html";
+  }
+  
+  function handleLogout() { 
+     window.location.href = "./index.html";
+   } 
+
   </script>
+  
+  
 </body>
 </html>
