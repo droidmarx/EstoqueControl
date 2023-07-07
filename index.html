@@ -308,7 +308,6 @@ ul {
 span {
   font-size: 12px;
   font-weight: 400;
-  color: white;
 }
 
 input.checkbox-item {
@@ -344,7 +343,7 @@ select#registros{
   padding: 0;
 }
 
-#comentarios{
+#comentarios:focus{
  animation: blink 2s linear infinite;
  caret-color: grey;
  outline: #55576B;
@@ -365,25 +364,13 @@ select#registros{
   }
 }
   
-  
-  @keyframes fadeOut {
-  from {
-    opacity: 1;
+  #cliente1:focus{
+   animation: blink 2s linear infinite;
+ caret-color: grey;
+ outline:transparent;
+ border: 1px solid #000000;
   }
-  to {
-    opacity: 0;
-  }
-}
 
-#usoLocalStorage {
-  transition: opacity 1s;
-}
-
-.fade-out {
-  animation: fadeOut 5s forwards;
-}
-
-  
   
 </style>
 
@@ -393,7 +380,7 @@ select#registros{
   <nav id="nav">
     <a><img class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
    
-  <p style="display: none" id="usoLocalStorage">Uso de LocalStorage: <span id="tamanho"></span> MB</p>
+
 
 
     <!-- Botão para abrir o menu em dispositivos móveis -->
@@ -409,8 +396,7 @@ select#registros{
       <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
      
       <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
-      
-         <li><a onclick="calcularTamanhoLocalStorage()">Verificar Uso de LocalStorage</a></li>
+     
 
     </ul>
   </nav>
@@ -430,7 +416,7 @@ select#registros{
 
  <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="5" cols="40"></textarea>
 
-
+<br><br>
 
  <select id="registros" onchange="selecionarRegistro()">
   <option value="" disabled selected>Selecione um registro</option>
@@ -472,6 +458,8 @@ select#registros{
 
   <!-- Div para a seção de lançamento -->
   <div class="habilitar" style="display: block" id="habilitar">
+   
+   
     
     <p>Instalação</p>
     <table>
@@ -498,7 +486,7 @@ select#registros{
       </tr>
       <tr>
         <th>CTO:</th>
-        <td><input placeholder="00" type="number" id="cto"></td>
+        <td><input placeholder="00" type="num" id="cto"></td>
       </tr>
       <tr>
         <th>Porta:</th>
@@ -611,28 +599,7 @@ select#registros{
   
   
   
-  function calcularTamanhoLocalStorage() {
-  var tamanho = 0;
 
-  for (var i = 0; i < localStorage.length; i++) {
-    var chave = localStorage.key(i);
-    var valor = localStorage.getItem(chave);
-    tamanho += chave.length + valor.length;
-  }
-
-  var tamanhoMB = (tamanho / (1024 * 1024)).toFixed(2);
-  document.getElementById("tamanho").innerHTML = tamanhoMB;
-
-  var elementoP = document.getElementById("usoLocalStorage");
-  elementoP.style.display = "block";
-  elementoP.classList.add("fade-out");
-
-  setTimeout(function() {
-    elementoP.style.display = "none";
-  }, 5000);
-}
-
-  
   
   
   
