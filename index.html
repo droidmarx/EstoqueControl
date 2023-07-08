@@ -115,7 +115,7 @@ td button {
 
 
 p{
- color: black;
+ color: white;
 }
 
 /* Estilos para botão de exclusão */
@@ -169,7 +169,6 @@ nav {
 
 li a {
   font-size: 20px;
-  background: gray;
   text-decoration: none;
   padding: 10px;
   border-radius: 5px;
@@ -202,7 +201,6 @@ li a:hover {
 
 /* Estilos para dispositivos móveis */
 @media (max-width: 600px) {
- 
   .logo {
     height: 40px;
     width: 40px;
@@ -213,12 +211,12 @@ li a:hover {
     font-size: 15px;
     text-align: center;
     color: #fff;
-    background-color: transparent;
+    background-color: #64696E;
     text-align: center;
   }
   
   li a:hover{
-   background: transparent;
+   background: black;
    color:#42445A ;
    font-weight: 900;
    font-size: 17px;
@@ -330,6 +328,7 @@ span {
 .item-lista p{
  font-size:  .6rem;
  margin: 10;
+ color: white;
 }
 
 input.checkbox-item {
@@ -354,11 +353,6 @@ select#registros{
 
 #estoqueDiv{
  margin-top: 2px;
-}
-
-#welcome-message{
- color: white ;
- margin-top: 25px;
 }
 
 #lista-dados-copiados {
@@ -429,9 +423,9 @@ select#registros{
 
 <div id="manutencaoDiv" style="display: none;">
 
- <p> Total de Manutenções: <span id="totalRegistros" style="color: black"></span></p>
+ <p> Total de Manutenções: <span id="totalRegistros"></span></p>
  <!-- Conteúdo da seção de manutenção -->
- <p>Manutenção</p>
+ 
 
  <td><input type="text" placeholder="Nome do Cliente" id="cliente1"></td>
 
