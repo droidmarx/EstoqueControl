@@ -394,12 +394,13 @@ select#registros{
   
  @keyframes slideout {
       0% {
-       scale: 7;
         transform: translateY(100%);
+        opacity: 0;
+        filter: blur(110px)
       }
       100% {
-        transform: translateY(0);
-        scale: 1;
+        transform: translateY(0%);
+        opacity: 1;
       }
     }
 
