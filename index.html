@@ -1,11 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
   <!-- Ícone da página -->
   <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Importação da fonte Poppins -->
@@ -1090,48 +1094,48 @@ function atualizarTabelaEstoque() {
       exibirDadosCopiados();
     }
 
-   // Função para exibir a lista de dados copiados na tela
-    function exibirDadosCopiados() {
-      // Limpar o conteúdo atual da lista
-      const listaElement = document.getElementById('lista-dados-copiados');
-      listaElement.innerHTML = '';
+ // Função para exibir a lista de dados copiados na tela
+function exibirDadosCopiados() {
+  // Limpar o conteúdo atual da lista
+  const listaElement = document.getElementById('lista-dados-copiados');
+  listaElement.innerHTML = '';
 
-      // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
-      for (let i = 0; i < dadosCopiados.length; i++) {
-        const item = dadosCopiados[i];
+  // Percorrer o array de dadosCopiados e criar um elemento de lista para cada item
+  for (let i = 0; i < dadosCopiados.length; i++) {
+    const item = dadosCopiados[i];
 
-        // Criar um elemento de lista e adicionar a classe 'item-lista'
-        const listItemElement = document.createElement('li');
-        listItemElement.classList.add('item-lista');
+    // Criar um elemento de lista e adicionar a classe 'item-lista'
+    const listItemElement = document.createElement('li');
+    listItemElement.classList.add('item-lista');
 
-        // Criar um elemento de caixa de seleção e adicionar a classe 'checkbox-item'
-        const checkboxElement = document.createElement('input');
-        checkboxElement.type = 'checkbox';
-        checkboxElement.classList.add('checkbox-item');
-        checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
-        listItemElement.appendChild(checkboxElement);
+    // Criar um elemento de caixa de seleção e adicionar a classe 'checkbox-item'
+    const checkboxElement = document.createElement('input');
+    checkboxElement.type = 'checkbox';
+    checkboxElement.classList.add('checkbox-item');
+    checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
+    listItemElement.appendChild(checkboxElement);
 
-        // Criar um elemento de texto com as informações do item
-        const dataHora = new Date(item.data).toLocaleString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-        const nomeCliente = extrairNomeCliente(item.conteudo);
-        const textElement = document.createElement('span');
-        textElement.textContent = `${dataHora} - ${nomeCliente}`;
-        listItemElement.appendChild(textElement);
+    // Criar um elemento de texto com as informações do item
+    const dataHora = new Date(item.data).toLocaleDateString('en', {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    const nomeCliente = extrairNomeCliente(item.conteudo);
+    const textElement = document.createElement('p');
+    textElement.textContent = `${dataHora} - ${nomeCliente}`;
+    listItemElement.appendChild(textElement);
 
-        // Adicionar o item à lista
-        listaElement.appendChild(listItemElement);
-        
-        // Atualizar o número total de elementos
-        const totalElement = document.getElementById('total-elementos');
-      totalElement.textContent = dadosCopiados.length;
-      }
-    }
+    // Adicionar o item à lista
+    listaElement.appendChild(listItemElement);
+  }
+
+  // Atualizar o número total de elementos
+  const totalElement = document.getElementById('total-elementos');
+  totalElement.textContent = dadosCopiados.length;
+}
 
     // Função para extrair o nome do cliente do conteúdo copiado
     function extrairNomeCliente(conteudo) {
