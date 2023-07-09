@@ -754,7 +754,7 @@ function atualizarListaRegistros() {
   registros.forEach((registro, index) => {
     const option = document.createElement('option');
     option.value = index;
-    option.textContent = registro.cliente + ' - ' + registro.dataHora;
+    option.textContent = registro.dataHora + ' - ' + registro.cliente;
     select.appendChild(option);
   });
 
@@ -832,20 +832,25 @@ function excluirRegistro() {
 
   // Verificar se o índice é válido
   if (index >= 0 && index < registros.length) {
-    // Remover o registro da lista
-    registros.splice(index, 1);
+    // Emitir o alerta de confirmação
+    const confirmacao = confirm("Você tem certeza que deseja excluir o registro?");
+    
+    if (confirmacao) {
+      // Remover o registro da lista
+      registros.splice(index, 1);
 
-    // Armazenar a lista atualizada no Local Storage
-    localStorage.setItem('registros', JSON.stringify(registros));
+      // Armazenar a lista atualizada no Local Storage
+      localStorage.setItem('registros', JSON.stringify(registros));
 
-    // Limpar os campos do formulário
-    document.getElementById('cliente1').value = '';
-    document.getElementById('comentarios').value = '';
+      // Limpar os campos do formulário
+      document.getElementById('cliente1').value = '';
+      document.getElementById('comentarios').value = '';
 
-    // Atualizar a lista de registros selecionáveis
-    atualizarListaRegistros();
-    // Atualizar o número total de registros
-    contarRegistros();
+      // Atualizar a lista de registros selecionáveis
+      atualizarListaRegistros();
+      // Atualizar o número total de registros
+      contarRegistros();
+    }
   }
 }
 
@@ -1068,8 +1073,7 @@ function atualizarTabelaEstoque() {
       // Substituir o "#" por quebras de linha (\n)
       copiado = copiado.replace(/#/g, '\n');
 
-      // Exiba o conteúdo da variável 'copiado' no console
-      console.log('Conteúdo Atualizado:', copiado);
+
 
 
       // Crie um elemento de input temporário
@@ -1231,13 +1235,6 @@ function exibirDadosCopiados() {
         exibirDadosCopiados();
       }
     }
-
-    // Carregar os dados copiados ao carregar a página
-    carregarDadosCopiados();
-
-
-
-
     // Função para limpar os dados copiados
     function limparDadosCopiados() {
       dadosCopiados = [];
