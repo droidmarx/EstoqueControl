@@ -230,6 +230,11 @@ li a:hover {
   display: none;
 }
 
+body.delta-active {
+  overflow-y: hidden;
+}
+
+
 /* Estilos para dispositivos móveis */
 @media (max-width: 600px) {
   .logo {
@@ -272,6 +277,7 @@ li a:hover {
     visibility: visible;
     overflow-y: auto;
   }
+  
 
   #menu a {
     padding: 1rem 0;
@@ -670,7 +676,25 @@ function ativarSublinhado(elemento) {
 }
 
   
-  
+ // Obtém uma referência ao elemento do nav
+const nav = document.querySelector('#nav');
+
+// Adiciona um event listener para verificar quando a classe .active é adicionada ou removida do nav
+nav.addEventListener('transitionend', function() {
+  // Verifica se a classe .active está presente no nav
+  const isActive = nav.classList.contains('active');
+
+  // Obtém uma referência ao elemento do body
+  const body = document.querySelector('body');
+
+  // Adiciona ou remove a classe .delta-active com base na presença da classe .active no nav
+  if (isActive) {
+    body.classList.add('delta-active');
+  } else {
+    body.classList.remove('delta-active');
+  }
+});
+ 
   
   
     
