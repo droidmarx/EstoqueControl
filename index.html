@@ -219,6 +219,13 @@ li a:hover {
   background: transparent;
 }
 
+.sublinhado-ativo {
+ color: var(--principal);
+  text-decoration: underline;
+  text-decoration-color: var(--principal);
+}
+
+
 #btn-mobile {
   display: none;
 }
@@ -270,7 +277,6 @@ li a:hover {
     padding: 1rem 0;
     margin: 0 1rem;
     border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-    
   }
 
   #btn-mobile {
@@ -448,16 +454,13 @@ select#registros{
     </button>
     <ul id="menu" role="menu">
     
-      <li><a onclick="mostrarRetirada()">Instalação</a></li>
-    
-      <li><a onclick="mostrarManutencao()">Manutenção</a></li>
-      
-      <li><a onclick="mostrarEstoque()">Meu estoque</a></li>
-     
-      <li><a onclick="mostrarInstalacoes()">Histórico de instalações</a></li>
-     
+<li><a class="sublinhado-ativo" onclick="ativarSublinhado(this); mostrarRetirada()">Instalação</a></li>
+<li><a onclick="ativarSublinhado(this); mostrarManutencao()">Manutenção</a></li>
+<li><a onclick="ativarSublinhado(this); mostrarEstoque()">Meu estoque</a></li>
+<li><a onclick="ativarSublinhado(this); mostrarInstalacoes()">Histórico de instalações</a></li>
 
     </ul>
+    
   </nav>
   
 
@@ -658,6 +661,13 @@ select#registros{
   
   
   
+function ativarSublinhado(elemento) {
+  var elementosA = document.querySelectorAll("#nav a");
+  elementosA.forEach(function(a) {
+    a.classList.remove("sublinhado-ativo");
+  });
+  elemento.classList.add("sublinhado-ativo");
+}
 
   
   
@@ -1417,7 +1427,7 @@ function exibirDadosCopiados() {
    window.open(linkWhatsApp);
  }
 
-
+   verificarTercaFeira()
 
 // Mensagem no WhatsApp para pedir material
 function verificarTercaFeira() {
