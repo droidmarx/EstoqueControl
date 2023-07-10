@@ -20,6 +20,15 @@
 </head>
 
 <style>
+
+
+:root { 
+   --principal: #36967A; 
+   --secundaria: #42445A; 
+   --texto:#0E0E11;
+ }
+
+
   /* Estilos gerais */
 body {
   font-family: 'Poppins', sans-serif;
@@ -27,7 +36,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   text-align: center;
-  background: #636FDC;
+  background: var(--principal);
 }
 
 
@@ -46,17 +55,20 @@ input {
   font-size: 10px;
   font-weight: bold;
   text-align: center;
-  color: #fff;
-  background-color: #42445A;
+  color: var(--texto);
+  background-color: var(--secundaria);
   text-align: center;
   width: 80%;
   max-width: 350px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 #btn-historico {
   margin-bottom: 10px;
-  background: #636FDC ;
-  
+  background: var(--principal) ;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 #enviar {
@@ -67,12 +79,12 @@ button {
   font-weight: bold;
   text-align: center;
   color: #fff;
-  background-color: #0077cc;
+  background-color: transparent;
   text-align: center;
   border-radius: 5px;
   font-size: 80%;
   padding: 10px;
-  color: white;
+  color: var(--texto);
   border: none;
 }
 
@@ -84,14 +96,18 @@ button {
   gap: 10px;
   width: fit-content;
   height: fit-content;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 tbody button {
   margin: 5px;
   justify-content: space-evenly;
   gap: 10px;
-  background: #636FDC;
+  background: var(--principal);
   width: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 /* Estilos para tabelas */
@@ -99,13 +115,15 @@ th,
 td {
   font-size: 1rem;
   text-align: center;
-  background-color: #42445A;
+  background-color: var(--secundaria);
   margin: 0 auto;
   border: 1px solid black;
   border-radius: 4px 0px 4px;
   padding: 5px;
   font-size: small;
-  color: white;
+  color: var(--texto);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 td button {
@@ -114,11 +132,15 @@ td button {
   border-radius: 5px;
   text-align: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
 }
 
 
 p{
- color: white;
+ color: var(--texto);
+ font-weight: 600;
+ margin: 20px;
 }
 
 /* Estilos para botão de exclusão */
@@ -161,7 +183,7 @@ select {
 
 /* Estilos para navegação */
 nav {
-  background-color: #42445A;
+  background-color: var(--secundaria);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -195,7 +217,7 @@ li a:hover {
 
 #menu a {
   display: block;
-  background: #42445A;
+  background: transparent;
 }
 
 #btn-mobile {
@@ -213,14 +235,14 @@ li a:hover {
   li a {
     font-size: 16px;
     text-align: center;
-    color: #636FDC ;
+    color: var(--texto) ;
     text-align: center;
     transition: 0.6s;
     font-weight: 600;
   }
   
   li a:hover{
-   color: white ;
+   color: var(--principal) ;
    font-weight: 900;
    font-size: 17px;
   }
@@ -231,7 +253,7 @@ li a:hover {
     width: 100%;
     top: 4.2rem;
     right: 0px;
-    background: #42445A;
+    background: var(--secundaria) ;
     transition: 0.6s;
     z-index: 1000;
     height: 0px;
@@ -287,13 +309,13 @@ li a:hover {
 
   #nav.active #hamburger::before {
     transform: rotate(135deg);
-    color: #636FDC;
+    color: var(--texto);
   }
 
   #nav.active #hamburger::after {
     transform: rotate(-135deg);
     top: -7px;
-    color: #636FDC;
+    color: var(--principal );
   }
 }
 
@@ -332,7 +354,6 @@ span {
 .item-lista p{
  font-size:  .6rem;
  margin: 10;
- color: white;
 }
 
 input.checkbox-item {
@@ -480,7 +501,7 @@ select#registros{
   <!-- Div para a seção de estoque -->
   <div id="estoqueDiv" style="display: none;">
     <table id="estoque">
-      <p>Meu estoque</p>
+      <h1>Meu estoque</h1>
       <tr>
         <th>Quantidade</th>
         <th>Ações</th>
@@ -500,7 +521,7 @@ select#registros{
    
    
     
-    <p>Instalação</p>
+    <h1>Instalação</h1>
     <table>
       <tr>
         <th>Técnico:</th>
