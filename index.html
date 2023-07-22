@@ -37,6 +37,8 @@ body {
   box-sizing: border-box;
   text-align: center;
   background: var(--principal);
+    transition: 1s all;
+
 }
 
 
@@ -121,7 +123,7 @@ td {
   border-radius: 4px 0px 4px;
   padding: 5px;
   font-size: small;
-  color: var(--principal);
+  color: var(--texto);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
 }
@@ -138,7 +140,7 @@ td button {
 
 
 p{
- color: var(--principal);
+ color: var(--texto);
  font-weight: 600;
 }
 
@@ -442,6 +444,17 @@ select#registros{
       animation: .7s ease;
       animation-name: slidein;
     }
+    
+  .dark-mode {
+  background-color: #333;
+  color: #fff;
+  transition: 1s all;
+  }
+  
+  .light-mode {
+   background-color: grey;
+   transition: 1s all;
+  }
   
 </style>
 
@@ -449,9 +462,7 @@ select#registros{
 
   <!-- Barra de navegação -->
   <nav id="nav">
-    <a><img class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
-   
-
+    <a><img id="toggleButton" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
 
 
     <!-- Botão para abrir o menu em dispositivos móveis -->
@@ -667,6 +678,17 @@ select#registros{
 
   <script>
   
+const toggleButton = document.getElementById('toggleButton');
+const body = document.body;
+const allThElements = document.querySelectorAll('th, td, p, button,  div, li');
+
+
+toggleButton.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+  allThElements.forEach(th => th.classList.toggle('dark-mode'));
+  nav.classList.toggle('light-mode');
+
+});
   
   
   
@@ -1490,6 +1512,7 @@ function verificarTercaFeira() {
     }
   }
 }
+
 
 
 
