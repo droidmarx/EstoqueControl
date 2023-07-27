@@ -23,9 +23,10 @@
 
 
 :root { 
-   --principal: #36967A; 
-   --secundaria: #42445A; 
-   --texto:#0E0E11;
+   --principal: #8F8F8F; 
+   --secundaria: #0077CC;
+   --tabela: #B2B2B2;
+   --texto: #0E0E11;
  }
 
 
@@ -37,7 +38,7 @@ body {
   box-sizing: border-box;
   text-align: center;
   background: var(--principal);
-    transition: 1s all;
+  transition: 1s all;
 
 }
 
@@ -117,7 +118,7 @@ th,
 td {
   font-size: 1rem;
   text-align: center;
-  background-color: var(--secundaria);
+  background-color: var(--tabela);
   margin: 0 auto;
   border: 1px solid black;
   border-radius: 4px 0px 4px;
@@ -138,6 +139,10 @@ td button {
   transition: box-shadow 0.3s ease;
 }
 
+.menu{
+  display: flex;
+  margin:0 auto;
+}
 
 p{
  color: var(--texto);
@@ -187,7 +192,7 @@ nav {
   background-color: var(--secundaria);
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   position: relative;
   z-index: 1;
 }
@@ -222,9 +227,12 @@ li a:hover {
 }
 
 .sublinhado-ativo {
- color: var(--principal);
+ color: var(--texto);
   text-decoration: underline;
   text-decoration-color: var(--principal);
+ box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
+ border-radius: 10px;
+ transition: .5s all;
 }
 
 
@@ -242,13 +250,14 @@ body.delta-active {
   .logo {
     height: 40px;
     width: 40px;
-    margin: 15px;
+    margin: 15px 15px -2px 15px;
+    align-items: center;
   }
 
   li a {
     font-size: 16px;
     text-align: center;
-    color: var(--texto) ;
+    color: var(--texto) #B2B2B2;
     text-align: center;
     transition: 0.6s;
     font-weight: 600;
@@ -288,7 +297,7 @@ body.delta-active {
   }
 
   #btn-mobile {
-    display: flex;
+    display: none;
     padding: 1rem;
     font-size: 1rem;
     border: none;
@@ -429,40 +438,63 @@ select#registros{
   
   
  @keyframes slidein {
-      40% {
-        transform: translateY(10%);
-        opacity: 0;
-        filter: blur(110px)
+      0% {
+        transform: translateY(20%);
+        scale: 1;
+        filter: blur(20px)
       }
       100% {
         transform: translateY(0%);
-        opacity: 1;
       }
     }
     
     #estoqueDiv, .habilitar, #retiradaDiv, #manutencaoDiv, .instalacoes {
-      animation: .7s ease;
+      animation: .4s all;
       animation-name: slidein;
     }
     
-  .dark-mode {
-  background-color: #333;
-  color: #fff;
-  transition: 1s all;
-  }
-  
-  .light-mode {
-   background-color: grey;
-   transition: 1s all;
-  }
+    .menu a {
+      font-size: .4em;
+      justify-content: center ;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0px;
+    }
+    
+
+    
+    
+    
+
   
 </style>
 
 <body>
+  
+
 
   <!-- Barra de navegação -->
   <nav id="nav">
-    <a><img id="toggleButton" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90" alt="editar"></a>
+   
+ <div class="menu">
+
+   
+    <a onclick="ativarSublinhado(this)" class="sublinhado-ativo";><img  onclick="mostrarRetirada();" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90">Instalação</a>
+    
+    <a onclick="ativarSublinhado(this)"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=3SXrHgLulKH6&format=png" height="90" width="90">Estoque</a>
+    
+     <a onclick="ativarSublinhado(this)"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90">Histórico</a>
+     
+      <a onclick="ativarSublinhado(this)"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
+    " height="90" width="90">Manutenção</a>
+    
+   </div>
+   
+   
+      
+   
+   
 
 
     <!-- Botão para abrir o menu em dispositivos móveis -->
@@ -471,7 +503,7 @@ select#registros{
     </button>
     <ul id="menu" role="menu">
     
-<li><a class="sublinhado-ativo" onclick="ativarSublinhado(this); mostrarRetirada()">Instalação</a></li>
+<li><a class="sublinhado-ativo"; onclick="mostrarRetirada()">Insonclick="ativarSublinhado(this)"talação</a></li>
 <li><a onclick="ativarSublinhado(this); mostrarManutencao()">Manutenção</a></li>
 <li><a onclick="ativarSublinhado(this); mostrarEstoque()">Meu estoque</a></li>
 <li><a onclick="ativarSublinhado(this); mostrarInstalacoes()">Histórico de instalações</a></li>
@@ -678,17 +710,6 @@ select#registros{
 
   <script>
   
-const toggleButton = document.getElementById('toggleButton');
-const body = document.body;
-const allThElements = document.querySelectorAll('th, td, p, button,  div, li');
-
-
-toggleButton.addEventListener('click', () => {
-  body.classList.toggle('dark-mode');
-  allThElements.forEach(th => th.classList.toggle('dark-mode'));
-  nav.classList.toggle('light-mode');
-
-});
   
   
   
