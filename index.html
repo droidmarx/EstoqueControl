@@ -196,7 +196,6 @@ nav {
   position: relative;
   z-index: 1;
 }
- 
 
 li a {
   font-size: 16px;
@@ -233,6 +232,8 @@ li a:hover {
  box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
  border-radius: 10px;
  transition: .5s all;
+ height: fit-content;
+ width: fit-content;
 }
 
 
@@ -248,11 +249,13 @@ body.delta-active {
 /* Estilos para dispositivos móveis */
 @media (max-width: 600px) {
   .logo {
-    height: 40px;
-    width: 40px;
-    margin: 15px 15px -2px 15px;
+    height: 30px;
+    width: 30px;
+    padding: 10px;
     align-items: center;
   }
+  
+  
 
   li a {
     font-size: 16px;
@@ -451,18 +454,24 @@ select#registros{
     #estoqueDiv, .habilitar, #retiradaDiv, #manutencaoDiv, .instalacoes {
       animation: .4s all;
       animation-name: slidein;
+      margin-bottom: 60px;
     }
     
-    .menu a {
+    #nav{
+      width: 100%;
+      right: 0;
+      bottom: 0;
+      position: fixed;
+    }
+    
+    .menu, a {
       font-size: .4em;
       justify-content: center ;
       align-items: center;
       display: flex;
-      flex-direction: column;
-      margin-top: 0px;
+      flex-direction: ;
+      margin: 5px;
     }
-    
-
     
     
     
@@ -480,16 +489,18 @@ select#registros{
  <div class="menu">
 
    
-    <a onclick="ativarSublinhado(this)" class="sublinhado-ativo";><img  onclick="mostrarRetirada();" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90">Instalação</a>
+<a onclick="ativarSublinhado(this);mostrarRetirada()"class="sublinhado-ativo";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
     
-    <a onclick="ativarSublinhado(this)"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=3SXrHgLulKH6&format=png" height="90" width="90">Estoque</a>
+<a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=3SXrHgLulKH6&format=png" height="90" width="90"></a>
     
-     <a onclick="ativarSublinhado(this)"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90">Histórico</a>
+ <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90"></a>
      
-      <a onclick="ativarSublinhado(this)"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
-    " height="90" width="90">Manutenção</a>
+<a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
+    " height="90" width="90"></a>
     
    </div>
+   
+  </nav>
    
    
       
@@ -497,7 +508,7 @@ select#registros{
    
 
 
-    <!-- Botão para abrir o menu em dispositivos móveis -->
+    <!-- Botão para abrir o menu em dispositivos móveis 
     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
       <span id="hamburger"></span>
     </button>
@@ -511,7 +522,7 @@ select#registros{
     </ul>
     
   </nav>
-  
+  -->
 
 
 <div id="manutencaoDiv" style="display: none;">
