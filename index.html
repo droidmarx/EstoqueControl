@@ -225,7 +225,6 @@ li a:hover {
 }
 
 .sublinhado-ativo {
- color: var(--texto);
   text-decoration: underline;
   text-decoration-color: var(--principal);
  box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
@@ -233,6 +232,7 @@ li a:hover {
  transition: .5s all;
  height: fit-content;
  width: fit-content;
+ scale: 1.2;
 }
 
 
@@ -449,16 +449,20 @@ select#registros{
       }
     }
     
-    #estoqueDiv, .habilitar, #retiradaDiv, #manutencaoDiv, .instalacoes {
+    #estoqueDiv, #habilitar, #retiradaDiv, #manutencaoDiv, .instalacoes {
       animation: .4s all;
       animation-name: slidein;
-      margin-bottom: 80px;
+      margin-top: 120px;
+    }
+    
+    #retiradaDiv{
+      margin-top: 10px;
     }
     
     #nav{
       width: 100%;
       right: 0;
-      bottom: 0;
+      top: 0;
       position: fixed;
     }
     
