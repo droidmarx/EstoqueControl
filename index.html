@@ -453,6 +453,7 @@ select#registros{
       animation: .4s all;
       animation-name: slidein;
       margin-top: 120px;
+      margin-bottom: 40px;
     }
     
     #retiradaDiv{
@@ -502,15 +503,8 @@ select#registros{
     
    </div>
    
-  </nav>
-   
-   
-      
-   
-   
-
-
-    <!-- Botão para abrir o menu em dispositivos móveis 
+ <!-- </nav>
+    Botão para abrir o menu em dispositivos móveis 
     <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
       <span id="hamburger"></span>
     </button>
@@ -1290,6 +1284,66 @@ function exibirDadosCopiados() {
   const totalElement = document.getElementById('total-elementos');
   totalElement.textContent = dadosCopiados.length;
 }
+
+function groupItemsByMonth(items) {
+  const groupedItems = {};
+
+  items.forEach((item) => {
+    const monthYear = new Date(item.data).toLocaleString('pt-br', {
+      year: 'numeric',
+      month: '2-digit',
+    });
+
+    if (!groupedItems[monthYear]) {
+      groupedItems[monthYear] = [];
+    }
+
+    groupedItems[monthYear].push(item);
+  });
+
+  return groupedItems;
+}
+
+function renderItemsByMonth(groupedItems) {
+  const listaElement = document.getElementById('lista-elementos');
+
+  for (const monthYear in groupedItems) {
+    const itemsInMonth = groupedItems[monthYear];
+
+    const monthDiv = document.createElement('div');
+    monthDiv.className = 'month-container';
+
+    const monthHeader = document.createElement('h2');
+    monthHeader.textContent = new Date(monthYear).toLocaleString('pt-br', {
+      year: 'numeric',
+      month: 'long',
+    });
+    monthDiv.appendChild(monthHeader);
+
+    itemsInMonth.forEach((item) => {
+      const dataHora = new Date(item.data).toLocaleString('pt-br', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      const nomeCliente = extrairNomeCliente(item.conteudo);
+      const textElement = document.createElement('p');
+
+      textElement.textContent = `${dataHora} - ${nomeCliente}`;
+      monthDiv.appendChild(textElement);
+    });
+
+    listaElement.appendChild(monthDiv);
+  }
+
+  // Atualizar o número total de elementos
+  const totalElement = document.getElementById('total-elementos');
+  totalElement.textContent = dadosCopiados.length;
+}
+
 
     // Função para extrair o nome do cliente do conteúdo copiado
     function extrairNomeCliente(conteudo) {
