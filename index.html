@@ -189,6 +189,8 @@ select {
 
 /* Estilos para navegação */
 nav {
+  backdrop-filter: blur(10px); 
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -1425,33 +1427,6 @@ function renderItemsByMonth(groupedItems) {
     carregarDadosCopiados();
 
 
-
-    // Função para limpar os dados copiados do mês vigente após 5 dias do mês terem passado
-    function limparDadosAntigos() {
-      const dataAtual = new Date();
-      const diaAtual = dataAtual.getDate();
-      const mesAtual = dataAtual.getMonth();
-      const anoAtual = dataAtual.getFullYear();
-
-      const dataLimite = new Date(anoAtual, mesAtual, 5); // Data limite: 5 dias do mês vigente
-
-      // Verificar se a data atual é posterior à data limite
-      if (dataAtual > dataLimite) {
-        dadosCopiados = dadosCopiados.filter(item => {
-          const dataItem = new Date(item.data);
-          const diaItem = dataItem.getDate();
-          const mesItem = dataItem.getMonth();
-          const anoItem = dataItem.getFullYear();
-
-          // Verificar se o item pertence ao mês vigente
-          return diaItem < 5 || (diaItem >= 5 && mesItem !== mesAtual) || anoItem !== anoAtual;
-        });
-
-        // Salvar os dados copiados atualizados no armazenamento local
-        salvarDadosCopiados();
-        exibirDadosCopiados();
-      }
-    }
 
 
 
