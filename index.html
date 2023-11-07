@@ -600,13 +600,13 @@ select#registros, {
   <th>Wifi 2.4GHz:</th>
   <td>
     <select name="opcoes24GHz" id="opcoes24GHz">
-      <option value="Auto" disabled selected>Banda Auto</option>
+      <option value="Banda Auto" disabled selected>Banda Auto</option>
       <option value="20Mhz">20Mhz</option>
       <option value="40Mhz">40Mhz</option>
     </select>
 
     <select id="canais24GHz">
-      <option disabled selected value="">CH Auto</option>
+      <option disabled selected value="CH Auto">CH Auto</option>
       <option value="CH01">CH01</option>
       <option value="CH06">CH06</option>
       <option value="CH11">CH11</option>
@@ -619,14 +619,14 @@ select#registros, {
   <th>Wifi 5GHz:</th>
   <td>
     <select name="opcoes5GHz" id="opcoes5GHz">
-      <option value="Auto" disabled selected>Banda Auto</option>
+      <option value="Banda Auto" disabled selected>Banda Auto</option>
       <option value="40Mhz">40Mhz</option>
       <option value="80Mhz">80Mhz</option>
       <option value="160Mhz">160Mhz</option>
     </select>
 
     <select id="canais5GHz">
-      <option disabled selected value="">CH Auto</option>
+      <option disabled selected value="CH Auto">CH Auto</option>
       <option value="CH36">CH36</option>
       <option value="CH44">CH44</option>
       <option value="CH149">CH149</option>
@@ -745,6 +745,10 @@ select#registros, {
     </table>
     <br>
   </div>
+  
+  
+
+  
 
   <div id="retiradaDiv" style="display: block;">
     <table id="retirada">
@@ -1064,6 +1068,8 @@ let produtos = JSON.parse(localStorage.getItem("produtos")) || [
   { nome: "Kit-Fusao", quantidade: 10 },
 ];
 
+
+
 let retirada = JSON.parse(localStorage.getItem("retirada")) || [];
 
 
@@ -1089,7 +1095,12 @@ function atualizarTabelaEstoque() {
   }
 }
 
-  // Função para atualizar a tabela de retirada com os produtos e suas quantidades
+
+
+
+
+
+  // Função para atualizar a tabela de retirada com os  e suas quantidades
     function atualizarTabelaRetirada() {
       let tabela = document.getElementById("retirada");
       tabela.innerHTML = "<tr><th>Produto</th><th>Quantidade</th><th>Ações</th></tr>";
@@ -1209,13 +1220,13 @@ function atualizarTabelaEstoque() {
       //estrututa da 1• tabela (copiar)
     // Copiando os valores da primeira tabela (Wifi 2.4GHz)
     
-copiado += `##Wifi 2.4GHz:\n`;
-copiado += ` ${document.getElementById('opcoes24GHz').value}\n`;
+copiado += `##**Wifi 2.4GHz:**\n`;
+copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 
 // Copiando os valores da segunda tabela (Wifi 5GHz)
-copiado += `Wifi 5GHz:\n`;
-copiado += ` ${document.getElementById('opcoes5GHz').value}\n`;
+copiado += `**Wifi 5GHz:**\n`;
+copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
     
@@ -1262,13 +1273,15 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
       // Selecione o texto no elemento de input
       tempInput.select();
+      
+      
 
       // Copie o texto para a área de transferência
       document.execCommand('copy')
 
       // Remova o elemento de input temporário
       document.body.removeChild(tempInput);
-      alert(copiado)
+        (copiado)
 
       document.getElementById("tecnico").selectedIndex = 0;
       document.getElementById("cliente").value = "Nome do Cliente";
