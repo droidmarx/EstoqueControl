@@ -183,6 +183,8 @@ table#estoque {
 }
 
 select {
+  padding: 2px;
+  margin-bottom: 4px;
   width: 100%;
   text-align: center;
 }
@@ -396,7 +398,7 @@ li.item-lista {
   display: flex;
 }
 
-select#registros{
+select#registros, {
  width: 80%;
  caret-color: grey;
  outline: #55576B;
@@ -505,7 +507,6 @@ select#registros{
 
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
-   
     -->
     
    </div>
@@ -595,6 +596,47 @@ select#registros{
     
     <h1>Instalação</h1>
     <table>
+<tr>
+  <th>Wifi 2.4GHz:</th>
+  <td>
+    <select name="opcoes24GHz" id="opcoes24GHz">
+      <option value="Auto" disabled selected>Banda Auto</option>
+      <option value="20Mhz">20Mhz</option>
+      <option value="40Mhz">40Mhz</option>
+    </select>
+
+    <select id="canais24GHz">
+      <option disabled selected value="">CH Auto</option>
+      <option value="CH01">CH01</option>
+      <option value="CH06">CH06</option>
+      <option value="CH11">CH11</option>
+      <!-- Adicione mais canais, se necessário -->
+    </select>
+  </td>
+</tr>
+
+<tr>
+  <th>Wifi 5GHz:</th>
+  <td>
+    <select name="opcoes5GHz" id="opcoes5GHz">
+      <option value="Auto" disabled selected>Banda Auto</option>
+      <option value="40Mhz">40Mhz</option>
+      <option value="80Mhz">80Mhz</option>
+      <option value="160Mhz">160Mhz</option>
+    </select>
+
+    <select id="canais5GHz">
+      <option disabled selected value="">CH Auto</option>
+      <option value="CH36">CH36</option>
+      <option value="CH44">CH44</option>
+      <option value="CH149">CH149</option>
+      <!-- Adicione mais canais, se necessário -->
+    </select>
+  </td>
+</tr>
+
+
+      
       <tr>
         <th>Técnico:</th>
         <td>
@@ -1165,7 +1207,19 @@ function atualizarTabelaEstoque() {
 
 
       //estrututa da 1• tabela (copiar)
-      copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
+    // Copiando os valores da primeira tabela (Wifi 2.4GHz)
+    
+copiado += `##Wifi 2.4GHz:\n`;
+copiado += ` ${document.getElementById('opcoes24GHz').value}\n`;
+copiado += ` ${document.getElementById('canais24GHz').value}\n`;
+
+// Copiando os valores da segunda tabela (Wifi 5GHz)
+copiado += `Wifi 5GHz:\n`;
+copiado += ` ${document.getElementById('opcoes5GHz').value}\n`;
+copiado += ` ${document.getElementById('canais5GHz').value}\n`;
+
+    
+     copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
       copiado += `CTO: ${document.getElementById('cto').value}\n`;
@@ -1238,7 +1292,7 @@ function atualizarTabelaEstoque() {
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Favor Habilitar**\n' + copiado + '\n\n**Obrigado!**'));
+      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Por favor habilitar**\n' + copiado + '\n\n**Obrigado!**'));
 
       // Adicionar a string copiada ao array de dadosCopiados
       dadosCopiados.push({
