@@ -501,8 +501,12 @@ select#registros{
     
  <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90"></a>
      
+<!--
+
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
+   
+    -->
     
    </div>
    
@@ -1179,7 +1183,7 @@ function atualizarTabelaEstoque() {
       copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
       copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
       copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
-      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##________________#*Meu Estoque*#\n`;
+      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}###**Meu Estoque**#\n`;
 
       // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
       //esse é o que copia *favor habilitar
@@ -1234,7 +1238,7 @@ function atualizarTabelaEstoque() {
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.open('https://wa.me/?text=' + encodeURIComponent('*Favor Habilitar*\n' + copiado + '\n\n*Obrigado!*'));
+      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Favor Habilitar**\n' + copiado + '\n\n**Obrigado!**'));
 
       // Adicionar a string copiada ao array de dadosCopiados
       dadosCopiados.push({
@@ -1476,7 +1480,7 @@ function exibirDadosCopiados() {
  // Função para enviar mensagem pelo WhatsApp
  function enviarMensagemWhatsApp() {
    // Construir a mensagem com produtos e quantidades
-   var mensagem = 'Preciso de materiais da uma olhada\n\n'+'*Meu estoque:*'+'\n\n';
+   var mensagem = 'Preciso de materiais da uma olhada\n\n'+'**Meu estoque:**'+'\n\n';
    for (let i = 0; i < produtos.length; i++) {
      mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
    }
@@ -1485,7 +1489,7 @@ function exibirDadosCopiados() {
    var mensagemCodificada = encodeURIComponent(mensagem);
 
    // Montar o link para o WhatsApp
-   var linkWhatsApp = 'whatsapp://send?text=' + mensagemCodificada;
+   var linkWhatsApp = 'https://t.me/share/url?url=' + mensagemCodificada;
 
    // Abrir o WhatsApp no navegador
    window.open(linkWhatsApp);
@@ -1517,7 +1521,7 @@ function verificarTercaFeira() {
         var mensagemCodificada = encodeURIComponent(mensagem);
 
    // Montar o link para o WhatsApp
-           var linkWhatsApp = 'whatsapp://send?text=' + mensagemCodificada;
+           var linkWhatsApp = 'https://t.me/share/url?url=' + mensagemCodificada;
 
         // Abrir o WhatsApp no navegador
         window.open(linkWhatsApp);
