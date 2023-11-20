@@ -398,6 +398,15 @@ li.item-lista {
   border: 1px solid grey;
 }
 
+p.classe-Data{
+  color:white ;
+  width: 30%;
+  margin: 6px;
+  display: block;
+  background: #606279;
+  border-radius: 4px;
+}
+
 h4.abaDados {
   width: 40%;
   margin: 6px;
@@ -413,12 +422,11 @@ h4{
 }
   
 
-p.abaRegistros{
+p.abaRegistros  {
   color: white;
   display: flex;
-  align-items: center;
   padding-left: 10px;
-  width: 60%;
+  width: 30%;
   align-items: left;
   background:#606279;
   margin:6px;
@@ -1359,6 +1367,8 @@ function exibirDadosCopiados() {
     checkboxElement.classList.add('checkbox-item');
     checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
     listItemElement.appendChild(checkboxElement);
+    
+    
 
     // Criar um elemento de texto com as informações do item
     const dataHora = new Date(item.data).toLocaleString('pt-br');
@@ -1366,9 +1376,23 @@ function exibirDadosCopiados() {
     const nomeCliente = extrairNomeCliente(item.conteudo);
     const textElement = document.createElement('p');
        textElement.classList.add('abaRegistros')
+       
+       
+// Criar um novo elemento de texto
+const dataElement = document.createElement('p');
 
+// Definir o conteúdo como o valor de item.data
+dataElement.textContent = `${item.data}`;
+
+// Adicionar uma classe ao elemento
+dataElement.classList.add('classe-Data');
+
+// Adicionar o elemento ao elemento pai desejado (por exemplo, uma lista)
+listItemElement.appendChild(dataElement);
     
-    textElement.textContent = ` ${nomeCliente} ${item.data}`;
+    textElement.textContent = ` ${nomeCliente}`;
+    textElement.classList.add('classe-Cliente');
+    
     listItemElement.appendChild(textElement);
 
     
@@ -1383,7 +1407,6 @@ const sinal = extrairSinalCTO(item.conteudo);
 // Crie elementos span para cada item e adicione classes a eles
 const ctoElement = document.createElement('h4');
 ctoElement.textContent = `CTO: ${cto}`;
-ctoElement.classList.add('classe-cto'); // Adicione a classe para CTO
 
 const portaElement = document.createElement('h4');
 portaElement.textContent = `Porta: ${porta}`;
