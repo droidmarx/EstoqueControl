@@ -381,28 +381,52 @@ span {
 }
 
 .item-lista p{
+ color: var(--principal);
  font-size:  .6rem;
  margin: 10;
 }
 
 input.checkbox-item {
-  width: 15px;
-  margin-right: 10px;
-  margin-left: 20px;
+  width: 10%;
+  margin: 5px;
 }
 
 li.item-lista {
+  margin: 1px;
+  color: var(--principal);
   width: 100%;
-  justify-items: center;
-  justify-content: left;
   display: flex;
+  border: 1px solid grey;
 }
 
-select#registros, {
+h4.abaDados {
+  width: 30%;
+  margin: 6px;
+  display: block;
+  background: #606279;
+  border-radius: 4px;
+}
+
+h4{
+  font-size: 8px;
+  margin:10px;
+}
+  
+
+p.abaRegistros{
+  display: flex;
+  width: 60%;
+  align-items: left;
+  background:black;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+select#registros {
  width: 80%;
  caret-color: grey;
  outline: #55576B;
- border: 1px solid #000000;
+ border: 1px solid black;
 }
 
 #estoqueDiv{
@@ -503,11 +527,11 @@ select#registros, {
     
  <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90"></a>
      
-<!--
+
 
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
-    -->
+    
     
    </div>
    
@@ -518,22 +542,6 @@ select#registros, {
    
    
 
-
-    <!-- Botão para abrir o menu em dispositivos móveis 
-    <button aria-label="Abrir Menu" id="btn-mobile" aria-haspopup="true" aria-controls="menu" aria-expanded="false">
-      <span id="hamburger"></span>
-    </button>
-    <ul id="menu" role="menu">
-    
-<li><a class="sublinhado-ativo"; onclick="mostrarRetirada()">Insonclick="ativarSublinhado(this)"talação</a></li>
-<li><a onclick="ativarSublinhado(this); mostrarManutencao()">Manutenção</a></li>
-<li><a onclick="ativarSublinhado(this); mostrarEstoque()">Meu estoque</a></li>
-<li><a onclick="ativarSublinhado(this); mostrarInstalacoes()">Histórico de instalações</a></li>
-
-    </ul>
-    
-  </nav>
-  -->
 
 
 <div id="manutencaoDiv" style="display: none;">
@@ -547,7 +555,7 @@ select#registros, {
  <br><br>
 
 
- <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="5" cols="40"></textarea>
+ <textarea id="comentarios" placeholder="Digite aqui suas conclusões" rows="8" cols="35"></textarea>
 
 <br><br>
 
@@ -629,7 +637,13 @@ select#registros, {
       <option disabled selected value="CH Auto">CH Auto</option>
       <option value="CH36">CH36</option>
       <option value="CH44">CH44</option>
-      <option value="CH149">CH149</option>
+      <option value="CH52">CH52</option>
+      <option value="CH149">CH149</option>      
+      <option value="CH157">CH157</option>      
+      <option value="CH165">CH165</option>
+
+
+
       <!-- Adicione mais canais, se necessário -->
     </select>
   </td>
@@ -660,7 +674,7 @@ select#registros, {
       </tr>
       <tr>
         <th>CTO:</th>
-        <td><input placeholder="00" type="num" id="cto"></td>
+        <td><input placeholder="00 - Bairro" type="num" id="cto"></td>
       </tr>
       <tr>
         <th>Porta:</th>
@@ -1351,11 +1365,71 @@ function exibirDadosCopiados() {
     minute: '2-digit',
     });
     
+    
+    
     const nomeCliente = extrairNomeCliente(item.conteudo);
     const textElement = document.createElement('p');
+       textElement.classList.add('abaRegistros')
+
     
     textElement.textContent = `${item.data} - ${nomeCliente}`;
     listItemElement.appendChild(textElement);
+    
+   
+   const ctoPortaElement = document.createElement('h4');
+ctoPortaElement.classList.add('abaDados');
+
+const cto = extrairCTO(item.conteudo);
+const porta = extrairPorta(item.conteudo);
+const sinal = extrairSinalCTO(item.conteudo);
+
+// Crie elementos span para cada item e adicione classes a eles
+const ctoElement = document.createElement('h4');
+ctoElement.textContent = `CTO: ${cto}`;
+ctoElement.classList.add('classe-cto'); // Adicione a classe para CTO
+
+const portaElement = document.createElement('h4');
+portaElement.textContent = `Porta: ${porta}`;
+portaElement.classList.add('classe-porta'); // Adicione a classe para Porta
+
+const sinalElement = document.createElement('h4');
+sinalElement.textContent = `Sinal: ${sinal}`;
+sinalElement.classList.add('classe-sinal'); // Adicione a classe para Sinal
+
+// Adicione os elementos span ao elemento h4
+ctoPortaElement.appendChild(ctoElement);
+ctoPortaElement.appendChild(portaElement);
+ctoPortaElement.appendChild(sinalElement);
+
+listItemElement.appendChild(ctoPortaElement);
+
+
+// Função para extrair a informação da CTO do conteúdo copiado
+function extrairCTO(conteudo) {
+  const indiceInicioCTO = conteudo.indexOf('CTO:') + 5;
+  const indiceFimCTO = conteudo.indexOf('\n', indiceInicioCTO);
+  const cto = conteudo.substring(indiceInicioCTO, indiceFimCTO);
+  return cto;
+}
+
+// Função para extrair a informação do Sinal da CTO do conteúdo copiado
+function extrairSinalCTO(conteudo) {
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
+  const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
+  const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
+  return sinalCTO;
+}
+
+
+// Função para extrair a informação da Porta do conteúdo copiado
+function extrairPorta(conteudo) {
+  const indiceInicioPorta = conteudo.indexOf('Porta: ') + 7;
+  const indiceFimPorta = conteudo.indexOf('\n', indiceInicioPorta);
+  const porta = conteudo.substring(indiceInicioPorta, indiceFimPorta);
+  return porta;
+}
+    
+    
 
     // Adicionar o item à lista
     listaElement.appendChild(listItemElement);
