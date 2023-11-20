@@ -387,20 +387,19 @@ span {
 }
 
 input.checkbox-item {
-  width: 10%;
-  margin: 5px;
+  width: 5%;
+  margin-left: 10px;
 }
 
 li.item-lista {
   margin: 1px;
-  color: var(--principal);
   width: 100%;
   display: flex;
   border: 1px solid grey;
 }
 
 h4.abaDados {
-  width: 30%;
+  width: 40%;
   margin: 6px;
   display: block;
   background: #606279;
@@ -408,18 +407,23 @@ h4.abaDados {
 }
 
 h4{
+  color:white ;
   font-size: 8px;
   margin:10px;
 }
   
 
 p.abaRegistros{
+  color: white;
   display: flex;
+  align-items: center;
+  padding-left: 10px;
   width: 60%;
   align-items: left;
-  background:black;
+  background:#606279;
+  margin:6px;
   border-radius: 4px;
-  font-size: 10px;
+  font-size: .6rem;
 }
 
 select#registros {
@@ -1357,23 +1361,16 @@ function exibirDadosCopiados() {
     listItemElement.appendChild(checkboxElement);
 
     // Criar um elemento de texto com as informações do item
-    const dataHora = new Date(item.data).toLocaleString('pt-br', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    });
-    
-    
+    const dataHora = new Date(item.data).toLocaleString('pt-br');
     
     const nomeCliente = extrairNomeCliente(item.conteudo);
     const textElement = document.createElement('p');
        textElement.classList.add('abaRegistros')
 
     
-    textElement.textContent = `${item.data} - ${nomeCliente}`;
+    textElement.textContent = ` ${nomeCliente} ${item.data}`;
     listItemElement.appendChild(textElement);
+
     
    
    const ctoPortaElement = document.createElement('h4');
@@ -1402,6 +1399,10 @@ ctoPortaElement.appendChild(portaElement);
 ctoPortaElement.appendChild(sinalElement);
 
 listItemElement.appendChild(ctoPortaElement);
+
+
+
+
 
 
 // Função para extrair a informação da CTO do conteúdo copiado
