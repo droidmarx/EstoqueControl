@@ -400,19 +400,24 @@ li.item-lista {
 
 p.classe-Data{
   color:white ;
-  width: 30%;
+  width: 50%;
+  margin: 6px;
+  display: flex;
+  align-items: center;
+  background: #606279;
+  border-radius: 4px;
+}
+
+h4.abaDados {
+  width: 50%;
   margin: 6px;
   display: block;
   background: #606279;
   border-radius: 4px;
 }
 
-h4.abaDados {
-  width: 40%;
-  margin: 6px;
-  display: block;
+div1{
   background: #606279;
-  border-radius: 4px;
 }
 
 h4{
@@ -425,8 +430,7 @@ h4{
 p.abaRegistros  {
   color: white;
   display: flex;
-  padding-left: 10px;
-  width: 30%;
+  width: 50%;
   align-items: left;
   background:#606279;
   margin:6px;
@@ -1394,6 +1398,17 @@ listItemElement.appendChild(dataElement);
     textElement.classList.add('classe-Cliente');
     
     listItemElement.appendChild(textElement);
+    
+    // Criar um novo elemento pai
+const containerElement = document.createElement('div1');
+
+// Adicionar os elementos Cliente e Data ao elemento pai
+containerElement.appendChild(dataElement);
+containerElement.appendChild(textElement);
+
+// Adicionar o elemento pai ao elemento desejado (por exemplo, uma lista)
+listItemElement.appendChild(containerElement);
+
 
     
    
