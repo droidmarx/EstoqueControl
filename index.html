@@ -558,9 +558,10 @@ select#registros {
  <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90"></a>
      
 
-
+  <!--     
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
+    -->
     
     
    </div>
@@ -810,6 +811,12 @@ select#registros {
   </div>
 
   <div id="instalacoes" class="instalacoes" style="display: none">
+   
+   
+   
+  <p id="quantidade-por-mes"></p>
+   
+   
    
      <p>Total de Instalações: <span id="total-elementos"></span></p>
     <ul id="lista-dados-copiados"></ul>
@@ -1367,6 +1374,69 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
  // Função para exibir a lista de dados copiados na tela
 function exibirDadosCopiados() {
+  
+const countByMonth = {};
+
+for (let i = 0; i < dadosCopiados.length; i++) {
+  const item = dadosCopiados[i];
+  const parts = item.data.match(/^(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2})$/);
+
+  if (parts) {
+    const dia = parseInt(parts[1], 10);
+    const mes = parseInt(parts[2], 10) - 1; // Mês é zero-based no JavaScript (janeiro = 0)
+    const ano = parseInt(parts[3], 10);
+    const hora = parseInt(parts[4], 10);
+    const minuto = parseInt(parts[5], 10);
+    const segundo = parseInt(parts[6], 10);
+
+    const data = new Date(ano, mes, dia, hora, minuto, segundo);
+
+    const monthIndex = data.getMonth();
+    const monthName = getMonthName(monthIndex);
+
+    if (countByMonth[monthName]) {
+      countByMonth[monthName]++;
+    } else {
+      countByMonth[monthName] = 1;
+    }
+  } else {
+    console.error('Formato de data inválido:', item.data);
+    continue; // Pule para a próxima iteração do loop
+  }
+}
+
+function getMonthName(monthIndex) {
+  const months = [
+    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+  ];
+  return months[monthIndex];
+}
+
+// Restante do seu código para exibir a quantidade por mês
+
+
+function getMonthName(monthIndex) {
+  const months = [
+    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+  ];
+  return months[monthIndex];
+}
+
+// Criar elementos <p> para cada mês e exibir a quantidade total
+const countByMonthElement = document.getElementById('quantidade-por-mes');
+countByMonthElement.innerHTML = '';
+
+for (const month in countByMonth) {
+  const pElement = document.createElement('p');
+  pElement.textContent = `${month}: ${countByMonth[month]}`;
+  countByMonthElement.appendChild(pElement);
+}
+
+  
+  
+  
   // Limpar o conteúdo atual da lista
   const listaElement = document.getElementById('lista-dados-copiados');
   listaElement.innerHTML = '';
@@ -1617,7 +1687,6 @@ function extrairPorta(conteudo) {
     function clearInput(event) {
       event.target.value = '';
     }
-
 
     //Função para deixar negativo o sinal do cliente e da CTO mesmo se digitar ele positivo
     var input = document.getElementById("sinalCto");
