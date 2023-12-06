@@ -535,8 +535,29 @@ select#registros {
       margin: 10px;
     }
     
+
+    #quantidade-por-mes{
+      
+      background: #606279;
+  border-radius: 1px 5px;
+  margin:6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+      
+      padding: 20px;
+      text-transform: capitalize;
+      column-count: 2;
+    }
     
+    #quantidade-por-mes p {
+    color: white;
+    margin: 0;
+    padding 2px;
+    }
     
+    div#instalacoes p{
+  color: white;
+    }
 
   
 </style>
@@ -558,10 +579,10 @@ select#registros {
  <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=ftv3foQkv3DY&format=png" height="90" width="90"></a>
      
 
-  <!--     
+     
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
-    -->
+    
     
     
    </div>
@@ -814,12 +835,16 @@ select#registros {
    
    
    
-  <p id="quantidade-por-mes"></p>
    
    
    
      <p>Total de Instalações: <span id="total-elementos"></span></p>
+     
+      <p id="quantidade-por-mes"></p>
+ 
+     
     <ul id="lista-dados-copiados"></ul>
+    
     <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
   </div>
 
@@ -827,6 +852,15 @@ select#registros {
 
 
   <script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -1792,6 +1826,7 @@ function verificarTercaFeira() {
     }
   }
 }
+
 
 
 
