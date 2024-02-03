@@ -552,7 +552,8 @@ select#registros {
     #quantidade-por-mes p {
     color: white;
     margin: 0;
-    padding 2px;
+    padding: 2px;
+text-align: right ;
     }
     
     div#instalacoes p{
@@ -656,53 +657,7 @@ select#registros {
     
     <h1>Instalação</h1>
     <table>
-<tr>
-  <th>Wifi 2.4GHz:</th>
-  <td>
-    <select name="opcoes24GHz" id="opcoes24GHz">
-      <option value="Banda Auto" disabled selected>Banda Auto</option>
-      <option value="20Mhz">20Mhz</option>
-      <option value="40Mhz">40Mhz</option>
-    </select>
 
-    <select id="canais24GHz">
-      <option disabled selected value="CH Auto">CH Auto</option>
-      <option value="CH01">CH01</option>
-      <option value="CH06">CH06</option>
-      <option value="CH11">CH11</option>
-      <!-- Adicione mais canais, se necessário -->
-    </select>
-  </td>
-</tr>
-
-<tr>
-  <th>Wifi 5GHz:</th>
-  <td>
-    <select name="opcoes5GHz" id="opcoes5GHz">
-      <option value="Banda Auto" disabled selected>Banda Auto</option>
-      <option value="40Mhz">40Mhz</option>
-      <option value="80Mhz">80Mhz</option>
-      <option value="160Mhz">160Mhz</option>
-    </select>
-
-    <select id="canais5GHz">
-      <option disabled selected value="CH Auto">CH Auto</option>
-      <option value="CH36">CH36</option>
-      <option value="CH44">CH44</option>
-      <option value="CH52">CH52</option>
-      <option value="CH149">CH149</option>      
-      <option value="CH157">CH157</option>      
-      <option value="CH165">CH165</option>
-
-
-
-      <!-- Adicione mais canais, se necessário -->
-    </select>
-  </td>
-</tr>
-
-
-      
       <tr>
         <th>Técnico:</th>
         <td>
@@ -808,6 +763,63 @@ select#registros {
         <th>Kit fusão:</th>
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
+      
+      
+      <th><br></th>
+      <td></td>
+      
+      
+      <tr>
+  <th>Wifi 2.4GHz:</th>
+  <td>
+    <select name="opcoes24GHz" id="opcoes24GHz">
+      <option value="Banda Auto" disabled selected>Banda Auto</option>
+      <option value="20Mhz">20Mhz</option>
+      <option value="40Mhz">40Mhz</option>
+    </select>
+
+    <select id="canais24GHz">
+      <option disabled selected value="CH Auto">CH Auto</option>
+      <option value="CH01">CH01</option>
+      <option value="CH06">CH06</option>
+      <option value="CH11">CH11</option>
+      <!-- Adicione mais canais, se necessário -->
+    </select>
+  </td>
+</tr>
+
+<tr>
+  <th>Wifi 5GHz:</th>
+  <td>
+    <select name="opcoes5GHz" id="opcoes5GHz">
+      <option value="Banda Auto" disabled selected>Banda Auto</option>
+      <option value="40Mhz">40Mhz</option>
+      <option value="80Mhz">80Mhz</option>
+      <option value="160Mhz">160Mhz</option>
+    </select>
+
+    <select id="canais5GHz">
+      <option disabled selected value="CH Auto">CH Auto</option>
+      <option value="CH36">CH36</option>
+      <option value="CH44">CH44</option>
+      <option value="CH52">CH52</option>
+      <option value="CH149">CH149</option>      
+      <option value="CH157">CH157</option>      
+      <option value="CH165">CH165</option>
+
+
+
+      <!-- Adicione mais canais, se necessário -->
+    </select>
+  </td>
+</tr>
+
+
+      
+      
+      
+      
+      
     </table>
     <br>
   </div>
@@ -1439,13 +1451,6 @@ for (let i = 0; i < dadosCopiados.length; i++) {
   }
 }
 
-function getMonthName(monthIndex) {
-  const months = [
-    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
-  ];
-  return months[monthIndex];
-}
 
 // Restante do seu código para exibir a quantidade por mês
 
