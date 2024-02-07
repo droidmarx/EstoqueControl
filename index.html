@@ -559,6 +559,8 @@ text-align: right ;
     div#instalacoes p{
   color: white;
     }
+    
+
 
   
 </style>
@@ -658,6 +660,10 @@ text-align: right ;
     <h1>Instalação</h1>
     <table>
 
+<button class="ocultar" class="BTN" onclick="capturarLocalizacao()"></button>
+
+<p class="ocultar" id="demo"></p>
+
       <tr>
         <th>Técnico:</th>
         <td>
@@ -665,7 +671,7 @@ text-align: right ;
             <option disabled selected value="">Selecione o técnico</option>
             <option value="Andre">André</option>
             <option value="Elvis">Elvis</option>
-            <option value="Guilherme">Guilherme</option>
+            <option selected value="Guilherme">Guilherme</option>
             <option value="Robson">Robson</option>
             <option value="Sergio">Sérgio</option>
           </select>
@@ -770,7 +776,7 @@ text-align: right ;
       
       
       <tr>
-  <th>Wifi 2.4GHz:</th>
+  <th>=Wifi 2.4GHz:</th>
   <td>
     <select name="opcoes24GHz" id="opcoes24GHz">
       <option value="Banda Auto" disabled selected>Banda Auto</option>
@@ -1284,6 +1290,7 @@ function atualizarTabelaEstoque() {
 
     // Função para processar a retirada de produtos
     function enviar() {
+      capturarLocalizacao()
       for (let i = 0; i < retirada.length; i++) {
         let produtoRetirado = retirada[i];
         for (let j = 0; j < produtos.length; j++) {
@@ -1326,6 +1333,10 @@ copiado += `**Wifi 5GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
+
+
+
+
     
      copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
@@ -1345,17 +1356,24 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
       copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
       copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
       copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
-      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}###**Meu Estoque**#\n`;
+      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##\n`;
 
-      // Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
-      //esse é o que copia *favor habilitar
-      for (let i = 0; i < produtos.length; i++) {
-        copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
-      }
 
-      // Substituir o "#" por quebras de linha (\n)
-      copiado = copiado.replace(/#/g, '\n');
 
+//copiando a localização 
+copiado += "**Localização:**\n";
+copiado += `${document.getElementById('demo').textContent}###**Meu Estoque**#\n`;
+
+
+
+//Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
+//esse é o que copia *favor habilitar
+for (let i = 0; i < produtos.length; i++) {
+  copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
+}
+
+// Substituir o "#" por quebras de linha (\n)
+copiado = copiado.replace(/#/g, '\n');
 
 
 
@@ -1830,6 +1848,21 @@ function verificarTercaFeira() {
       }
     }
   }
+}
+
+
+function capturarLocalizacao() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(mostrarPosicao);
+    } else {
+        alert("Geolocalização não é suportada por esse navegador.");
+    }
+}
+
+function mostrarPosicao(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    document.getElementById("demo").innerHTML = "Latitude: " + latitude + "#Longitude: " + longitude;
 }
 
 
