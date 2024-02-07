@@ -47,7 +47,6 @@ body {
 /* Estilos para inputs */
 input {
   text-align: center;
-  width: 80%;
 }
 
 /* Estilos para botões */
@@ -560,7 +559,9 @@ text-align: right ;
   color: white;
     }
     
-
+#ocultar{
+  display: none;
+}
 
   
 </style>
@@ -662,7 +663,7 @@ text-align: right ;
 
 <button class="ocultar" class="BTN" onclick="capturarLocalizacao()"></button>
 
-<p class="ocultar" id="demo"></p>
+<p style="display: none;" id="demo"></p>
 
       <tr>
         <th>Técnico:</th>
@@ -776,7 +777,7 @@ text-align: right ;
       
       
       <tr>
-  <th>=Wifi 2.4GHz:</th>
+  <th>Wifi 2.4GHz:</th>
   <td>
     <select name="opcoes24GHz" id="opcoes24GHz">
       <option value="Banda Auto" disabled selected>Banda Auto</option>
@@ -1322,16 +1323,6 @@ function atualizarTabelaEstoque() {
 
 
       //estrututa da 1• tabela (copiar)
-    // Copiando os valores da primeira tabela (Wifi 2.4GHz)
-    
-copiado += `##**Wifi 2.4GHz:**\n`;
-copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
-copiado += ` ${document.getElementById('canais24GHz').value}\n`;
-
-// Copiando os valores da segunda tabela (Wifi 5GHz)
-copiado += `**Wifi 5GHz:**\n`;
-copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
-copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
 
 
@@ -1357,6 +1348,18 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
       copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
       copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
       copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##\n`;
+      
+          // Copiando os valores da primeira tabela (Wifi 2.4GHz)
+    
+copiado += `##**Wifi 2.4GHz:**\n`;
+copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
+copiado += ` ${document.getElementById('canais24GHz').value}\n`;
+
+// Copiando os valores da segunda tabela (Wifi 5GHz)
+copiado += `**Wifi 5GHz:**\n`;
+copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
+copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
+
 
 
 
