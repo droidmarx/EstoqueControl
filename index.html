@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
   
-  <title>Controle de Estoque</title>
+  <title>Painel de Controle</title>
 </head>
 
 <style>
@@ -568,6 +568,17 @@ text-align: right ;
   display: none;
 }
 
+
+h1.animar {
+    animation: changeColor 2s infinite; /* Adiciona a animação de troca de cor */
+  }
+
+  /* Define a animação de troca de cor */
+  @keyframes changeColor {
+    0% { color: black; }
+    50% { font-size: 29px }
+    100% { color: black; } 
+  }
   
 </style>
 
@@ -647,7 +658,7 @@ text-align: right ;
   <!-- Div para a seção de estoque -->
   <div id="estoqueDiv" style="display: none;">
     <table id="estoque">
-      <h1>Meu estoque</h1>
+      <h1 class="animar">ESTOQUE</h1>
       <tr>
         <th>Quantidade</th>
         <th>Ações</th>
@@ -667,7 +678,7 @@ text-align: right ;
    
    
     
-    <h1>Instalação</h1>
+    <h1 class="animar">HABILITAR</h1>
     <table>
 
       <tr>
@@ -1450,7 +1461,7 @@ copiado = copiado.replace(/#/g, '\n');
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Por favor habilitar**\n' + copiado + '\n\n**Obrigado!**'));
+      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Por favor habilitar !!**\n' + copiado + '\n\n**Obrigado !**'));
 
       // Adicionar a string copiada ao array de dadosCopiados
       dadosCopiados.push({
@@ -1852,7 +1863,7 @@ function verificarTercaFeira() {
   var dataAtual = new Date();
   var diaSemana = dataAtual.getDay();
 
-  if (diaSemana === 1) {
+  if (diaSemana === 5) {
     var alertaExibido = sessionStorage.getItem('alertaExibido');
 
     if (!alertaExibido) {
