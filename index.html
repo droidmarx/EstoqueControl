@@ -851,9 +851,12 @@ text-align: right ;
   
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
   
+   <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
+  
   </div>
   
-    <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
+  
+   
   
     <button style="display: none;" class="BTN" onclick="getLocation()">Obter Localização</button>
 
@@ -1365,7 +1368,7 @@ copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 
 // Copiando os valores da segunda tabela (Wifi 5GHz)
-copiado += `**Wifi 5GHz:**\n`;
+copiado += `#**Wifi 5GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
@@ -1374,15 +1377,15 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
 //copiando a localização 
 copiado += "**Localização:**\n";
-copiado += `${document.getElementById('mapLink').textContent}###**Meu Estoque**#\n`;
+copiado += `${document.getElementById('mapLink').textContent}\n`;
 
 
 
 //Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
 //esse é o que copia *favor habilitar
-for (let i = 0; i < produtos.length; i++) {
-  copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;
-}
+for (let i = 0; i < produtos.length; i++) "###**Meu Estoque**#"
+
+//{copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;}
 
 // Substituir o "#" por quebras de linha (\n)
 copiado = copiado.replace(/#/g, '\n');
