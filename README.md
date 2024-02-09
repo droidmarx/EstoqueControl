@@ -1,4 +1,4 @@
-# ESTOQUE CONTROL
+# PAINEL DE CONTROLE
   
  Sistema desenvolvido a quesito de estudo, porém com potencial de auxiliar técnicos em campo na area de telecomunicaçõe, com o controle de materiais, ordens de serviço, controle de instalação, e manutenção.
 
