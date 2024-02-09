@@ -560,7 +560,11 @@ text-align: right ;
   color: white;
     }
     
-#ocultar{
+#demo{
+  background: #34375600
+}
+
+#mapLink{
   display: none;
 }
 
@@ -591,6 +595,10 @@ text-align: right ;
     
     
    </div>
+   
+     
+     <p id="mapLink"></p>
+
    
   </nav>
    
@@ -662,10 +670,6 @@ text-align: right ;
     <h1>Instalação</h1>
     <table>
 
-<button class="ocultar" class="BTN" onclick="capturarLocalizacao()"></button>
-
-<p style="display: none;" id="demo"></p>
-
       <tr>
         <th>Técnico:</th>
         <td>
@@ -717,7 +721,7 @@ text-align: right ;
       </tr>
       <tr>
         <th>Sinal CTO:</th>
-        <td><input type="number" placeholder="-00.00" id="sinalCto"></td>
+        <td><input type="number"  placeholder="-00.00" id="sinalCto"></td>
       </tr>
       <tr>
         <th>Sinal Cliente:</th>
@@ -831,12 +835,10 @@ text-align: right ;
     </table>
     <br>
   </div>
-  
-  
 
   
 
-  <div id="retiradaDiv" style="display: block;">
+  <div id="retiradaDiv">
     <table id="retirada">
       <p>Equipamento utilizado</p>
       <tr>
@@ -848,8 +850,14 @@ text-align: right ;
     <br>
   
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
-    <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
+  
   </div>
+  
+    <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
+  
+    <button style="display: none;" class="BTN" onclick="getLocation()">Obter Localização</button>
+
+
 
   <div id="instalacoes" class="instalacoes" style="display: none">
    
@@ -1292,7 +1300,7 @@ function atualizarTabelaEstoque() {
 
     // Função para processar a retirada de produtos
     function enviar() {
-      capturarLocalizacao()
+     getLocation()
       for (let i = 0; i < retirada.length; i++) {
         let produtoRetirado = retirada[i];
         for (let j = 0; j < produtos.length; j++) {
@@ -1366,7 +1374,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
 //copiando a localização 
 copiado += "**Localização:**\n";
-copiado += `${document.getElementById('demo').textContent}###**Meu Estoque**#\n`;
+copiado += `${document.getElementById('mapLink').textContent}###**Meu Estoque**#\n`;
 
 
 
@@ -1855,19 +1863,22 @@ function verificarTercaFeira() {
 }
 
 
-function capturarLocalizacao() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(mostrarPosicao);
-    } else {
-        alert("Geolocalização não é suportada por esse navegador.");
-    }
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocalização não é suportada por este navegador.");
+  }
 }
 
-function mostrarPosicao(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    document.getElementById("demo").innerHTML = "Latitude: " + latitude + "#Longitude: " + longitude;
+function showPosition(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
+  document.getElementById('mapLink').innerHTML = mapLink;
 }
+
+
 
 
 
