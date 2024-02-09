@@ -889,7 +889,22 @@ text-align: right ;
   
   
   
-  
+  function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocalização não é suportada por este navegador.");
+  }
+}
+
+function showPosition(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
+  document.getElementById('mapLink').innerHTML = mapLink;
+}
+
+getLocation()
   
   
   
@@ -1865,21 +1880,6 @@ function verificarTercaFeira() {
   }
 }
 
-
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else {
-    alert("Geolocalização não é suportada por este navegador.");
-  }
-}
-
-function showPosition(position) {
-  var latitude = position.coords.latitude;
-  var longitude = position.coords.longitude;
-  var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
-  document.getElementById('mapLink').innerHTML = mapLink;
-}
 
 
 
