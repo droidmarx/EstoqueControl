@@ -61,10 +61,11 @@ input {
   color: var(--texto);
   background-color: dimgray;
   text-align: center;
-  width: 80%;
+  width: 70%;
   max-width: 350px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
+
 }
 
 #btn-historico {
@@ -101,6 +102,7 @@ button {
   height: fit-content;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
+  
 }
 
 tbody button {
@@ -234,7 +236,7 @@ li a:hover {
  box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
  height: fit-content;
  width: fit-content;
- animation: scaleAnimation 1.5s infinite;
+ animation: scaleAnimation 2.5s infinite;
 }
 
 @keyframes scaleAnimation {
@@ -654,9 +656,9 @@ text-align: right ;
  <br><br>
 
  <div class="btnEstoque">
-  <button class="BTN" onclick="enviarComentario()" type="submit">Enviar</button>
+  <button class="BTN" onclick="enviarComentario()" type="submit">ENVIAR</button>
 
-  <button class="BTN" onclick="excluirRegistro()" type="button">Excluir</button>
+  <button class="BTN" onclick="excluirRegistro()" type="button">EXCLUIR</button>
  </div>
 
 
@@ -850,7 +852,7 @@ text-align: right ;
 
 
       
-      
+  
       
       
       
@@ -873,7 +875,10 @@ text-align: right ;
   
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
   
-   <button id="enviar" class="BTN" onclick="enviar()">Enviar</button>
+   <button id="enviar" class="BTN" onclick="enviar()">ENVIAR</button>
+  
+   <div id="dailyVersesWrapper"></div>
+      <script async defer src="https://dailyverses.net/get/random.js?language=arc"></script></th>
   
   </div>
   
