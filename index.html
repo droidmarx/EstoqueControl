@@ -707,7 +707,38 @@ text-align: right ;
    
    
     
-    <h1>HABILITAR</h1>
+    
+    
+    <div id="weather"></div>
+    <script>
+      
+      const apiKey = '247b887404d2c17d430365e56d58d514';
+      const cidade = 'Indaiatuba';
+      
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=Indaiatuba,br&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const weatherDiv = document.getElementById('weather');
+          const temperatura = data.main.temp;
+          const descricao = data.weather[0].description;
+          const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+      
+          weatherDiv.innerHTML = `
+                  <p>${cidade} 
+                  | ${temperatura}°C</p>
+                
+              `;
+        })
+        .catch(error => {
+          console.error('Erro ao obter dados do clima:', error);
+        });
+    </script>
+    
+        <h1>HABILITAR</h1>
+
+    
     <table>
 
       <tr>
@@ -892,6 +923,8 @@ text-align: right ;
     <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
   
    <button id="enviar" class="BTN" onclick="enviar()">ENVIAR</button>
+  
+  
   
    <div class="versiculo" id="dailyVersesWrapper"></div>
       <script async defer src="https://dailyverses.net/get/random.js?language=arc"></script></th>
@@ -1927,9 +1960,7 @@ function verificarTercaFeira() {
 
 
 
-
-
-
+ 
 
   </script>
   
