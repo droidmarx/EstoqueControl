@@ -230,28 +230,31 @@ li a:hover {
 }
 
 .sublinhado-ativo {
-  text-decoration: underline;
   text-decoration-color: var(--principal);
  box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
- border-radius: 10px;
- transition: .5s all;
  height: fit-content;
  width: fit-content;
- animation: scaleAnimation 1.3s infinite;
+ animation: scaleAnimation 1.5s infinite;
 }
 
 @keyframes scaleAnimation {
   0% {
-    transform: scale(1.3);
-     box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
+    border-radius: 4px;
+    transform: scale(1.1);
+    box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
 
   }
   50% {
-    transform: scale(1.2);
+    transition: 2s linear;
+    border-radius: 8px 10px 8px 10px;
+    transform: scale(1);
     background-color: dimgray;
+    box-shadow: 0 10px 11px rgba(09, 10, 0, 01);
+
   }
   100% {
-    transform: scale(1.3);
+    border-radius: 4px;
+    transform: scale(1.1);
          box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
 
   }
