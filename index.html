@@ -115,6 +115,23 @@ tbody button {
   transition: box-shadow 0.3s ease;
 }
 
+
+.versiculo{
+  width: 80%;
+  font-size: 1rem;
+  text-align: center;
+  background-color: var(--tabela);
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 4px 0px 4px;
+  padding: 5px;
+  font-size: small;
+  color: var(--texto);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+  animation: blink 7.5s infinite;
+}
+
 /* Estilos para tabelas */
 th,
 td {
@@ -592,7 +609,6 @@ text-align: right ;
 }
 
 
-
 </style>
 
 <body>
@@ -877,7 +893,7 @@ text-align: right ;
   
    <button id="enviar" class="BTN" onclick="enviar()">ENVIAR</button>
   
-   <div id="dailyVersesWrapper"></div>
+   <div class="versiculo" id="dailyVersesWrapper"></div>
       <script async defer src="https://dailyverses.net/get/random.js?language=arc"></script></th>
   
   </div>
