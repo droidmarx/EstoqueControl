@@ -17,6 +17,7 @@
   
   
   <title>Painel de Controle</title>
+  <body onload="verificarTercaFeira()">
 </head>
 
 <style>
@@ -142,7 +143,7 @@ td {
   border: 1px solid black;
   border-radius: 4px 0px 4px;
   padding: 5px;
-  font-size: small;
+  font-size: small ;
   color: var(--texto);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
@@ -258,6 +259,8 @@ li a:hover {
 
 @keyframes scaleAnimation {
   0% {
+  
+
     border-radius: 4px;
     transform: scale(1.3);
     box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
@@ -272,9 +275,10 @@ li a:hover {
 
   }
   100% {
+    
     border-radius: 4px;
     transform: scale(1.3);
-         box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
+    box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
 
   }
 }
@@ -540,8 +544,8 @@ select#registros {
   
  @keyframes slidein {
       0% {
-        transform: translateY(20%);
-        filter: blur(20px)
+        transform: translateY(10%);
+        filter: blur(30px);
       }
       100% {
         transform: translateY(0%);
@@ -549,7 +553,7 @@ select#registros {
     }
     
     #estoqueDiv, #habilitar, #retiradaDiv, #manutencaoDiv, .instalacoes {
-      animation: .4s all;
+      animation: .5s all;
       animation-name: slidein;
       margin-top: 120px;
       margin-bottom: 40px;
@@ -731,9 +735,12 @@ select#registros {
           const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
       
           weatherDiv.innerHTML = `<div class="temp">
-                  <p>${cidade} 
+          <p>
+           ${cidade}
+          </p>
+                  <p>${descricao} 
                   | ${temperatura}°C</p>
-                <p>${descricao}</p></div>
+                <p></div>
               `;
         })
         .catch(error => {
@@ -1925,43 +1932,28 @@ function extrairPorta(conteudo) {
    // Abrir o WhatsApp no navegador
    window.open(linkWhatsApp);
  }
+ 
 
-   verificarTercaFeira()
 
-// Mensagem no WhatsApp para pedir material
 function verificarTercaFeira() {
   var dataAtual = new Date();
   var diaSemana = dataAtual.getDay();
 
-  if (diaSemana === 5) {
+  if (diaSemana === 2 ) {
     var alertaExibido = sessionStorage.getItem('alertaExibido');
 
     if (!alertaExibido) {
-      var confirmacao = confirm("Hoje é segunda-feira, dia de pedir material. Deseja prosseguir?");
+      var confirmacao = confirm("Hoje é dia de pedir material. Deseja prosseguir?");
 
       if (confirmacao) {
         sessionStorage.setItem('alertaExibido', 'true');
 
-        // Construir a mensagem com produtos e quantidades
-        var mensagem = 'Hoje é dia de pedir material, poderia verificar meu estoque?' + '\n\n' + '*Meu Estoque Atual:*' + '\n\n';
-        for (let i = 0; i < produtos.length; i++) {
-          mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
-        }
-
-        // Codificar a mensagem para uso na URL
-        var mensagemCodificada = encodeURIComponent(mensagem);
-
-   // Montar o link para o WhatsApp
-           var linkWhatsApp = 'https://t.me/share/url?url=' + mensagemCodificada;
-
-        // Abrir o WhatsApp no navegador
-        window.open(linkWhatsApp);
+        // Redirecionar para o link do formulário de pedido de material
+        window.location.href = 'https://forms.gle/hLhheg9B6CMuParT6';
       }
     }
   }
 }
-
-
 
 
 
