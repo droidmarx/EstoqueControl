@@ -60,11 +60,11 @@ input {
   font-weight: bold;
   text-align: center;
   color: var(--texto);
-  background-color: dimgray;
+  background-color: #E1E2F075;
   text-align: center;
   width: 70%;
   max-width: 350px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 9px rgba(0, 0, 0, 8);
   transition: box-shadow 0.3s ease;
 
 }
@@ -417,6 +417,7 @@ ul {
   margin: 0 auto;
   gap: 15px;
   display: flex;
+  
 }
 
 span {
@@ -616,6 +617,12 @@ select#registros {
   text-transform: capitalize;
   padding: 0;
 }
+
+
+
+
+
+
 
 
 </style>
@@ -954,8 +961,7 @@ select#registros {
    
    
    
-   
-   
+
    
      <p>Total de Instalações: <span id="total-elementos"></span></p>
      
@@ -1668,7 +1674,6 @@ containerElement.appendChild(textElement);
 // Adicionar o elemento pai ao elemento desejado (por exemplo, uma lista)
 listItemElement.appendChild(containerElement);
 
-
     
    
    const ctoPortaElement = document.createElement('h4');
@@ -1677,6 +1682,10 @@ ctoPortaElement.classList.add('abaDados');
 const cto = extrairCTO(item.conteudo);
 const porta = extrairPorta(item.conteudo);
 const sinal = extrairSinalCTO(item.conteudo);
+
+
+
+
 
 // Crie elementos span para cada item e adicione classes a eles
 const ctoElement = document.createElement('h4');
@@ -1696,6 +1705,8 @@ ctoPortaElement.appendChild(portaElement);
 ctoPortaElement.appendChild(sinalElement);
 
 listItemElement.appendChild(ctoPortaElement);
+
+
 
 
 
@@ -1915,6 +1926,8 @@ function extrairPorta(conteudo) {
     });
 
 
+/*function desable{
+
  // Função para enviar mensagem pelo WhatsApp
  function enviarMensagemWhatsApp() {
    // Construir a mensagem com produtos e quantidades
@@ -1922,6 +1935,7 @@ function extrairPorta(conteudo) {
    for (let i = 0; i < produtos.length; i++) {
      mensagem += produtos[i].nome + ': ' + produtos[i].quantidade + '\n';
    }
+   
 
    // Codificar a mensagem para uso na URL
    var mensagemCodificada = encodeURIComponent(mensagem);
@@ -1933,6 +1947,15 @@ function extrairPorta(conteudo) {
    window.open(linkWhatsApp);
  }
  
+}
+
+*/
+
+
+
+ function enviarMensagemWhatsApp() {
+   window.open('https://forms.gle/hLhheg9B6CMuParT6', '_blank');
+}
 
 
 function verificarTercaFeira() {
@@ -1957,6 +1980,51 @@ function verificarTercaFeira() {
 
 
 
+
+function search() {
+    var searchInput = document.getElementById('searchInput').value;
+    var searchResults = document.getElementById('searchResults');
+    var pageContent = document.body.innerText;
+
+    var regex = new RegExp(searchInput, 'gi');
+    var matches = pageContent.match(regex);
+
+    if (matches) {
+        searchResults.innerHTML = matches.join('<br>');
+    } else {
+        searchResults.innerHTML = 'No matches found.';
+    }
+}
+
+
+
+
+
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.toLowerCase();
+    var checkboxes = document.querySelectorAll('.instalacoes input[type="checkbox"]');
+    
+    checkboxes.forEach(function(checkbox) {
+        var label = checkbox.parentNode;
+        var checkboxValue = checkbox.value.toLowerCase();
+        
+        if (checkboxValue.indexOf(searchValue) !== -1) {
+            label.style.display = 'block';
+        } else {
+            label.style.display = 'none';
+        }
+    });
+});
+
+
+
+
+
+setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
+
+ 
+ 
+ 
  
 
   </script>
