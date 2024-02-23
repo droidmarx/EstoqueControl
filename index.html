@@ -15,6 +15,9 @@
   <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEDZw-CFe800-yV5F9AKtBs3QtybHSsf0&callback=initMap" async defer></script>
+
+  
   
   <title>Painel de Controle</title>
   <body onload="verificarTercaFeira()">
@@ -618,6 +621,12 @@ select#registros {
   padding: 0;
 }
 
+#location a{
+  text-decoration: underline ;
+  font-size: 12px;
+  color: blue;
+}
+
 
 
 
@@ -867,8 +876,9 @@ select#registros {
       </tr>
       
       
-      <th><br></th>
-      <td></td>
+      <th>Localização:</th>
+      <td><div id="map"></div>
+    <p id="location"></p></td>
       
       
       <tr>
@@ -2022,6 +2032,29 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
 
+ 
+ 
+ 
+ function initMap() {
+   var map = new google.maps.Map(document.getElementById('map'), {
+     zoom: 8,
+     center: { lat: -34.397, lng: 150.644 }
+   });
+ 
+   var infoWindow = new google.maps.InfoWindow;
+ 
+   if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function(position) {
+       var pos = {
+         lat: position.coords.latitude,
+         lng: position.coords.longitude
+       };
+ 
+       document.getElementById('location').innerHTML = '<a href="https://www.google.com/maps/search/?api=1&query=' + pos.lat + ',' + pos.lng + '">Ver no Google Maps</a>';
+     });
+   }
+ }
+ 
  
  
  
