@@ -2073,38 +2073,9 @@ setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
  
  
  
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 50,
-    center: { lat: -34.397, lng: 150.644 }
-  });
-
-  var infoWindow = new google.maps.InfoWindow;
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
-      iframe.width = '200';
-      iframe.height = '200';
-      iframe.frameborder = '0';
-      iframe.style.border = '0';
-      iframe.allowfullscreen = '';
-      iframe.ariaHidden = 'false';
-      iframe.tabIndex = '0';
-
-      document.getElementById('location').appendChild(iframe);
-    });
-  }
-}
-
 function getLocationAndInitMap() {
     getLocation();
+    initMap();
     hideIframes();
 }
 
@@ -2123,6 +2094,45 @@ function hideIframes() {
             iframe.style.display = "block";
         });
     }, 1300);
+}
+
+function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 50,
+        center: { lat: -34.397, lng: 150.644 }
+    });
+
+    var infoWindow = new google.maps.InfoWindow;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            // Verifique se já existe um iframe na página
+            var existingIframe = document.querySelector("iframe");
+
+            // Se já existir, remova-o
+            if (existingIframe) {
+                existingIframe.remove();
+            }
+
+            // Crie um novo iframe com a posição atualizada
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
+            iframe.width = '200';
+            iframe.height = '200';
+            iframe.frameborder = '0';
+            iframe.style.border = '0';
+            iframe.allowfullscreen = '';
+            iframe.ariaHidden = 'false';
+            iframe.tabIndex = '0';
+
+            document.getElementById('location').appendChild(iframe);
+        });
+    }
 }
 
 
