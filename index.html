@@ -652,7 +652,12 @@ select#registros {
 }
 
 
-
+.BtnMap{
+  margin: 0 auto;
+  width: 100%;
+  background:#67697D;
+  color: white;
+}
 
 </style>
 
@@ -785,19 +790,21 @@ select#registros {
     
     
     
-    
-    
+
     
     
     
         <h1>HABILITAR</h1>
-
     
     <table>
       <tr>
         <th><div id="weather"></div>
-</th>
+      </th>
         <td><div id="location"></div>
+                <div>
+                  <button class="BtnMap" onclick="getLocationAndInitMap()">Atualizar Localização</button>
+        
+                </div>
 </td>
       </tr>
 
@@ -995,7 +1002,6 @@ select#registros {
   
    
   
-    <button style="display: none;" class="BTN" onclick="getLocation()">Obter Localização</button>
 
 
 
@@ -2097,7 +2103,29 @@ function initMap() {
   }
 }
 
- 
+function getLocationAndInitMap() {
+    getLocation();
+    hideIframes();
+}
+
+function hideIframes() {
+    // Selecione todos os iframes na página
+    var iframes = document.querySelectorAll("iframe");
+
+    // Oculte cada iframe
+    iframes.forEach(function(iframe) {
+        iframe.style.display = "none";
+    });
+
+    // Agende a exibição dos iframes após 1.2 segundos
+    setTimeout(function() {
+        iframes.forEach(function(iframe) {
+            iframe.style.display = "block";
+        });
+    }, 1300);
+}
+
+
 
   </script>
   
