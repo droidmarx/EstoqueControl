@@ -754,7 +754,6 @@ select#registros {
     
     
     
-    <div id="weather"></div>
     <script>
       
       const apiKey = '247b887404d2c17d430365e56d58d514';
@@ -775,7 +774,7 @@ select#registros {
            ${cidade}
           </p>
                   <p>${descricao} 
-                  | ${temperatura}°C</p>
+                   ${temperatura}°C</p>
                 <p></div>
               `;
         })
@@ -795,6 +794,12 @@ select#registros {
 
     
     <table>
+      <tr>
+        <th><div id="weather"></div>
+</th>
+        <td><div id="location"></div>
+</td>
+      </tr>
 
       <tr>
         <th>Técnico:</th>
@@ -983,7 +988,6 @@ select#registros {
    <div class="versiculo" id="dailyVersesWrapper"></div>
       <script async defer src="https://dailyverses.net/get/random.js?language=arc"></script></th>
       
-          <div id="location"></div>
 
   
   </div>
@@ -2080,8 +2084,8 @@ function initMap() {
 
       var iframe = document.createElement('iframe');
       iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
-      iframe.width = '300';
-      iframe.height = '250';
+      iframe.width = '200';
+      iframe.height = '200';
       iframe.frameborder = '0';
       iframe.style.border = '0';
       iframe.allowfullscreen = '';
