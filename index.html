@@ -15,7 +15,7 @@
   <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEDZw-CFe800-yV5F9AKtBs3QtybHSsf0&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk&callback=initMap" async defer></script>
 
   
   
@@ -629,7 +629,27 @@ select#registros {
 
 
 
+#map-iframe {
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
 
+#map-iframe::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  /* Defina um valor maior de z-index para o ponto preto */
+}
 
 
 
@@ -764,6 +784,14 @@ select#registros {
         });
     </script>
     
+      <div id="location"></div>
+
+    
+    
+    
+    
+    
+    
         <h1>HABILITAR</h1>
 
     
@@ -876,10 +904,6 @@ select#registros {
       </tr>
       
       
-      <th>Localização:</th>
-      <td><div id="map"></div>
-    <p id="location"></p></td>
-      
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -953,6 +977,10 @@ select#registros {
   
    <button id="enviar" class="BTN" onclick="enviar()">ENVIAR</button>
   
+  
+  <div id="map"></div>
+
+
   
   
    <div class="versiculo" id="dailyVersesWrapper"></div>
@@ -2035,29 +2063,36 @@ setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
  
  
  
- function initMap() {
-   var map = new google.maps.Map(document.getElementById('map'), {
-     zoom: 8,
-     center: { lat: -34.397, lng: 150.644 }
-   });
- 
-   var infoWindow = new google.maps.InfoWindow;
- 
-   if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(function(position) {
-       var pos = {
-         lat: position.coords.latitude,
-         lng: position.coords.longitude
-       };
- 
-       document.getElementById('location').innerHTML = '<a href="https://www.google.com/maps/search/?api=1&query=' + pos.lat + ',' + pos.lng + '">Ver no Google Maps</a>';
-     });
-   }
- }
- 
- 
- 
- 
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 20,
+    center: { lat: -34.397, lng: 150.644 }
+  });
+
+  var infoWindow = new google.maps.InfoWindow;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
+      iframe.width = '350';
+      iframe.height = '275';
+      iframe.frameborder = '0';
+      iframe.style.border = '0';
+      iframe.allowfullscreen = '';
+      iframe.ariaHidden = 'false';
+      iframe.tabIndex = '0';
+
+      document.getElementById('location').appendChild(iframe);
+    });
+  }
+}
+
  
 
   </script>
