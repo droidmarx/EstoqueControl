@@ -784,8 +784,7 @@ select#registros {
         });
     </script>
     
-      <div id="location"></div>
-
+    
     
     
     
@@ -960,6 +959,7 @@ select#registros {
     <br>
   </div>
 
+<div id="location"></div>
   
 
   <div id="retiradaDiv">
@@ -979,7 +979,6 @@ select#registros {
   
   
   <div id="map"></div>
-
 
   
   
@@ -2065,7 +2064,7 @@ setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
  
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 20,
+    zoom: 50,
     center: { lat: -34.397, lng: 150.644 }
   });
 
@@ -2080,8 +2079,8 @@ function initMap() {
 
       var iframe = document.createElement('iframe');
       iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
-      iframe.width = '350';
-      iframe.height = '275';
+      iframe.width = '300';
+      iframe.height = '250';
       iframe.frameborder = '0';
       iframe.style.border = '0';
       iframe.allowfullscreen = '';
