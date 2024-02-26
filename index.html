@@ -663,10 +663,12 @@ select#registros {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-#loading {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+  
+  #loading {
+    z-index: 1;
+    position: absolute; 
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -674,6 +676,14 @@ select#registros {
     margin:20px;
 }
 
+#weather{
+  height:200px;
+}
+
+iframe{
+  position: relative;
+  z-index: 5;
+}
 
 </style>
 
@@ -816,14 +826,16 @@ select#registros {
       <tr>
         <th><div id="weather"></div>
       </th>
-        <td>
+      <td>
+        <div class="location">
           <div id="loading"></div>
           <div id="location"></div>
+        </div>
                 <div>
                   <button class="BtnMap" onclick="getLocationAndInitMap()">Atualizar Localização</button>
-        
                 </div>
-</td>
+        
+      </td>
       </tr>
 
       <tr>
@@ -2094,24 +2106,6 @@ setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
 function getLocationAndInitMap() {
     getLocation();
     initMap();
-    hideIframes();
-}
-
-function hideIframes() {
-    // Selecione todos os iframes na página
-    var iframes = document.querySelectorAll("iframe");
-
-    // Oculte cada iframe
-    iframes.forEach(function(iframe) {
-        iframe.style.display = "none";
-    });
-
-    // Agende a exibição dos iframes após 1.2 segundos
-    setTimeout(function() {
-        iframes.forEach(function(iframe) {
-            iframe.style.display = "block";
-        });
-    }, 1300);
 }
 
 function initMap() {
@@ -2146,23 +2140,9 @@ function initMap() {
             iframe.style.border = '0';
             iframe.allowfullscreen = '';
             iframe.ariaHidden = 'false';
-            iframe.tabIndex = '0';
-            iframe.classList.add('loading'); // Adicione a classe loading ao iframe
-
-            // Adicione o loading antes de adicionar o iframe à página
-            document.getElementById('loading').style.display = 'block';
-            
+            iframe.tabIndex = '5';
+            // Adicione o iframe à página
             document.getElementById('location').appendChild(iframe);
-            
-            // Adicione a classe iframe-transition após um pequeno atraso
-            setTimeout(function() {
-              iframe.classList.remove('loading'); // Remova a classe loading do iframe
-            
-              // Oculte o loading após o iframe ser carregado
-              iframe.onload = function() {
-                document.getElementById('loading').style.display = 'none';
-              };
-            }, 300);
         });
     }
 }
