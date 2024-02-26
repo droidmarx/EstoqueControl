@@ -659,6 +659,23 @@ select#registros {
   color: white;
 }
 
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+    display: none;
+}
+
+
 </style>
 
 <body>
@@ -800,7 +817,9 @@ select#registros {
       <tr>
         <th><div id="weather"></div>
       </th>
-        <td><div id="location"></div>
+        <td>
+          <div id="loading" style="display: none;"></div>
+          <div id="location"></div>
                 <div>
                   <button class="BtnMap" onclick="getLocationAndInitMap()">Atualizar Localização</button>
         
@@ -2130,10 +2149,24 @@ function initMap() {
             iframe.ariaHidden = 'false';
             iframe.tabIndex = '0';
 
+            // Adicione o loading antes de adicionar o iframe à página
+            document.getElementById('loading').style.display = 'block';
+            
             document.getElementById('location').appendChild(iframe);
+            
+            // Adicione a classe iframe-transition após um pequeno atraso
+            setTimeout(function() {
+              iframe.classList.remove('hidden');
+            
+              // Oculte o loading após o iframe ser carregado
+              iframe.onload = function() {
+                document.getElementById('loading').style.display = 'none';
+              };
+            }, 300);
         });
     }
 }
+
 
 
 
