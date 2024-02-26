@@ -665,7 +665,6 @@ select#registros {
 }
 
 #loading {
-    position: absolute;
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;
@@ -2106,6 +2105,13 @@ function hideIframes() {
     iframes.forEach(function(iframe) {
         iframe.style.display = "none";
     });
+
+    // Agende a exibição dos iframes após 1.2 segundos
+    setTimeout(function() {
+        iframes.forEach(function(iframe) {
+            iframe.style.display = "block";
+        });
+    }, 1300);
 }
 
 function initMap() {
@@ -2141,21 +2147,25 @@ function initMap() {
             iframe.allowfullscreen = '';
             iframe.ariaHidden = 'false';
             iframe.tabIndex = '0';
+            iframe.classList.add('loading'); // Adicione a classe loading ao iframe
 
             // Adicione o loading antes de adicionar o iframe à página
-            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('loading').style.display = 'block';
             
             document.getElementById('location').appendChild(iframe);
+            
+            // Adicione a classe iframe-transition após um pequeno atraso
+            setTimeout(function() {
+              iframe.classList.remove('loading'); // Remova a classe loading do iframe
             
               // Oculte o loading após o iframe ser carregado
               iframe.onload = function() {
                 document.getElementById('loading').style.display = 'none';
               };
-            
+            }, 300);
         });
     }
 }
-
 
 
 
