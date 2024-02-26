@@ -787,31 +787,39 @@ iframe{
     
     <script>
       
-      const apiKey = '247b887404d2c17d430365e56d58d514';
-      const cidade = 'Indaiatuba';
-      
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=Indaiatuba,br&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
-      
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          const weatherDiv = document.getElementById('weather');
-          const temperatura = data.main.temp;
-          const descricao = data.weather[0].description;
-          const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-      
-          weatherDiv.innerHTML = `<div class="temp">
-          <p>
-           ${cidade}
-          </p>
-                  <p>${descricao} 
-                   ${temperatura}°C</p>
-                <p></div>
-              `;
-        })
-        .catch(error => {
-          console.error('Erro ao obter dados do clima:', error);
-        });
+  navigator.geolocation.getCurrentPosition(position => {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  // Use a API de Geolocalização para obter a cidade com base na latitude e longitude
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const cidade = data.name;
+      const temperatura = data.main.temp;
+      const descricao = data.weather[0].description;
+      const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+      const umidade = data.main.humidity;
+
+      const weatherDiv = document.getElementById('weather');
+
+      weatherDiv.innerHTML = `
+        <div class="temp">
+          <h2>${cidade}</h2>
+          <p>${temperatura}°C</p>
+          <p>${descricao}</p>
+          <p>Chuva: ${umidade}%</p>
+          <img src="${icon}" alt="Weather Icon">
+        </div>
+      `;
+    })
+    .catch(error => {
+      console.error('Erro ao obter dados do clima:', error);
+    });
+});
+
     </script>
     
     
