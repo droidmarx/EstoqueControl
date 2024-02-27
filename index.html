@@ -685,6 +685,13 @@ iframe{
   z-index: 5;
 }
 
+.temp p{
+  font-size: 12px;
+  margin: 0 auto;
+  width: fit-content;
+  font-weight: small;
+}
+
 </style>
 
 <body>
@@ -802,15 +809,27 @@ iframe{
       const descricao = data.weather[0].description;
       const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
       const umidade = data.main.humidity;
+      const sensacao = data.main.feels_like;
+      const vento = data.wind.speed;
+
+      const nuvens = data.clouds.all;
+
+
 
       const weatherDiv = document.getElementById('weather');
 
       weatherDiv.innerHTML = `
         <div class="temp">
           <h2>${cidade}</h2>
-          <p>${temperatura}°C</p>
           <p>${descricao}</p>
+
+          <p>Temperatura: ${temperatura}°C</p>
+          <p>Sensação: ${sensacao}°C</p>
           <p>Umidade: ${umidade}%</p>
+          <p>Nuvens: ${nuvens}%</p>
+          <p>Vento: ${vento} m/s</p>
+
+
           <img src="${icon}" alt="Weather Icon">
         </div>
       `;
@@ -832,7 +851,9 @@ iframe{
     
     <table>
       <tr>
-        <th><div id="weather"></div>
+        <th><div id="weather" class="temp">
+          <h2>Carregando...</h2>
+        </div>
       </th>
       <td>
         <div class="location">
