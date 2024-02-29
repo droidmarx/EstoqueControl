@@ -15,7 +15,7 @@
   <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk&callback=initMap" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg&callback=initMap" async defer></script>
 
   
   
@@ -692,6 +692,10 @@ iframe{
   font-weight: small;
 }
 
+#rua{
+  font-size: 10px
+}
+
 </style>
 
 <body>
@@ -720,7 +724,6 @@ iframe{
    </div>
    
      
-     <p id="mapLink"></p>
 
    
   </nav>
@@ -842,7 +845,8 @@ iframe{
     </script>
     
     
-    
+         <p id="mapLink"></p>
+
 
     
     
@@ -1594,6 +1598,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
 //copiando a localização 
 copiado += "**Localização:**\n";
+copiado += `**${document.getElementById('rua').textContent}**\n\n`;
 copiado += `${document.getElementById('mapLink').textContent}\n`;
 
 
@@ -2133,9 +2138,20 @@ setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
  
  
  
-function getLocationAndInitMap() {
+async function getLocationAndInitMap() {
     getLocation();
     initMap();
+    hideIframes();
+}
+
+function hideIframes() {
+    // Selecione todos os iframes na página
+    var iframes = document.querySelectorAll("iframe");
+
+    // Oculte cada iframe
+    iframes.forEach(function(iframe) {
+        iframe.style.display = "none";
+    });
 }
 
 function initMap() {
@@ -2147,7 +2163,7 @@ function initMap() {
     var infoWindow = new google.maps.InfoWindow;
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async function(position) {
+        navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -2170,20 +2186,22 @@ function initMap() {
             iframe.style.border = '0';
             iframe.allowfullscreen = '';
             iframe.ariaHidden = 'false';
-            iframe.tabIndex = '5';
-            // Adicione o iframe à página
+            iframe.tabIndex = '0';
+
             document.getElementById('location').appendChild(iframe);
 
-// Obtenha o nome da rua
-const streetName = await getStreetName(pos.lat, pos.lng);
-if (streetName) {
-    // Atualize o texto da div com ID 'rua'
-    document.getElementById('rua').innerText = `Você está na rua ${streetName}`;
-} else {
-    // Atualize o texto da div com ID 'rua' para indicar que o nome da rua não pôde ser obtido
-    document.getElementById('rua').innerText = "Não foi possível obter o nome da rua.";
-}
-
+            // Obtenha o nome da rua
+            getStreetName(pos.lat, pos.lng).then(streetName => {
+                if (streetName) {
+                    // Atualize o texto da div com ID 'rua'
+                    document.getElementById('rua').innerText = `Proximo a ${streetName}`;
+                } else {
+                    // Atualize o texto da div com ID 'rua' para indicar que o nome da rua não pôde ser obtido
+                    document.getElementById('rua').innerText = "Não foi possível obter o nome da rua.";
+                }
+            }).catch(error => {
+                console.error("Error getting street name:", error);
+            });
         });
     }
 }
@@ -2191,7 +2209,7 @@ if (streetName) {
 async function getStreetName(latitude, longitude) {
     try {
         const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk`
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg`
         );
         const data = await response.json();
         if (data.results && data.results.length > 0) {
@@ -2215,11 +2233,6 @@ function getLocation() {
     } else {
         console.log("Geolocation is not supported by this browser.");
     }
-}
-
-function showPosition(position) {
-    console.log("Latitude: " + position.coords.latitude +
-        "<br>Longitude: " + position.coords.longitude);
 }
 
 
