@@ -15,7 +15,7 @@
   <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg&callback=initMap" async defer></script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg&libraries=places"></script>
 
   
   
@@ -621,63 +621,22 @@ select#registros {
   padding: 0;
 }
 
-#location a{
-  text-decoration: underline ;
-  font-size: 12px;
-  color: blue;
-}
-
-
-
-#map-iframe {
-  display: block;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-#map-iframe::after {
-  content: '';
-  display: block;
-  width: 10px;
-  height: 10px;
-  background-color: black;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  /* Defina um valor maior de z-index para o ponto preto */
-}
-
 
 .BtnMap{
+  display: none;
   margin: 0 auto;
-  width: 100%;
+  width: 90%;
   background:#67697D;
   color: white;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-  
-  #loading {
-    z-index: 1;
-    position: absolute; 
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-    margin:20px;
-}
 
 #weather{
-  height:200px;
+  height:fit-content;
+}
+
+#weather p{
+  font-size: 10px;
 }
 
 iframe{
@@ -693,7 +652,8 @@ iframe{
 }
 
 #rua{
-  font-size: 10px
+  font-size: 10px;
+  max-width: 180px ;
 }
 
 </style>
@@ -828,9 +788,7 @@ iframe{
 
           <p>Temperatura: ${temperatura}°C</p>
           <p>Sensação: ${sensacao}°C</p>
-          <p>Umidade: ${umidade}%</p>
-          <p>Nuvens: ${nuvens}%</p>
-          <p>Vento: ${vento} m/s</p>
+        
 
 
           <img src="${icon}" alt="Weather Icon">
@@ -861,12 +819,13 @@ iframe{
       </th>
       <td>
         <div class="location">
-          <p id="rua"></p>
-          <div id="loading"></div>
+          <div id="rua">
+            <h2>Carregando...</h2>
+          </div>
           <div id="location"></div>
         </div>
                 <div>
-                  <button class="BtnMap" onclick="getLocationAndInitMap()">Atualizar Localização</button>
+                  <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
                 </div>
         
       </td>
@@ -1597,8 +1556,8 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
 
 //copiando a localização 
-copiado += "**Localização:**\n";
-copiado += `**${document.getElementById('rua').textContent}**\n\n`;
+copiado += `**Endereço aproximado:**\n${document.getElementById('rua').textContent}\n\n`;
+copiado += "**Acesse:**\n";
 copiado += `${document.getElementById('mapLink').textContent}\n`;
 
 
@@ -2133,111 +2092,33 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 
 
-setInterval(verificarTercaFeira, 3000); // 3000 milissegundos = 3 segundos
+setInterval(verificarTercaFeira, 11000);
 
  
  
- 
-async function getLocationAndInitMap() {
-    getLocation();
-    initMap();
-    hideIframes();
-}
+function showPosition(position) {
+  var lat = position.coords.latitude;
+  var lng = position.coords.longitude;
+  var latlng = new google.maps.LatLng(lat, lng);
+  var geocoder = new google.maps.Geocoder();
 
-function hideIframes() {
-    // Selecione todos os iframes na página
-    var iframes = document.querySelectorAll("iframe");
-
-    // Oculte cada iframe
-    iframes.forEach(function(iframe) {
-        iframe.style.display = "none";
-    });
-}
-
-function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 50,
-        center: { lat: -34.397, lng: 150.644 }
-    });
-
-    var infoWindow = new google.maps.InfoWindow;
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            // Verifique se já existe um iframe na página
-            var existingIframe = document.querySelector("iframe");
-
-            // Se já existir, remova-o
-            if (existingIframe) {
-                existingIframe.remove();
-            }
-
-            // Crie um novo iframe com a posição atualizada
-            var iframe = document.createElement('iframe');
-            iframe.src = 'https://www.google.com/maps/embed/v1/place?q=' + pos.lat + ',' + pos.lng + '&key=AIzaSyBzREjzO7cNXzP-QzhtTJsZWlwt1lJx2Nk';
-            iframe.width = '200';
-            iframe.height = '200';
-            iframe.frameborder = '0';
-            iframe.style.border = '0';
-            iframe.allowfullscreen = '';
-            iframe.ariaHidden = 'false';
-            iframe.tabIndex = '0';
-
-            document.getElementById('location').appendChild(iframe);
-
-            // Obtenha o nome da rua
-            getStreetName(pos.lat, pos.lng).then(streetName => {
-                if (streetName) {
-                    // Atualize o texto da div com ID 'rua'
-                    document.getElementById('rua').innerText = `Proximo a ${streetName}`;
-                } else {
-                    // Atualize o texto da div com ID 'rua' para indicar que o nome da rua não pôde ser obtido
-                    document.getElementById('rua').innerText = "Não foi possível obter o nome da rua.";
-                }
-            }).catch(error => {
-                console.error("Error getting street name:", error);
-            });
-        });
-    }
-}
-
-async function getStreetName(latitude, longitude) {
-    try {
-        const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg`
-        );
-        const data = await response.json();
-        if (data.results && data.results.length > 0) {
-            const addressComponents = data.results[0].address_components;
-            for (const component of addressComponents) {
-                if (component.types.includes("route")) {
-                    return component.long_name;
-                }
-            }
-        }
-        return null;
-    } catch (error) {
-        console.error("Error getting street name:", error);
-        return null;
-    }
-}
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+  geocoder.geocode({ 'latLng': latlng }, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0]) {
+        document.getElementById('rua').innerHTML = results[0].formatted_address;
+        var mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+        document.getElementById('mapLink').innerHTML = mapLink;
+      } else {
+        alert('No results found');
+      }
     } else {
-        console.log("Geolocation is not supported by this browser.");
+      alert('Geocoder failed due to: ' + status);
     }
+  });
 }
 
 
-
-
+setInterval(getLocation, 2000);
   </script>
   
   
