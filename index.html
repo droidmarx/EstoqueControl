@@ -656,6 +656,17 @@ iframe{
   max-width: 180px ;
 }
 
+.abaDados a {
+  display: none;
+  font-size: 8px;
+  display: block;
+  text-decoration: underline;
+  margin: 0px;
+  padding: 0px;
+  text-align: left;
+  
+}
+
 </style>
 
 <body>
@@ -1556,9 +1567,10 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 
 
 //copiando a localização 
-copiado += `**Endereço aproximado:**\n${document.getElementById('rua').textContent}\n\n`;
-copiado += "**Acesse:**\n";
+copiado += "**Localização:**\n";
 copiado += `${document.getElementById('mapLink').textContent}\n`;
+
+
 
 
 
@@ -1777,6 +1789,30 @@ ctoPortaElement.appendChild(portaElement);
 ctoPortaElement.appendChild(sinalElement);
 
 listItemElement.appendChild(ctoPortaElement);
+
+// Função para extrair a informação do link do mapa do conteúdo copiado
+function extrairLinkMapa(conteudo) {
+  const indiceInicioLinkMapa = conteudo.indexOf('Localização:') + 15; // Adicionado 12 para compensar o comprimento da palavra "Localização:"
+  const indiceFimLinkMapa = conteudo.indexOf('\n', indiceInicioLinkMapa);
+  const linkMapa = conteudo.substring(indiceInicioLinkMapa, indiceFimLinkMapa);
+  return linkMapa;
+}
+
+// Crie o elemento h4 para o link do mapa e adicione uma classe a ele
+const linkMapaElement = document.createElement('h4');
+linkMapaElement.textContent = `Localização: ${extrairLinkMapa(item.conteudo)}`;
+linkMapaElement.classList.add('classe-link-mapa'); // Adicione a classe para o link do mapa
+
+// Crie um elemento <a> e defina o atributo href com o link do mapa
+const linkElement = document.createElement('a');
+linkElement.href = extrairLinkMapa(item.conteudo);
+linkElement.target = '_blank'; // Abra o link em uma nova página
+linkElement.textContent = 'Localização'; // Defina o texto do link como "Localização"
+
+// Substitua o elemento h4 pelo elemento <a> para tornar o link clicável
+linkMapaElement.textContent = '';
+linkMapaElement.appendChild(linkElement);
+ctoPortaElement.appendChild(linkMapaElement);
 
 
 
@@ -2118,7 +2154,7 @@ function showPosition(position) {
 }
 
 
-setInterval(getLocation, 2000);
+setInterval(showPosition, 100);
   </script>
   
   
