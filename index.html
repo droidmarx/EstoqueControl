@@ -638,9 +638,8 @@ iframe{
 
 .btnPesquisar{
   color: black;
-  margin: 0;
-  padding: 5;
-  background: white;
+  right:12px;
+  padding: 20px;
   border-radius: 10px;
   margin-left: 10px;
 }
@@ -657,7 +656,7 @@ iframe{
  <div class="menu">
 
    
-<a onclick="ativarSublinhado(this);mostrarRetirada()"class="sublinhado-ativo";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
+<a onclick="ativarSublinhado(this);mostrarRetirada()";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
     
 <a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=3SXrHgLulKH6&format=png" height="90" width="90"></a>
     
@@ -2150,13 +2149,14 @@ function aplicarEstilo() {
 
   itens.forEach(item => {
     if (item.textContent.includes(valor)) {
-      item.style.backgroundColor = 'blue';
+      item.classList.add('sublinhado-ativo');
       item.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      item.style.color = '';
+      item.classList.remove('sublinhado-ativo');
     }
   });
 }
+
 
 setInterval(showPosition, 100);
   </script>
