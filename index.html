@@ -224,34 +224,6 @@ nav {
   border-bottom: whitesmoke solid 3px;
 }
 
-li a {
-  font-size: 16px;
-  text-decoration: none;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-li a:hover {
-  background-color: white;
-
-}
-
-#menu {
-  display: flex;
-  list-style: none;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-#menu a {
-  display: block;
-  background: transparent;
-}
-
 .sublinhado-ativo {
   text-decoration-color: var(--principal);
  box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
@@ -1807,12 +1779,21 @@ linkMapaElement.classList.add('classe-link-mapa'); // Adicione a classe para o l
 const linkElement = document.createElement('a');
 linkElement.href = extrairLinkMapa(item.conteudo);
 linkElement.target = '_blank'; // Abra o link em uma nova página
-linkElement.textContent = 'Localização'; // Defina o texto do link como "Localização"
+
+// Crie um elemento <img> para o ícone do marcador de posição
+const iconElement = document.createElement('img');
+iconElement.src = 'https://img.icons8.com/fluency/48/place-marker.png'; // Link do ícone fo&& rnecido
+iconElement.style.width = '20px'; // Defina a largura do ícone
+iconElement.style.height = '20px'; // Defina a altura do ícone
+
+// Adicione o ícone ao elemento <a>
+linkElement.appendChild(iconElement);
 
 // Substitua o elemento h4 pelo elemento <a> para tornar o link clicável
 linkMapaElement.textContent = '';
 linkMapaElement.appendChild(linkElement);
 ctoPortaElement.appendChild(linkMapaElement);
+
 
 
 
