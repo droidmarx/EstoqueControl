@@ -629,14 +629,20 @@ iframe{
 }
 
 .abaDados a {
-  font-size: 8px;
   display: block;
-  text-decoration: underline;
   margin: 0px;
   padding: 0px;
   text-align: left;
   color: #34BECD;
+}
 
+.btnPesquisar{
+  color: black;
+  margin: 0;
+  padding: 5;
+  background: white;
+  border-radius: 10px;
+  margin-left: 10px;
 }
 
 </style>
@@ -1014,7 +1020,11 @@ iframe{
   <div id="instalacoes" class="instalacoes" style="display: none">
    
    
-   
+   <div class="pesquisar">
+        <input type="text" id="inputFind" placeholder="Nome do cliente">
+        <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
+   </div>
+
 
    
      <p>Total de Instalações: <span id="total-elementos"></span></p>
@@ -1782,7 +1792,7 @@ linkElement.target = '_blank'; // Abra o link em uma nova página
 
 // Crie um elemento <img> para o ícone do marcador de posição
 const iconElement = document.createElement('img');
-iconElement.src = 'https://img.icons8.com/fluency/48/place-marker.png'; // Link do ícone fo&& rnecido
+iconElement.src = 'https://img.icons8.com/fluency/48/place-marker.png'; // Link do ícone fornecido
 iconElement.style.width = '20px'; // Defina a largura do ícone
 iconElement.style.height = '20px'; // Defina a altura do ícone
 
@@ -2134,6 +2144,19 @@ function showPosition(position) {
   });
 }
 
+function aplicarEstilo() {
+  const valor = document.getElementById('inputFind').value;
+  const itens = document.querySelectorAll('.abaRegistros');
+
+  itens.forEach(item => {
+    if (item.textContent.includes(valor)) {
+      item.style.backgroundColor = 'blue';
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      item.style.color = '';
+    }
+  });
+}
 
 setInterval(showPosition, 100);
   </script>
