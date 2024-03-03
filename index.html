@@ -2143,19 +2143,41 @@ function showPosition(position) {
   });
 }
 
+
+
 function aplicarEstilo() {
   const valor = document.getElementById('inputFind').value;
-  const itens = document.querySelectorAll('.abaRegistros');
+  const itensRegistros = document.querySelectorAll('.abaRegistros');
+  const itensDados = document.querySelectorAll('.abaDados');
 
-  itens.forEach(item => {
+  let encontrado = false;
+
+  itensRegistros.forEach(item => {
     if (item.textContent.includes(valor)) {
       item.classList.add('sublinhado-ativo');
       item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      encontrado = true;
     } else {
       item.classList.remove('sublinhado-ativo');
     }
   });
+
+  itensDados.forEach(item => {
+    if (item.textContent.includes(valor)) {
+      item.classList.add('sublinhado-ativo');
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      encontrado = true;
+    } else {
+      item.classList.remove('sublinhado-ativo');
+    }
+  });
+
+  if (!encontrado) {
+    alert('Nada encontrado');
+  }
 }
+
+
 
 
 setInterval(showPosition, 100);
