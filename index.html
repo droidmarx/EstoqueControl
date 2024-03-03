@@ -636,13 +636,29 @@ iframe{
   color: #34BECD;
 }
 
+
+.pesquisar {
+  border-radius: 5px;
+  position:fixed;
+  top: 90px;
+  background-color: #3841A142;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  left:0px;
+  animation: .8s linear;
+  animation-name: slidein;
+}
+
 .btnPesquisar{
-  color: black;
+  color: white;
   right:12px;
   padding: 20px;
   border-radius: 10px;
   margin-left: 10px;
 }
+
+
 
 </style>
 
@@ -1020,7 +1036,7 @@ iframe{
    
    
    <div class="pesquisar">
-        <input type="text" id="inputFind" placeholder="Nome do cliente">
+        <input type="text" id="inputFind" placeholder="Pesquisar">
         <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
    </div>
 
