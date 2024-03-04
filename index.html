@@ -637,25 +637,64 @@ iframe{
 }
 
 
-.pesquisar {
-  border-radius: 5px;
-  position:fixed;
-  top: 90px;
-  background-color: #3841A142;
+.search-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+} 
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.search-container {
+  display: block;
+  position: fixed;
+  bottom: 35px;
+  left: 20px;
+  width: 200px;
+  height: 40px;
+  display: none;
+}
+
+.search-container input[type=text] {
   width: 100%;
-  margin: 0;
-  padding: 0;
-  left:0px;
-  animation: .8s linear;
-  animation-name: slidein;
+  height: 100%;
+  padding: 6px;
+  font-size: 17px;
+  border: none;
 }
 
 .btnPesquisar{
-  color: white;
-  right:12px;
+  z-index: 1;
+  border-radius: 0 10px 10px 0;
+  position: fixed;
+  bottom: 20px;
   padding: 20px;
-  border-radius: 10px;
-  margin-left: 10px;
+  background-color:#0056b3;
+  animation: .5s all;
+  animation-name: slidein;
+}
+.btnPesquisar:hover{
+  background-color: #007bff;
+
+}
+
+#inputFind{
+  animation: .5s all;
+  animation-name: slidein;
+  height: 42px;
+  width: 90%;
+  border-radius:  10px 0 0 10px;
 }
 
 
@@ -1035,10 +1074,14 @@ iframe{
   <div id="instalacoes" class="instalacoes" style="display: none">
    
    
-   <div class="pesquisar">
-        <input type="text" id="inputFind" placeholder="Pesquisar">
-        <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
-   </div>
+    <div class="search-button" onclick="toggleSearch()">
+      &#x1F50D;
+    </div>
+    
+    <div class="search-container" id="search-container">
+      <input type="text" placeholder="Pesquisar..." id="inputFind">
+      <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
+    </div>
 
 
    
@@ -2161,37 +2204,46 @@ function showPosition(position) {
 
 
 
-function aplicarEstilo() {
-  const valor = document.getElementById('inputFind').value;
-  const itensRegistros = document.querySelectorAll('.abaRegistros');
-  const itensDados = document.querySelectorAll('.abaDados');
-
-  let encontrado = false;
-
-  itensRegistros.forEach(item => {
-    if (item.textContent.includes(valor)) {
-      item.classList.add('sublinhado-ativo');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      encontrado = true;
+function toggleSearch() {
+    var searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'none') {
+      searchContainer.style.display = 'block';
     } else {
-      item.classList.remove('sublinhado-ativo');
+      searchContainer.style.display = 'none';
     }
-  });
-
-  itensDados.forEach(item => {
-    if (item.textContent.includes(valor)) {
-      item.classList.add('sublinhado-ativo');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      encontrado = true;
-    } else {
-      item.classList.remove('sublinhado-ativo');
-    }
-  });
-
-  if (!encontrado) {
-    alert('Nada encontrado');
   }
-}
+
+  function aplicarEstilo() {
+    const valor = document.getElementById('inputFind').value;
+    const itensRegistros = document.querySelectorAll('.abaRegistros');
+    const itensDados = document.querySelectorAll('.abaDados');
+
+    let encontrado = false;
+
+    itensRegistros.forEach(item => {
+      if (item.textContent.includes(valor)) {
+        item.classList.add('sublinhado-ativo');
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        encontrado = true;
+      } else {
+        item.classList.remove('sublinhado-ativo');
+      }
+    });
+
+    itensDados.forEach(item => {
+      if (item.textContent.includes(valor)) {
+        item.classList.add('sublinhado-ativo');
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        encontrado = true;
+      } else {
+        item.classList.remove('sublinhado-ativo');
+      }
+    });
+
+    if (!encontrado) {
+      alert('Nada encontrado');
+    }
+  }
 
 
 
