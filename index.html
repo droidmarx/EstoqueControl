@@ -638,11 +638,13 @@ iframe{
 
 
 .search-button {
+  z-index: 10;
   position: fixed;
   bottom: 20px;
   right: 20px;
   width: 60px;
   height: 60px;
+  background-color: #8F8F8F;
   border-radius: 50%;
   text-align: center;
   line-height: 60px;
@@ -652,11 +654,12 @@ iframe{
   transition: all 0.3s ease;
 } 
 
-.search-button:hover {
+.search-button:focus   {
   background-color: #0056b3;
 }
 
 .search-container {
+  z-index: 10;
   display: block;
   position: fixed;
   bottom: 35px;
@@ -675,7 +678,7 @@ iframe{
 }
 
 .btnPesquisar{
-  z-index: 1;
+  z-index: 10;
   border-radius: 0 10px 10px 0;
   position: fixed;
   bottom: 20px;
@@ -711,7 +714,7 @@ iframe{
  <div class="menu">
 
    
-<a onclick="ativarSublinhado(this);mostrarRetirada()";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
+<a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
     
 <a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=3SXrHgLulKH6&format=png" height="90" width="90"></a>
     
@@ -2206,10 +2209,10 @@ function showPosition(position) {
 
 function toggleSearch() {
     var searchContainer = document.getElementById('search-container');
-    if (searchContainer.style.display === 'none') {
-      searchContainer.style.display = 'block';
-    } else {
+    if (searchContainer.style.display === 'block') {
       searchContainer.style.display = 'none';
+    } else {
+      searchContainer.style.display = 'block';
     }
   }
 
