@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
   <!-- Ícone da página -->
-<link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
+  <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -637,6 +637,29 @@ iframe{
 }
 
 
+.pesquisar {
+  border-radius: 5px;
+  position:fixed;
+  top: 90px;
+  background-color: #3841A142;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  left:0px;
+  animation: .8s linear;
+  animation-name: slidein;
+}
+
+.btnPesquisar{
+  color: white;
+  right:12px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+
+
 </style>
 
 <body>
@@ -1012,10 +1035,11 @@ iframe{
   <div id="instalacoes" class="instalacoes" style="display: none">
    
    
+   <div class="pesquisar">
+        <input type="text" id="inputFind" placeholder="Pesquisar">
+        <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
+   </div>
 
-
-  <input type="text" placeholder="Pesquisar..." id="inputFind">
-          <button class="BTN" onclick="aplicarEstilo()">IR</button>
 
    
      <p>Total de Instalações: <span id="total-elementos"></span></p>
@@ -1488,7 +1512,7 @@ function atualizarTabelaEstoque() {
       setTimeout(copiarConteudo, 200)
     }
 
-    // Array para armazenar os dados copiados 
+    // Array para armazenar os dados copiados
     let dadosCopiados = [];
 
     // Função para copiar o conteúdo atualizado para a área de transferência
@@ -2137,7 +2161,7 @@ function showPosition(position) {
 
 
 
-  function aplicarEstilo() {
+function aplicarEstilo() {
   const valor = document.getElementById('inputFind').value;
   const itensRegistros = document.querySelectorAll('.abaRegistros');
   const itensDados = document.querySelectorAll('.abaDados');
