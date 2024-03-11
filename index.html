@@ -489,6 +489,11 @@ select#registros {
   padding: 0;
 }
 
+#comentarios1{
+  width: 95%;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 #comentarios:focus{
  animation: blink 2s linear infinite;
  caret-color: grey;
@@ -642,10 +647,11 @@ iframe{
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 60px;
-  height: 60px;
-  border: 1px black solid;
-  background-color: #8F8F8F;
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  border: none;
+  background-color: #1564BA;
   border-radius: 50%;
   text-align: center;
   line-height: 60px;
@@ -655,8 +661,8 @@ iframe{
   transition: all 0.3s ease;
 } 
 
-.search-button:focus   {
-  background-color: #0056b3;
+.search-button:hover:focus   {
+  background-color: #0056B3;
 }
 
 .search-container {
@@ -676,6 +682,8 @@ iframe{
   padding: 6px;
   font-size: 17px;
   border: none;
+  background:#C7D5E4;
+  outline: none;
 }
 
 .btnPesquisar{
@@ -684,7 +692,7 @@ iframe{
   position: fixed;
   bottom: 20px;
   padding: 20px;
-  background-color:#0056b3;
+  background-color:#0056B3;
   animation: .5s all;
   animation-name: slidein;
 }
@@ -849,6 +857,7 @@ iframe{
 
     </script>
     
+ 
     
          <p id="mapLink"></p>
 
@@ -877,6 +886,18 @@ iframe{
         
       </td>
       </tr>
+
+<tr>
+  <th>Tipo de trabalho:</th>
+  <td>
+    <select name="Trabalho" id="Trabalho">Trabalho
+    <option value="Instalacao">Instalação</option>
+    <option value="Manutencao">Manutenção</option>
+    <option value="MudancaEnd">Mudança de Endereço</option>
+    </select>
+  </td>
+</tr>
+
 
       <tr>
         <th>Técnico:</th>
@@ -1038,6 +1059,7 @@ iframe{
       
     </table>
     <br>
+     <textarea id="comentarios1" placeholder="Comentários..." rows="10" cols="35"></textarea>
   </div>
 
   
@@ -1575,8 +1597,8 @@ function atualizarTabelaEstoque() {
 
 
 
-    
-     copiado += `##Técnico: ${document.getElementById('tecnico').value}\n`;
+    copiado += `##Tipo de trabalho: ${document.getElementById('Trabalho').value}\n`;
+     copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
       copiado += `CTO: ${document.getElementById('cto').value}\n`;
@@ -1613,6 +1635,12 @@ copiado += ` ${document.getElementById('canais5GHz').value}###\n`;
 //copiando a localização 
 copiado += "**Localização:**\n";
 copiado += `${document.getElementById('mapLink').textContent}\n`;
+
+
+copiado += "**Comentários:**\n";
+copiado += `${document.getElementById('comentarios1').value}\n`;
+
+
 
 
 
@@ -2252,8 +2280,13 @@ function toggleSearch() {
 
 
 
+
+
+
 setInterval(showPosition, 100);
   </script>
+  
+  
   
   
 </body>
