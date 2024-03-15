@@ -731,7 +731,7 @@ iframe{
      
 
      
-<a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
+<a style="display:none" onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
     
     
@@ -868,32 +868,15 @@ iframe{
         <h1>HABILITAR</h1>
     
     <table>
-      <tr>
-        <th><div id="weather" class="temp">
-          <h2>Carregando...</h2>
-        </div>
-      </th>
-      <td>
-        <div class="location">
-          <div id="rua">
-            <h2>Carregando...</h2>
-          </div>
-          <div id="location"></div>
-        </div>
-                <div>
-                  <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
-                </div>
-        
-      </td>
-      </tr>
+    
 
 <tr>
   <th>Tipo de trabalho:</th>
   <td>
     <select name="Trabalho" id="Trabalho">Trabalho
-    <option value="Instalacao">Instalação</option>
-    <option value="Manutencao">Manutenção</option>
-    <option value="MudancaEnd">Mudança de Endereço</option>
+    <option value="Instalação">Instalação</option>
+    <option onchange="mostrarManutencao()" value="Manutencao">Manutenção</option>
+    <option value="Mudanca de endereço">Mudança de endereço</option>
     </select>
   </td>
 </tr>
@@ -1053,7 +1036,24 @@ iframe{
 </tr>
 
 
-  
+    <tr>
+        <th><div id="weather" class="temp">
+          <h2>Carregando...</h2>
+        </div>
+      </th>
+      <td>
+        <div class="location">
+          <div id="rua">
+            <h2>Carregando...</h2>
+          </div>
+          <div id="location"></div>
+        </div>
+                <div>
+                  <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
+                </div>
+        
+      </td>
+      </tr>
 
       
       
@@ -1597,7 +1597,7 @@ function atualizarTabelaEstoque() {
 
 
 
-    copiado += `##Tarefa: ${document.getElementById('Trabalho').value}\n`;
+    copiado += `##Taréfa: ${document.getElementById('Trabalho').value}\n`;
      copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
@@ -1641,7 +1641,7 @@ copiado += `${document.getElementById('mapLink').textContent}##\n`;
 const comentarios = document.getElementById('comentarios1').value;
 if (comentarios.trim() !== "") {
   copiado += "**Comentários:**\n";
-  copiado += `${comentarios}\n`;
+  copiado += `__${comentarios}__\n`;
 }
 
 
