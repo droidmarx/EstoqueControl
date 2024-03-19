@@ -711,11 +711,12 @@ iframe{
 
  .alert {
   backdrop-filter: blur(5px); 
-  background-color: rgba(07, 0, 0, 0.5);
+  background-color: rgba(10, 0, 0, 0.8);
     position: fixed;
-    top: 10px;
+    top: 320px;
+    width: fit-content;
     padding: 10px;
-    border: 1px solid #FFFFFF;
+    font-size: 14px;
     border-radius: 10px;
     z-index: 9999;
     display: none;
@@ -730,6 +731,8 @@ iframe{
   .alert button{
     color: white;
     border: 1px solid #FFFFFF;
+    width: 90px;
+    margin: 10px;
   }
 
 
@@ -761,16 +764,25 @@ iframe{
 <a style="display:none" onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
     
-   </div>
-  </nav>
-  
+    <div class="alert" id="alerta">
 
-<div class="alert" id="alerta">
-  <p>Olá, deseja registrar o pedido de material ?</p>
+  <p>Deseja registrar o pedido de material ?</p>
+  
   <button onclick="prosseguir()">Sim</button>
   
   <button onclick="fecharAlerta()">Depois</button>
+  
 </div>
+
+    
+    
+   </div>
+
+
+   
+  </nav>
+  
+
    
 
    
