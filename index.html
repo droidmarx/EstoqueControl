@@ -709,6 +709,29 @@ iframe{
   border-radius:  10px 0 0 10px;
 }
 
+ .alert {
+  backdrop-filter: blur(5px); 
+  background-color: rgba(07, 0, 0, 0.5);
+    position: fixed;
+    top: 10px;
+    padding: 10px;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    z-index: 9999;
+    display: none;
+    animation: .9s all;
+    animation-name: slidein;
+  }
+  
+  .alert p{
+    color: white;
+  }
+  
+  .alert button{
+    color: white;
+    border: 1px solid #FFFFFF;
+  }
+
 
 
 </style>
@@ -719,8 +742,12 @@ iframe{
 
   <!-- Barra de navegação -->
   <nav id="nav">
+    
+    
    
  <div class="menu">
+
+
 
    
 <a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
@@ -734,18 +761,18 @@ iframe{
 <a style="display:none" onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=QAZ1r1PFVZoh&format=png
     " height="90" width="90"></a>
     
-    
-    
    </div>
-   
-     
-
-   
   </nav>
+  
+
+<div class="alert" id="alerta">
+  <p>Olá, deseja registrar o pedido de material ?</p>
+  <button onclick="prosseguir()">Sim</button>
+  
+  <button onclick="fecharAlerta()">Depois</button>
+</div>
    
-   
-      
-   
+
    
 
 
@@ -782,6 +809,10 @@ iframe{
 
 
 </div>
+
+
+
+
 
   
 
@@ -866,6 +897,7 @@ iframe{
     
     
         <h1>HABILITAR</h1>
+
     
     <table>
     
@@ -2155,20 +2187,27 @@ function verificarTercaFeira() {
   var dataAtual = new Date();
   var diaSemana = dataAtual.getDay();
 
-  if (diaSemana === 2 ) {
+  if (diaSemana === 2) {
     var alertaExibido = sessionStorage.getItem('alertaExibido');
 
     if (!alertaExibido) {
-      var confirmacao = confirm("Hoje é dia de pedir material. Deseja prosseguir?");
-
-      if (confirmacao) {
-        sessionStorage.setItem('alertaExibido', 'true');
-
-        // Redirecionar para o link do formulário de pedido de material
-        window.location.href = 'https://forms.gle/hLhheg9B6CMuParT6';
-      }
+      exibirAlerta();
     }
   }
+}
+
+function exibirAlerta() {
+  document.getElementById('alerta').style.display = 'block';
+}
+
+function prosseguir() {
+  sessionStorage.setItem('alertaExibido', 'true');
+  // Redirecionar para o link do formulário de pedido de material
+  window.location.href = 'https://forms.gle/hLhheg9B6CMuParT6';
+}
+
+function fecharAlerta() {
+  document.getElementById('alerta').style.display = 'none';
 }
 
 
@@ -2280,12 +2319,6 @@ function toggleSearch() {
       alert('Nada encontrado');
     }
   }
-
-
-
-
-
-
 
 setInterval(showPosition, 100);
   </script>
