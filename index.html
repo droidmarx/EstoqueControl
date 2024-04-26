@@ -735,6 +735,14 @@ iframe{
     margin: 10px;
   }
   
+  .editor{
+    font-size: 12px;
+    text-decoration: none;
+    color: black;
+    transition: box-shadow 0.3s ease;
+    animation: blink 7.5s infinite;
+  }
+  
 
 
 
@@ -794,7 +802,10 @@ iframe{
   
 <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ehbc=2E312F" width="350" height="400"></iframe>
   
-<button class="BTN"><a href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13">MODO EDITOR</a></button>
+<button class="BTN">
+   <a class="editor" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13">ADD CTO</a>
+</button>
+
 
 
 <div style="display: none;">
@@ -1307,6 +1318,11 @@ function mostrarEstoque() {
     }
 
     function mostrarManutencao() {
+      
+     setTimeout(function() {
+        window.open("https://goo.gl/maps/88VJ2ZpSiy4F2Qas7?g_st=aw", "_blank");
+    }, 1700);  
+      
       const estoqueDiv = document.getElementById("estoqueDiv");
       const retiradaDiv = document.getElementById("retiradaDiv");
       const habilitar = document.getElementById("habilitar");
