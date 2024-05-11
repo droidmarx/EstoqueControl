@@ -991,10 +991,6 @@ iframe{
         <td><input type="text" placeholder="Nome do Cliente" id="cliente"></td>
       </tr>
       <tr>
-        <th>Fibra metragem:</th>
-        <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)" id="fibraMetragem"></td>
-      </tr>
-      <tr>
         <th>CTO:</th>
         <td><input placeholder="00 - Bairro" type="num" id="cto"></td>
       </tr>
@@ -1029,6 +1025,10 @@ iframe{
       <tr>
         <th>Sinal do Cliente:</th>
         <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
+      </tr>
+        <tr>
+        <th>Fibra metragem:</th>
+        <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)" id="fibraMetragem"></td>
       </tr>
       <tr>
         <th>Conector-APC:</th>
@@ -1079,7 +1079,9 @@ iframe{
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
       
-
+      <tr>
+       <td><th>.</th></td>
+      </tr>
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -2038,11 +2040,16 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 'Sinal da CTO:'.length;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
-  const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
-  return sinalCTO;
+  if (indiceInicioSinalCTO !== -1 && indiceFimSinalCTO !== -1) {
+    const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO).trim();
+    return sinalCTO;
+  } else {
+    return ''; // Retorna uma string vazia se não encontrar o sinal da CTO
+  }
 }
+
 
 
 // Função para extrair a informação da Porta do conteúdo copiado
