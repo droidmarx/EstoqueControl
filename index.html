@@ -1079,9 +1079,7 @@ iframe{
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
       
-      <tr>
-       <td><th>.</th></td>
-      </tr>
+    
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -2041,7 +2039,7 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 12;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
   const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
   return sinalCTO;
