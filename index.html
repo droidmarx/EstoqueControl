@@ -930,6 +930,8 @@ iframe{
     
     
         <h1>HABILITAR</h1>
+    
+
 
     
     <table>
@@ -1680,23 +1682,54 @@ function atualizarTabelaEstoque() {
     copiado += `##Taréfa: ${document.getElementById('Trabalho').value}\n`;
      copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
-      copiado += `Fibra Metragem: ${document.getElementById('fibraMetragem').value}\n`;
+      
+      
+
       copiado += `CTO: ${document.getElementById('cto').value}\n`;
       copiado += `Porta: ${document.getElementById('porta').value}\n`;
       copiado += `Sinal CTO: ${document.getElementById('sinalCto').value}\n`;
       copiado += `Sinal Cliente: ${document.getElementById('sinalCliente').value}\n`;
-      copiado += `SC-APC: ${document.getElementById('scApc').value}\n`;
-      copiado += `SC-UPC: ${document.getElementById('scUpc').value}\n`;
-      copiado += `Esticadores: ${document.getElementById('esticadores').value}\n`;
-      copiado += `Roldana: ${document.getElementById('roldana').value}\n`;
-      copiado += `Fecho: ${document.getElementById('fecho').value}\n`;
-      copiado += `Anel: ${document.getElementById('anel').value}\n`;
-      copiado += `Fita aço: ${document.getElementById('fitaAco').value}\n`;
-      copiado += `Fixa fio: ${document.getElementById('fixaFio').value}\n`;
-      copiado += `Isolante: ${document.getElementById('isolante').value}\n`;
-      copiado += `Cabo de rede: ${document.getElementById('caboRede').value}\n`;
-      copiado += `Conc RJ45: ${document.getElementById('concRj45').value}\n`;
-      copiado += `Kit fusão: ${document.getElementById('kitFusao').value}##\n`;
+      
+      
+      
+// Escrevendo o cabeçalho
+copiado += `##**MATERIAS UTILIZADOS:**#\n`;
+
+// Exemplo de cópia de valores de campos de entrada
+const campos = {
+  'fibraMetragem': 'Fibra Metragem',
+  'scApc': 'SC-APC',
+  'scUpc': 'SC-UPC',
+  'esticadores': 'Esticadores',
+  'roldana': 'Roldana',
+  'fecho': 'Fecho',
+  'anel': 'Anel',
+  'fitaAco': 'Fita aço',
+  'fixaFio': 'Fixa fio',
+  'isolante': 'Isolante',
+  'caboRede': 'Cabo de rede',
+  'concRj45': 'Conc RJ45',
+  'kitFusao': 'Kit fusão'
+};
+
+// Exemplo de cópia de valores de campos de entrada
+let algumMaterialUtilizado = false;
+
+Object.keys(campos).forEach((campo) => {
+  const valorCampo = document.getElementById(campo).value;
+  if (valorCampo.trim() !== "") {
+    copiado += `${campos[campo]}: ${valorCampo}\n`;
+    algumMaterialUtilizado = true;
+  }
+});
+
+if (!algumMaterialUtilizado) {
+  copiado += "Não foi utilizado materiais !\n";
+}
+
+copiado += '##\n';
+
+
       
           // Copiando os valores da primeira tabela (Wifi 2.4GHz)
     
@@ -1712,9 +1745,12 @@ copiado += ` ${document.getElementById('canais5GHz').value}##\n`;
 
 
 
-//copiando a localização 
-copiado += "**Localização:**\n";
-copiado += `${document.getElementById('mapLink').textContent}##\n`;
+// Verificando se há localização e copiando, se houver
+const localizacao = document.getElementById('mapLink').textContent;
+if (localizacao.trim() !== "") {
+  copiado += "**Localização:**\n";
+  copiado += `${localizacao}##\n`;
+}
 
 
 // Verificando se há comentários e copiando, se houver
@@ -2371,6 +2407,8 @@ function toggleSearch() {
 setInterval(showPosition, 100);if (true) {
   
 }
+
+
 
 
 
