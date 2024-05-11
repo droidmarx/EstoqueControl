@@ -1699,13 +1699,13 @@ function atualizarTabelaEstoque() {
       
       
 // Escrevendo o cabeçalho
-copiado += `##**MATERIAS UTILIZADOS:**#\n`;
+copiado += `#**Materiais Utilizados:**#\n`;
 
 // Exemplo de cópia de valores de campos de entrada
 const campos = {
   'fibraMetragem': 'Metragem da Fibra',
-  'scApc': 'Conector-APC',
-  'scUpc': 'Conector-UPC',
+  'scApc': 'Conector APC',
+  'scUpc': 'Conector UPC',
   'esticadores': 'Esticadores',
   'roldana': 'Roldana',
   'fecho': 'Fecho',
@@ -1963,7 +1963,6 @@ ctoPortaElement.classList.add('abaDados');
 
 const cto = extrairCTO(item.conteudo);
 const porta = extrairPorta(item.conteudo);
-const sinal = extrairSinalCTO(item.conteudo);
 
 
 
@@ -1977,14 +1976,10 @@ const portaElement = document.createElement('h4');
 portaElement.textContent = `Porta: ${porta}`;
 portaElement.classList.add('classe-porta'); // Adicione a classe para Porta
 
-const sinalElement = document.createElement('h4');
-sinalElement.textContent = `Sinal: ${sinal}`;
-sinalElement.classList.add('classe-sinal'); // Adicione a classe para Sinal
 
 // Adicione os elementos span ao elemento h4
 ctoPortaElement.appendChild(ctoElement);
 ctoPortaElement.appendChild(portaElement);
-ctoPortaElement.appendChild(sinalElement);
 
 listItemElement.appendChild(ctoPortaElement);
 
@@ -2039,7 +2034,7 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 12;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
   const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
   return sinalCTO;
