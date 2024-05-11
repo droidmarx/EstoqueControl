@@ -2039,8 +2039,19 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
-  const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
+  let indiceInicioSinalCTO, indiceFimSinalCTO;
+  
+  // Verifica se a data é após 10 de maio
+  const dataAtual = new Date();
+  const diaAtual = dataAtual.getDate();
+  const mesAtual = dataAtual.getMonth() + 1; // Os meses em JavaScript são indexados de 0 a 11
+  if (mesAtual > 5 || (mesAtual === 5 && diaAtual > 10)) {
+    indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 12;
+  } else {
+    indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
+  }
+  
+  indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
   const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
   return sinalCTO;
 }
