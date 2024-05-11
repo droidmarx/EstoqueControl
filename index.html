@@ -2040,16 +2040,11 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 'Sinal da CTO:'.length;
+  const indiceInicioSinalCTO = conteudo.indexOf('sinalCto:') + 10;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
-  if (indiceInicioSinalCTO !== -1 && indiceFimSinalCTO !== -1) {
-    const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO).trim();
-    return sinalCTO;
-  } else {
-    return ''; // Retorna uma string vazia se não encontrar o sinal da CTO
-  }
+  const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
+  return sinalCTO;
 }
-
 
 
 // Função para extrair a informação da Porta do conteúdo copiado
