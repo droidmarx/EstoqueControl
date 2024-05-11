@@ -1023,19 +1023,19 @@ iframe{
         </td>
       </tr>
       <tr>
-        <th>Sinal CTO:</th>
+        <th>Sinal da CTO:</th>
         <td><input type="number"  placeholder="-00.00" id="sinalCto"></td>
       </tr>
       <tr>
-        <th>Sinal Cliente:</th>
+        <th>Sinal do Cliente:</th>
         <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
       </tr>
       <tr>
-        <th>SC-APC:</th>
+        <th>Conector-APC:</th>
         <td><input type="number" placeholder="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)"></td>
       </tr>
       <tr>
-        <th>SC-UPC:</th>
+        <th>Conector-UPC:</th>
         <td><input type="number" placeholder="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)"></td>
       </tr>
       <tr>
@@ -1055,7 +1055,7 @@ iframe{
         <td><input type="number" placeholder="00" id="anel" onchange="atualizarQuantidadeRetirada(6, this.value)"></td>
       </tr>
       <tr>
-        <th>Fita aço:</th>
+        <th>Fita de aço:</th>
         <td><input type="number" placeholder="00" id="fitaAco" onchange="atualizarQuantidadeRetirada(7, this.value)"></td>
       </tr>
       <tr>
@@ -1071,7 +1071,7 @@ iframe{
         <td><input type="number" placeholder="00" id="caboRede" onchange="atualizarQuantidadeRetirada(10, this.value)"></td>
       </tr>
       <tr>
-        <th>Conc RJ45:</th>
+        <th>Conctor RJ45:</th>
         <td><input type="number" placeholder="00" id="concRj45" onchange="atualizarQuantidadeRetirada(11, this.value)"></td>
       </tr>
       <tr>
@@ -1079,7 +1079,7 @@ iframe{
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
       
-      
+
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -1693,8 +1693,8 @@ function atualizarTabelaEstoque() {
 
       copiado += `CTO: ${document.getElementById('cto').value}\n`;
       copiado += `Porta: ${document.getElementById('porta').value}\n`;
-      copiado += `Sinal CTO: ${document.getElementById('sinalCto').value}\n`;
-      copiado += `Sinal Cliente: ${document.getElementById('sinalCliente').value}\n`;
+      copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
+      copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
       
       
       
@@ -1703,18 +1703,18 @@ copiado += `##**MATERIAS UTILIZADOS:**#\n`;
 
 // Exemplo de cópia de valores de campos de entrada
 const campos = {
-  'fibraMetragem': 'Fibra Metragem',
-  'scApc': 'SC-APC',
-  'scUpc': 'SC-UPC',
+  'fibraMetragem': 'Metragem da Fibra',
+  'scApc': 'Conector-APC',
+  'scUpc': 'Conector-UPC',
   'esticadores': 'Esticadores',
   'roldana': 'Roldana',
   'fecho': 'Fecho',
   'anel': 'Anel',
-  'fitaAco': 'Fita aço',
+  'fitaAco': 'Fita de Aço',
   'fixaFio': 'Fixa fio',
   'isolante': 'Isolante',
   'caboRede': 'Cabo de rede',
-  'concRj45': 'Conc RJ45',
+  'concRj45': 'Conctor RJ45',
   'kitFusao': 'Kit fusão'
 };
 
