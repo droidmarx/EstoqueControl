@@ -2039,7 +2039,7 @@ function extrairCTO(conteudo) {
 
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 12;
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal CTO:') + 10;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
   const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
   return sinalCTO;
