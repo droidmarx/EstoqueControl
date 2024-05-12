@@ -226,12 +226,21 @@ nav {
 }
 
 .sublinhado-ativo {
-  text-decoration-color: var(--principal);
- box-shadow: 0 2px 8px rgba(09, 10, 0, 01);
+ box-shadow: 0px 0px 20px rgba(15, 206, 224, 0.59);
  height: fit-content;
  width: fit-content;
  animation: scaleAnimation 1.2s infinite;
 }
+
+
+.sublinhado-ativo1 {
+ box-shadow: 0 2px 8px rgba(01, 0, 0, 01);
+ height: fit-content;
+ width: fit-content;
+ animation: scaleAnimation1 2s infinite;
+}
+
+
 
 @keyframes scaleAnimation {
   0% {
@@ -239,25 +248,50 @@ nav {
 
     border-radius: 4px;
     transform: scale(1.3);
-    box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
+    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
 
   }
   50% {
     
     border-radius: 8px 10px 8px 10px;
     transform: scale(1.2);
-    background-color: dimgray;
-    box-shadow: 0 10px 11px rgba(09, 10, 0, 01);
+    box-shadow: 0px 5px 10px 0px #2E373D
 
   }
   100% {
     
     border-radius: 4px;
     transform: scale(1.3);
-    box-shadow: 0 20px 20px rgba(09, 10, 0, 01);
+    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
 
   }
 }
+
+
+@keyframes scaleAnimation1 {
+  0% {
+    
+    border-radius: 4px;
+    transform: scale(1.3);
+    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
+
+  }
+  50% {
+    
+    border-radius: 8px 10px 8px 10px;
+    transform: scale(1.3);
+    box-shadow: 0px 5px 10px 0px #2E373D
+
+  }
+  100% {
+    
+    border-radius: 4px;
+    transform: scale(1.3);
+    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
+
+  }
+}
+
 
 
 #btn-mobile {
@@ -806,13 +840,13 @@ iframe{
  
  
  <div class="menu">
-   <a class="sublinhado-ativo" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13">
+   <a class="sublinhado-ativo1" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13">
      
      <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20">
      
 </a>
 
-<a class="sublinhado-ativo" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC">
+<a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC">
   
 <img class="logo" src="https://img.icons8.com/?size=512&id=0JR9TPl4aWU1&format=png" height="20" width="20">
 </a>
