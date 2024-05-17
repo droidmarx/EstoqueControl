@@ -1083,11 +1083,11 @@ iframe{
       </tr>
       <tr>
         <th>Sinal da CTO:</th>
-        <td><input type="number"  placeholder="-00.00" id="sinalCto"></td>
+        <td><input type="text"  placeholder="-00.00" id="sinalCto"></td>
       </tr>
       <tr>
         <th>Sinal do Cliente:</th>
-        <td><input type="number" placeholder="-00.00" id="sinalCliente"></td>
+        <td><input type="text" placeholder="-00.00" id="sinalCliente"></td>
       </tr>
         <tr>
         <th>Fibra metragem:</th>
@@ -2254,22 +2254,32 @@ function extrairPorta(conteudo) {
       event.target.value = '';
     }
 
-    //Função para deixar negativo o sinal do cliente e da CTO mesmo se digitar ele positivo
-    var input = document.getElementById("sinalCto");
-    var input1 = document.getElementById("sinalCliente");
+function formatInput(e) {
+            let value = e.target.value;
 
-    input.addEventListener('input', function() {
-      if (parseFloat(input.value) >= 0) {
-        input.value = '-' + input.value;
-      }
-    });
+            // Remove todos os caracteres que não são dígitos ou vírgula
+            value = value.replace(/[^0-9,]/g, '');
 
-    input1.addEventListener('input', function() {
-      if (parseFloat(input1.value) >= 0) {
-        input1.value = '-' + input1.value;
-      }
-    });
+            // Garante que sempre tenha um sinal negativo no início
+            value = '-' + value;
 
+            // Adiciona a vírgula se não estiver presente no lugar certo
+            if (value.length > 3 && value.indexOf(',') !== 3) {
+                value = value.slice(0, 3) + ',' + value.slice(3);
+            }
+
+            // Limita o número de caracteres antes da vírgula
+            if (value.length > 6) {
+                value = value.slice(0, 6);
+            }
+
+            // Atualiza o valor do input
+            e.target.value = value;
+        }
+
+        document.getElementById('sinalCto').addEventListener('input', formatInput);
+        document.getElementById('sinalCliente').addEventListener('input', formatInput);
+        
 
     //botão toogle menu
 
