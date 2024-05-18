@@ -1026,9 +1026,12 @@ iframe{
   <th>Tipo de trabalho:</th>
   <td>
     <select name="Trabalho" id="Trabalho">Trabalho
-    <option value="Instalação">Instalação</option>
-    <option onchange="mostrarManutencao()" value="Manutencao">Manutenção</option>
-    <option value="Mudanca de endereço">Mudança de endereço</option>
+    <option value="Instalação
+    
+    **  Por favor, habilitar !**">Instalação</option>
+    <option value="Mudanca de endereço
+    
+    **  Por favor, atualizar !**">Mudança de endereço</option>
     </select>
   </td>
 </tr>
@@ -1758,7 +1761,7 @@ function atualizarTabelaEstoque() {
 
 
 
-    copiado += `##Taréfa: ${document.getElementById('Trabalho').value}\n`;
+    copiado += `## ${document.getElementById('Trabalho').value}\n`;
      copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       
@@ -1806,7 +1809,7 @@ if (!algumMaterialUtilizado) {
   copiado += "Não foi utilizado materiais !\n";
 }
 
-copiado += '##\n';
+copiado += '#\n';
 
 
       
@@ -1827,7 +1830,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}##\n`;
 // Verificando se há localização e copiando, se houver
 const localizacao = document.getElementById('mapLink').textContent;
 if (localizacao.trim() !== "") {
-  copiado += "**Localização:**\n";
+  copiado += "**📍Localização:**\n";
   copiado += `${localizacao}##\n`;
 }
 
@@ -1899,7 +1902,7 @@ copiado = copiado.replace(/#/g, '\n');
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.open('https://t.me/share/url?url=' + encodeURIComponent('**Por favor habilitar !!**\n' + copiado + '\n\n**Obrigado !**'));
+      window.open('https://t.me/share/url?url=' + encodeURIComponent('** ⚙️ **\n' + copiado + '\n\n**Obrigado !**'));
 
       // Adicionar a string copiada ao array de dadosCopiados
       dadosCopiados.push({
