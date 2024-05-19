@@ -2085,8 +2085,8 @@ linkElement.target = '_blank'; // Abra o link em uma nova página
 // Crie um elemento <img> para o ícone do marcador de posição
 const iconElement = document.createElement('img');
 iconElement.src = 'https://img.icons8.com/fluency/48/place-marker.png'; // Link do ícone fornecido
-iconElement.style.width = '20px'; // Defina a largura do ícone
-iconElement.style.height = '20px'; // Defina a altura do ícone
+iconElement.style.width = '25px'; // Defina a largura do ícone
+iconElement.style.height = '25px'; // Defina a altura do ícone
 
 // Adicione o ícone ao elemento <a>
 linkElement.appendChild(iconElement);
@@ -2094,7 +2094,7 @@ linkElement.appendChild(iconElement);
 // Substitua o elemento h4 pelo elemento <a> para tornar o link clicável
 linkMapaElement.textContent = '';
 linkMapaElement.appendChild(linkElement);
-ctoPortaElement.appendChild(linkMapaElement);
+containerElement.appendChild(linkMapaElement);
 
 
 
