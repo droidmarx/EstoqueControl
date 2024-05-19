@@ -1028,10 +1028,10 @@ iframe{
     <select name="Trabalho" id="Trabalho">Trabalho
     <option value="Instalação
     
-    **  Por favor, habilitar !**">Instalação</option>
-    <option value="Mudanca de endereço
+    **Por favor habilitar !**#">Instalação</option>
+    <option value="Mudança de endereço
     
-    **  Por favor, atualizar !**">Mudança de endereço</option>
+    **Por favor atualizar !**#">Mudança de endereço</option>
     </select>
   </td>
 </tr>
@@ -1144,8 +1144,6 @@ iframe{
         <th>Kit fusão:</th>
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
-      
-    
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -2032,13 +2030,14 @@ containerElement.appendChild(textElement);
 // Adicionar o elemento pai ao elemento desejado (por exemplo, uma lista)
 listItemElement.appendChild(containerElement);
 
-    
-   
-   const ctoPortaElement = document.createElement('h4');
+
+
+const ctoPortaElement = document.createElement('h4');
 ctoPortaElement.classList.add('abaDados');
 
 const cto = extrairCTO(item.conteudo);
 const porta = extrairPorta(item.conteudo);
+const sinal = extrairSinalCTO(item.conteudo);
 
 
 
@@ -2052,45 +2051,16 @@ const portaElement = document.createElement('h4');
 portaElement.textContent = `Porta: ${porta}`;
 portaElement.classList.add('classe-porta'); // Adicione a classe para Porta
 
+const sinalElement = document.createElement('h4');
+sinalElement.textContent = `${sinal}`;
+sinalElement.classList.add('classe-sinal'); // Adicione a classe para Sinal
 
 // Adicione os elementos span ao elemento h4
 ctoPortaElement.appendChild(ctoElement);
 ctoPortaElement.appendChild(portaElement);
+ctoPortaElement.appendChild(sinalElement);
 
 listItemElement.appendChild(ctoPortaElement);
-
-// Função para extrair a informação do link do mapa do conteúdo copiado
-function extrairLinkMapa(conteudo) {
-  const indiceInicioLinkMapa = conteudo.indexOf('Localização:') + 15; // Adicionado 12 para compensar o comprimento da palavra "Localização:"
-  const indiceFimLinkMapa = conteudo.indexOf('\n', indiceInicioLinkMapa);
-  const linkMapa = conteudo.substring(indiceInicioLinkMapa, indiceFimLinkMapa);
-  return linkMapa;
-}
-
-// Crie o elemento h4 para o link do mapa e adicione uma classe a ele
-const linkMapaElement = document.createElement('h4');
-linkMapaElement.textContent = `Localização: ${extrairLinkMapa(item.conteudo)}`;
-linkMapaElement.classList.add('classe-link-mapa'); // Adicione a classe para o link do mapa
-
-// Crie um elemento <a> e defina o atributo href com o link do mapa
-const linkElement = document.createElement('a');
-linkElement.href = extrairLinkMapa(item.conteudo);
-linkElement.target = '_blank'; // Abra o link em uma nova página
-
-// Crie um elemento <img> para o ícone do marcador de posição
-const iconElement = document.createElement('img');
-iconElement.src = 'https://img.icons8.com/fluency/48/place-marker.png'; // Link do ícone fornecido
-iconElement.style.width = '20px'; // Defina a largura do ícone
-iconElement.style.height = '20px'; // Defina a altura do ícone
-
-// Adicione o ícone ao elemento <a>
-linkElement.appendChild(iconElement);
-
-// Substitua o elemento h4 pelo elemento <a> para tornar o link clicável
-linkMapaElement.textContent = '';
-linkMapaElement.appendChild(linkElement);
-ctoPortaElement.appendChild(linkMapaElement);
-
 
 
 
@@ -2107,10 +2077,9 @@ function extrairCTO(conteudo) {
   return cto;
 }
 
-
 // Função para extrair a informação do Sinal da CTO do conteúdo copiado
 function extrairSinalCTO(conteudo) {
-  const indiceInicioSinalCTO = conteudo.indexOf('Sinal da CTO:') + 12;
+  const indiceInicioSinalCTO = conteudo.indexOf('Sinal') + 0;
   const indiceFimSinalCTO = conteudo.indexOf('\n', indiceInicioSinalCTO);
   const sinalCTO = conteudo.substring(indiceInicioSinalCTO, indiceFimSinalCTO);
   return sinalCTO;
@@ -2124,16 +2093,16 @@ function extrairPorta(conteudo) {
   const porta = conteudo.substring(indiceInicioPorta, indiceFimPorta);
   return porta;
 }
-    
-    
 
-    // Adicionar o item à lista
-    listaElement.appendChild(listItemElement);
-  }
 
-  // Atualizar o número total de elementos
-  const totalElement = document.getElementById('total-elementos');
-  totalElement.textContent = dadosCopiados.length;
+
+// Adicionar o item à lista
+listaElement.appendChild(listItemElement);
+}
+
+// Atualizar o número total de elementos
+const totalElement = document.getElementById('total-elementos');
+totalElement.textContent = dadosCopiados.length;
 }
 
 
