@@ -1026,8 +1026,8 @@ iframe{
   <th>Tipo de trabalho:</th>
   <td>
     <select name="Trabalho" id="Trabalho">Trabalho
-    <option value="️🛠  **Instalação**">Instalação</option>
-    <option value="🏘️  **Mudança de endereço**">Mudança de endereço</option>
+    <option value="️🛠  **Instalação:**">Instalação</option>
+    <option value="🏘️  **Mudança de endereço:**">Mudança de endereço</option>
     </select>
   </td>
 </tr>
@@ -1777,7 +1777,7 @@ if (ultimoElemento !== "") {
       
       
 // Escrevendo o cabeçalho
-copiado += `##**📦 Materiais Utilizados:**\n`;
+copiado += `##**📦  Materiais:**\n`;
 
 // Exemplo de cópia de valores de campos de entrada
 const campos = {
@@ -1815,14 +1815,14 @@ if (!algumMaterialUtilizado) {
 
       
           // Copiando os valores da primeira tabela (Wifi 2.4GHz)
-copiado += `##🛜  **Configuraçoes do Wifi:**\n`;
+copiado += `##🛜  **Configuraçoes:**\n`;
     
-copiado += `**Wifi 2.4GHz:**\n`;
+copiado += `** 2.4GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 
 // Copiando os valores da segunda tabela (Wifi 5GHz)
-copiado += `#**Wifi 5GHz:**\n`;
+copiado += `#** 5GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}##\n`;
 
