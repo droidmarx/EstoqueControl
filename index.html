@@ -20,7 +20,7 @@
   
   
   <title>Painel de Controle</title>
-  <body onload="verificarTercaFeira()">
+  <body>
 </head>
 
 <style>
@@ -321,97 +321,8 @@ body.delta-active {
     width: 30px;
     padding: 10px;
     align-items: center;
-    
-  }
-  
-  
-
-  li a {
-    font-size: 16px;
-    text-align: center;
-    color: var(--texto) #B2B2B2;
-    text-align: center;
-    transition: 0.6s;
-    font-weight: 600;
-  }
-  
-  li a:hover{
-   color: var(--principal) ;
-   font-weight: 900;
-   font-size: 17px;
   }
 
-  #menu {
-    display: block;
-    position: absolute;
-    width: 100%;
-    top: 4.2rem;
-    right: 0px;
-    background: var(--secundaria) ;
-    transition: 0.6s;
-    z-index: 1000;
-    height: 0px;
-    visibility: hidden;
-    overflow-y: hidden;
-  }
-
-  #nav.active #menu {
-    height: calc(100vh - 4rem);
-    visibility: visible;
-    overflow-y: auto;
-  }
-  
-
-  #menu a {
-    padding: 1rem 0;
-    margin: 0 1rem;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-  }
-
-  #btn-mobile {
-    display: none;
-    padding: 1rem;
-    font-size: 1rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #hamburger {
-    border-top: 2px solid;
-    width: 20px;
-  }
-
-  #hamburger::after,
-  #hamburger::before {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 2px;
-    background: currentColor;
-    margin-top: 5px;
-    transition: 0.3s;
-    position: relative;
-  }
-
-  #nav.active #hamburger {
-    border-top-color: transparent;
-  }
-
-  #nav.active #hamburger::before {
-    transform: rotate(135deg);
-    color: var(--texto);
-  }
-
-  #nav.active #hamburger::after {
-    transform: rotate(-135deg);
-    top: -7px;
-    color: var(--principal );
-  }
-}
 
 ul {
   font-size: 0.5rem;
@@ -764,14 +675,15 @@ iframe{
   backdrop-filter: blur(5px); 
   background-color: rgba(10, 0, 0, 0.8);
     position: fixed;
-    top: 320px;
+    top: 85px;
     width: fit-content;
-    padding: 10px;
-    font-size: 14px;
+    padding: 6px;
+    font-size: 10px;
     border-radius: 10px;
     z-index: 9999;
     display: none;
-    animation: .9s all;
+    animation: 1.2s ease-in;
+    transition: box-shadow 0.3s ease;
     animation-name: slidein;
   }
   
@@ -824,7 +736,7 @@ iframe{
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png
     " height="90" width="90"></a>
     
-    <div class="alert" id="alerta">
+  <a class="alert" id="alerta">
 
   <p>Deseja registrar o pedido de material ?</p>
   
@@ -832,7 +744,7 @@ iframe{
   
   <button onclick="fecharAlerta()">Depois</button>
   
-</div>
+</a>
 
     
     
@@ -925,7 +837,7 @@ iframe{
     <br>
     <div class="btnEstoque">
       <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar<br>Produto</button>
-      <button style="display: none" id="clear-storage-btn" class="BTN">Resetar<br>Estoque</button>
+   
       <button onclick="enviarMensagemWhatsApp()" class="BTN">Pedir<br>Material</button>
     </div>
   </div>
@@ -1276,7 +1188,7 @@ iframe{
   
   
   
-  
+  verificarTercaFeira()
   
   
   function getLocation() {
@@ -1308,49 +1220,6 @@ function ativarSublinhado(elemento) {
   });
   elemento.classList.add("sublinhado-ativo");
 }
-
-  
- // Obtém uma referência ao elemento do nav
-const nav = document.querySelector('#nav');
-
-// Adiciona um event listener para verificar quando a classe .active é adicionada ou removida do nav
-nav.addEventListener('transitionend', function() {
-  // Verifica se a classe .active está presente no nav
-  const isActive = nav.classList.contains('active');
-
-  // Obtém uma referência ao elemento do body
-  const body = document.querySelector('body');
-
-  // Adiciona ou remove a classe .delta-active com base na presença da classe .active no nav
-  if (isActive) {
-    body.classList.add('delta-active');
-  } else {
-    body.classList.remove('delta-active');
-  }
-});
- 
-  
-  
-    
-     // Seleciona o botão de limpar armazenamento do DOM
-const clearStorageBtn = document.querySelector("#clear-storage-btn");
-
-// Adiciona um ouvinte de evento de clique ao botão
-clearStorageBtn.addEventListener("click", () => {
-  // Exibe uma mensagem de confirmação ao usuário
-  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
-
-  // Verifica se o usuário confirmou o reset
-  if (confirmReset) {
-    // Limpa o armazenamento local
-    localStorage.clear();
-    
-    // Exibe uma mensagem de sucesso ao usuário
-    alert("Estoque resetado com sucesso!");
-     // Recarrega a página
-    location.reload();
-  }
-});
 
 
 
@@ -2375,7 +2244,7 @@ function verificarTercaFeira() {
 }
 
 function exibirAlerta() {
-  document.getElementById('alerta').style.display = 'block';
+  document.getElementById('alerta').style.display = 'flex';
 }
 
 function prosseguir() {
@@ -2425,12 +2294,6 @@ document.getElementById('searchInput').addEventListener('input', function() {
         }
     });
 });
-
-
-
-
-
-setInterval(verificarTercaFeira, 11000);
 
  
  
