@@ -1023,14 +1023,10 @@ iframe{
 <tr>
   <th>Tipo de trabalho:</th>
   <td>
-    <select name="Trabalho" id="Trabalho">Trabalho
-    <option value=" 💻️ Instalação
-    
-    **Por favor habilitar !**#">Instalação</option>
-    <option value="Mudança de endereço
-    
-    **Por favor atualizar !**#">Mudança de endereço</option>
-    </select>
+       <select name="Trabalho" id="Trabalho">Trabalho
+  <option value="🛠  **Instalação:**">Instalação</option>
+  <option value="🏘️  **Mudança de endereço:**">Mudança de endereço</option>
+</select>
   </td>
 </tr>
 
@@ -1753,12 +1749,17 @@ function atualizarTabelaEstoque() {
 
       //estrututa da 1• tabela (copiar)
 
-
+// Copiando o valor do elemento com o id "quantidade-por-mes", se existir
+const quantidadePorMes = document.getElementById('quantidade-por-mes').textContent;
+if (quantidadePorMes.trim() !== "") {
+  copiado += "Instalações no mês de ";
+  copiado += `${quantidadePorMes}\n`;
+}
 
 
 
     copiado += `## ${document.getElementById('Trabalho').value}\n`;
-     copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
+     copiado += `Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       
       
@@ -1769,9 +1770,8 @@ function atualizarTabelaEstoque() {
       copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
       
       
-      
-// Escrevendo o cabeçalho
-copiado += `#**Materiais Utilizados:**#\n`;
+  copiado += `##**📦  Materiais:**\n`;
+
 
 // Exemplo de cópia de valores de campos de entrada
 const campos = {
@@ -1805,13 +1805,13 @@ if (!algumMaterialUtilizado) {
   copiado += "Não foi utilizado materiais !\n";
 }
 
-copiado += '#\n';
 
 
       
           // Copiando os valores da primeira tabela (Wifi 2.4GHz)
+copiado += `##🛜  **Configuraçoes:**\n`;
     
-copiado += `##**Wifi 2.4GHz:**\n`;
+copiado += `**Wifi 2.4GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 
@@ -1838,12 +1838,7 @@ if (comentarios.trim() !== "") {
   copiado += `__${comentarios}__\n`;
 }
 
-// Copiando o valor do elemento com o id "quantidade-por-mes", se existir
-const quantidadePorMes = document.getElementById('quantidade-por-mes').textContent;
-if (quantidadePorMes.trim() !== "") {
-  copiado += "**Instalações:**\n";
-  copiado += `${quantidadePorMes}##\n`;
-}
+
 
 
 
