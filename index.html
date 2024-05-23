@@ -20,7 +20,7 @@
   
   
   <title>Painel de Controle</title>
-  <body>
+  <body onload="verificarTercaFeira()">
 </head>
 
 <style>
@@ -321,8 +321,97 @@ body.delta-active {
     width: 30px;
     padding: 10px;
     align-items: center;
+    
+  }
+  
+  
+
+  li a {
+    font-size: 16px;
+    text-align: center;
+    color: var(--texto) #B2B2B2;
+    text-align: center;
+    transition: 0.6s;
+    font-weight: 600;
+  }
+  
+  li a:hover{
+   color: var(--principal) ;
+   font-weight: 900;
+   font-size: 17px;
   }
 
+  #menu {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 4.2rem;
+    right: 0px;
+    background: var(--secundaria) ;
+    transition: 0.6s;
+    z-index: 1000;
+    height: 0px;
+    visibility: hidden;
+    overflow-y: hidden;
+  }
+
+  #nav.active #menu {
+    height: calc(100vh - 4rem);
+    visibility: visible;
+    overflow-y: auto;
+  }
+  
+
+  #menu a {
+    padding: 1rem 0;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  }
+
+  #btn-mobile {
+    display: none;
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #hamburger {
+    border-top: 2px solid;
+    width: 20px;
+  }
+
+  #hamburger::after,
+  #hamburger::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px;
+    transition: 0.3s;
+    position: relative;
+  }
+
+  #nav.active #hamburger {
+    border-top-color: transparent;
+  }
+
+  #nav.active #hamburger::before {
+    transform: rotate(135deg);
+    color: var(--texto);
+  }
+
+  #nav.active #hamburger::after {
+    transform: rotate(-135deg);
+    top: -7px;
+    color: var(--principal );
+  }
+}
 
 ul {
   font-size: 0.5rem;
@@ -675,15 +764,14 @@ iframe{
   backdrop-filter: blur(5px); 
   background-color: rgba(10, 0, 0, 0.8);
     position: fixed;
-    top: 85px;
+    top: 320px;
     width: fit-content;
-    padding: 6px;
-    font-size: 10px;
+    padding: 10px;
+    font-size: 14px;
     border-radius: 10px;
     z-index: 9999;
     display: none;
-    animation: 1.2s ease-in;
-    transition: box-shadow 0.3s ease;
+    animation: .9s all;
     animation-name: slidein;
   }
   
@@ -724,19 +812,17 @@ iframe{
  <div class="menu">
 
 
-
-   
-<a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()";><img  onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
+<a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()" ;><img onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
 
 <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=Kwa2wLSodvjf&format=png" height="90" width="90"></a>
-    
+
 <a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=ATNcH32az6si&format=png" height="90" width="90"></a>
-     
-     
+
+
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png
     " height="90" width="90"></a>
     
-  <a class="alert" id="alerta">
+    <div class="alert" id="alerta">
 
   <p>Deseja registrar o pedido de material ?</p>
   
@@ -744,7 +830,7 @@ iframe{
   
   <button onclick="fecharAlerta()">Depois</button>
   
-</a>
+</div>
 
     
     
@@ -768,13 +854,13 @@ iframe{
  
  
  <div class="menu">
-   <a class="sublinhado-ativo1" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13"target="_blank">
+   <a class="sublinhado-ativo1" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13">
      
      <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20">
      
 </a>
 
-<a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC" target="_blank">
+<a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC">
   
 <img class="logo" src="https://img.icons8.com/?size=512&id=0JR9TPl4aWU1&format=png" height="20" width="20">
 </a>
@@ -837,7 +923,7 @@ iframe{
     <br>
     <div class="btnEstoque">
       <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar<br>Produto</button>
-   
+      <button style="display: none" id="clear-storage-btn" class="BTN">Resetar<br>Estoque</button>
       <button onclick="enviarMensagemWhatsApp()" class="BTN">Pedir<br>Material</button>
     </div>
   </div>
@@ -938,8 +1024,12 @@ iframe{
   <th>Tipo de trabalho:</th>
   <td>
     <select name="Trabalho" id="Trabalho">Trabalho
-    <option value="🛠  **𝕀𝕟𝕤𝕥𝕒𝕝𝕒çã𝕠:**">Instalação</option>
-    <option value="🏘️  **𝕄𝕦𝕕𝕒𝕟ç𝕒 𝕕𝕖 𝕖𝕟𝕕𝕖𝕣𝕖ç𝕠:**">Mudança de endereço</option>
+    <option value=" 💻️ Instalação
+    
+    **Por favor habilitar !**#">Instalação</option>
+    <option value="Mudança de endereço
+    
+    **Por favor atualizar !**#">Mudança de endereço</option>
     </select>
   </td>
 </tr>
@@ -1188,7 +1278,7 @@ iframe{
   
   
   
-  verificarTercaFeira()
+  
   
   
   function getLocation() {
@@ -1220,6 +1310,49 @@ function ativarSublinhado(elemento) {
   });
   elemento.classList.add("sublinhado-ativo");
 }
+
+  
+ // Obtém uma referência ao elemento do nav
+const nav = document.querySelector('#nav');
+
+// Adiciona um event listener para verificar quando a classe .active é adicionada ou removida do nav
+nav.addEventListener('transitionend', function() {
+  // Verifica se a classe .active está presente no nav
+  const isActive = nav.classList.contains('active');
+
+  // Obtém uma referência ao elemento do body
+  const body = document.querySelector('body');
+
+  // Adiciona ou remove a classe .delta-active com base na presença da classe .active no nav
+  if (isActive) {
+    body.classList.add('delta-active');
+  } else {
+    body.classList.remove('delta-active');
+  }
+});
+ 
+  
+  
+    
+     // Seleciona o botão de limpar armazenamento do DOM
+const clearStorageBtn = document.querySelector("#clear-storage-btn");
+
+// Adiciona um ouvinte de evento de clique ao botão
+clearStorageBtn.addEventListener("click", () => {
+  // Exibe uma mensagem de confirmação ao usuário
+  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
+
+  // Verifica se o usuário confirmou o reset
+  if (confirmReset) {
+    // Limpa o armazenamento local
+    localStorage.clear();
+    
+    // Exibe uma mensagem de sucesso ao usuário
+    alert("Estoque resetado com sucesso!");
+     // Recarrega a página
+    location.reload();
+  }
+});
 
 
 
@@ -1620,20 +1753,12 @@ function atualizarTabelaEstoque() {
 
       //estrututa da 1• tabela (copiar)
 
-//copiar quantade de instalações do ultimo mês 
-const listaQuantidade = document.getElementById('quantidade-por-mes');
-const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
-
-if (ultimoElemento !== "") {
-  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
-  copiado += "Instalações no mês de ";
-  copiado += `${primeiroMaiusculo}\n`;
-}
 
 
 
-    copiado += `##${document.getElementById('Trabalho').value}\n`;
-     copiado += `Técnico: ${document.getElementById('tecnico').value}\n`;
+
+    copiado += `## ${document.getElementById('Trabalho').value}\n`;
+     copiado += `#Técnico: ${document.getElementById('tecnico').value}\n`;
       copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
       
       
@@ -1646,7 +1771,7 @@ if (ultimoElemento !== "") {
       
       
 // Escrevendo o cabeçalho
-copiado += `##**📦 𝕄𝕒𝕥𝕖𝕣𝕚𝕒𝕚𝕤:**\n`;
+copiado += `#**Materiais Utilizados:**#\n`;
 
 // Exemplo de cópia de valores de campos de entrada
 const campos = {
@@ -1680,18 +1805,18 @@ if (!algumMaterialUtilizado) {
   copiado += "Não foi utilizado materiais !\n";
 }
 
+copiado += '#\n';
 
 
       
           // Copiando os valores da primeira tabela (Wifi 2.4GHz)
-copiado += `##🛜  **ℂ𝕠𝕟𝕗𝕚𝕘𝕦𝕣𝕒çõ𝕖𝕤:**\n`;
     
-copiado += `** 2.4GHz:**\n`;
+copiado += `##**Wifi 2.4GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 
 // Copiando os valores da segunda tabela (Wifi 5GHz)
-copiado += `#** 5GHz:**\n`;
+copiado += `#**Wifi 5GHz:**\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}##\n`;
 
@@ -1701,7 +1826,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}##\n`;
 // Verificando se há localização e copiando, se houver
 const localizacao = document.getElementById('mapLink').textContent;
 if (localizacao.trim() !== "") {
-  copiado += "**📍 𝕃𝕠𝕔𝕒𝕝𝕚𝕫𝕒𝕔‌ã𝕠:**\n";
+  copiado += "**📍Localização:**\n";
   copiado += `${localizacao}##\n`;
 }
 
@@ -1713,9 +1838,12 @@ if (comentarios.trim() !== "") {
   copiado += `__${comentarios}__\n`;
 }
 
-
-
-
+// Copiando o valor do elemento com o id "quantidade-por-mes", se existir
+const quantidadePorMes = document.getElementById('quantidade-por-mes').textContent;
+if (quantidadePorMes.trim() !== "") {
+  copiado += "**Instalações:**\n";
+  copiado += `${quantidadePorMes}##\n`;
+}
 
 
 
@@ -1724,7 +1852,7 @@ if (comentarios.trim() !== "") {
 
 //Construir a string com a estrutura desejada, substituindo as quebras de linha pelo caractere "#"
 //esse é o que copia *favor habilitar
-for (let i = 0; i < produtos.length; i++) "#**Meu Estoque**#"
+for (let i = 0; i < produtos.length; i++) "###**Meu Estoque**#"
 
 //{copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;}
 
@@ -2244,7 +2372,7 @@ function verificarTercaFeira() {
 }
 
 function exibirAlerta() {
-  document.getElementById('alerta').style.display = 'flex';
+  document.getElementById('alerta').style.display = 'block';
 }
 
 function prosseguir() {
@@ -2294,6 +2422,12 @@ document.getElementById('searchInput').addEventListener('input', function() {
         }
     });
 });
+
+
+
+
+
+setInterval(verificarTercaFeira, 11000);
 
  
  
