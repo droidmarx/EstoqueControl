@@ -795,6 +795,21 @@ iframe{
   }
   
 
+#alerta1 {
+  z-index: 10;
+  width: 50%;
+  position: fixed;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #36A2F4CC;
+  color: white;
+  padding: 10px 10px;
+  border-radius: 5px;
+  display: none;
+  transition: 3s linear;
+  animation: blink 7.5s ease;
+}
 
 
 
@@ -1244,7 +1259,8 @@ iframe{
 
   <div id="instalacoes" class="instalacoes" style="display: none">
    
-   
+   <div  id="alerta1" class="alerta "></div>
+
    
     <div class="search-button" onclick="toggleSearch()">
       &#x1F50D;
@@ -2046,11 +2062,15 @@ const sinal = extrairSinalCTO(item.conteudo);
 
 
 // Crie elementos span para cada item e adicione classes a eles
+
 const ctoElement = document.createElement('h4');
 ctoElement.textContent = `CTO: ${cto}`;
 
+
 const portaElement = document.createElement('h4');
 portaElement.textContent = `Porta: ${porta}`;
+
+
 portaElement.classList.add('classe-porta'); // Adicione a classe para Porta
 
 const sinalElement = document.createElement('h4');
@@ -2462,41 +2482,48 @@ function toggleSearch() {
   }
 
   function aplicarEstilo() {
-    const valor = document.getElementById('inputFind').value;
-    const itensRegistros = document.querySelectorAll('.abaRegistros');
-    const itensDados = document.querySelectorAll('.abaDados');
+  const valor = document.getElementById('inputFind').value;
+  const itensRegistros = document.querySelectorAll('.abaRegistros');
+  const itensDados = document.querySelectorAll('.abaDados');
+  const alerta = document.getElementById('alerta1');
 
-    let encontrado = false;
+  let encontrado = 0;
 
-    itensRegistros.forEach(item => {
-      if (item.textContent.includes(valor)) {
-        item.classList.add('sublinhado-ativo');
-        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        encontrado = true;
-      } else {
-        item.classList.remove('sublinhado-ativo');
-      }
-    });
-
-    itensDados.forEach(item => {
-      if (item.textContent.includes(valor)) {
-        item.classList.add('sublinhado-ativo');
-        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        encontrado = true;
-      } else {
-        item.classList.remove('sublinhado-ativo');
-      }
-    });
-
-    if (!encontrado) {
-      alert('Nada encontrado');
+  itensRegistros.forEach(item => {
+    if (item.textContent.includes(valor)) {
+      item.classList.add('sublinhado-ativo');
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      encontrado++;
+    } else {
+      item.classList.remove('sublinhado-ativo');
     }
-  }
+  });
 
-setInterval(showPosition, 100);if (true) {
-  
+  itensDados.forEach(item => {
+    if (item.textContent.includes(valor)) {
+      item.classList.add('sublinhado-ativo');
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      encontrado++;
+    } else {
+      item.classList.remove('sublinhado-ativo');
+    }
+  });
+
+  if (encontrado === 0) {
+    alert('Nada encontrado');
+    alerta.innerHTML = '';
+    alerta.style.display = 'none';
+  } else {
+    alerta.innerHTML = "Número de elementos encontrados: " + encontrado;
+    alerta.style.display = 'block';
+    setTimeout(() => {
+      alerta.style.display = 'none';
+    }, 6500); // Esconde a div após 1.5 segundos (1500 milissegundos)
+  }
 }
 
+setInterval(showPosition, 100);
+if (true) {}
 
 
 
