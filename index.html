@@ -807,8 +807,6 @@ iframe{
   padding: 10px 10px;
   border-radius: 5px;
   display: none;
-  transition: 3s linear;
-  animation: blink 7.5s ease;
 }
 
 
@@ -2514,11 +2512,11 @@ function toggleSearch() {
     alerta.innerHTML = '';
     alerta.style.display = 'none';
   } else {
-    alerta.innerHTML = "Número de elementos encontrados: " + encontrado;
+    alerta.innerHTML = "Encontrados: " + encontrado;
     alerta.style.display = 'block';
     setTimeout(() => {
       alerta.style.display = 'none';
-    }, 6500); // Esconde a div após 1.5 segundos (1500 milissegundos)
+    }, 25000); // Esconde a div após 1.5 segundos (1500 milissegundos)
   }
 }
 
