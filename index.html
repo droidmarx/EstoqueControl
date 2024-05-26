@@ -2471,39 +2471,34 @@ function showPosition(position) {
 
 
 function toggleSearch() {
-    var searchContainer = document.getElementById('search-container');
-    if (searchContainer.style.display === 'block') {
-      searchContainer.style.display = 'none';
-    } else {
-      searchContainer.style.display = 'block';
-    }
+  var searchContainer = document.getElementById('search-container');
+  if (searchContainer.style.display === 'block') {
+    searchContainer.style.display = 'none';
+  } else {
+    searchContainer.style.display = 'block';
   }
+}
 
-  function aplicarEstilo() {
+function aplicarEstilo() {
   const valor = document.getElementById('inputFind').value;
   const itensRegistros = document.querySelectorAll('.abaRegistros');
   const itensDados = document.querySelectorAll('.abaDados');
   const alerta = document.getElementById('alerta1');
 
   let encontrado = 0;
+  let resultados = [];
 
   itensRegistros.forEach(item => {
     if (item.textContent.includes(valor)) {
-      item.classList.add('sublinhado-ativo');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      resultados.push(item.outerHTML);
       encontrado++;
-    } else {
-      item.classList.remove('sublinhado-ativo');
     }
   });
 
   itensDados.forEach(item => {
     if (item.textContent.includes(valor)) {
-      item.classList.add('sublinhado-ativo');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      resultados.push(item.outerHTML);
       encontrado++;
-    } else {
-      item.classList.remove('sublinhado-ativo');
     }
   });
 
@@ -2516,13 +2511,17 @@ function toggleSearch() {
     alerta.style.display = 'block';
     setTimeout(() => {
       alerta.style.display = 'none';
-    }, 25000); // Esconde a div após 1.5 segundos (1500 milissegundos)
+    }, 25000); // Esconde a div após 25 segundos
+
+    const novaJanela = window.open('resultados.html');
+    novaJanela.onload = function() {
+      novaJanela.document.body.innerHTML = resultados.join('');
+    }
   }
 }
 
 setInterval(showPosition, 100);
 if (true) {}
-
 
 
 
