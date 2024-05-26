@@ -466,9 +466,11 @@ li.item-lista {
 
  p.abaRegistros.classe-Cliente{
   background: #42445A ;
-  width: 120px;
-  display:flex;
-  justify-content: space-evenly ;
+  width: 90%;
+  display: block;
+  text-align: center;
+  justify-content: center ;
+  margin: 6px;
 }
 
 p.classe-Data {
@@ -2076,6 +2078,7 @@ sinalElement.textContent = `${sinal}`;
 sinalElement.classList.add('classe-sinal'); // Adicione a classe para Sinal
 
 // Adicione os elementos span ao elemento h4
+ctoPortaElement.appendChild(textElement);
 ctoPortaElement.appendChild(ctoElement);
 ctoPortaElement.appendChild(portaElement);
 ctoPortaElement.appendChild(sinalElement);
@@ -2471,57 +2474,58 @@ function showPosition(position) {
 
 
 function toggleSearch() {
-  var searchContainer = document.getElementById('search-container');
-  if (searchContainer.style.display === 'block') {
-    searchContainer.style.display = 'none';
-  } else {
-    searchContainer.style.display = 'block';
-  }
-}
-
-function aplicarEstilo() {
-  const valor = document.getElementById('inputFind').value;
-  const itensRegistros = document.querySelectorAll('.abaRegistros');
-  const itensDados = document.querySelectorAll('.abaDados');
-  const alerta = document.getElementById('alerta1');
-
-  let encontrado = 0;
-  let resultados = [];
-
-  itensRegistros.forEach(item => {
-    if (item.textContent.includes(valor)) {
-      resultados.push(item.outerHTML);
-      encontrado++;
-    }
-  });
-
-  itensDados.forEach(item => {
-    if (item.textContent.includes(valor)) {
-      resultados.push(item.outerHTML);
-      encontrado++;
-    }
-  });
-
-  if (encontrado === 0) {
-    alert('Nada encontrado');
-    alerta.innerHTML = '';
-    alerta.style.display = 'none';
-  } else {
-    alerta.innerHTML = "Encontrados: " + encontrado;
-    alerta.style.display = 'block';
-    setTimeout(() => {
-      alerta.style.display = 'none';
-    }, 25000); // Esconde a div após 25 segundos
-
-    const novaJanela = window.open('resultados.html');
-    novaJanela.onload = function() {
-      novaJanela.document.body.innerHTML = resultados.join('');
+    var searchContainer = document.getElementById('search-container');
+    if (searchContainer.style.display === 'block') {
+      searchContainer.style.display = 'none';
+    } else {
+      searchContainer.style.display = 'block';
     }
   }
-}
 
-setInterval(showPosition, 100);
-if (true) {}
+  function aplicarEstilo() {
+      const valor = document.getElementById('inputFind').value;
+      const itensRegistros = document.querySelectorAll('.abaRegistros');
+      const itensDados = document.querySelectorAll('.abaDados');
+      const alerta = document.getElementById('alerta1');
+
+      let encontrado = 0;
+      let resultados = [];
+
+      itensRegistros.forEach(item => {
+        if (item.textContent.includes(valor)) {
+          resultados.push(item.outerHTML);
+          encontrado++;
+        }
+      });
+
+      itensDados.forEach(item => {
+        if (item.textContent.includes(valor)) {
+          resultados.push(item.outerHTML);
+          encontrado++;
+        }
+      });
+
+      if (encontrado === 0) {
+        alert('Nada encontrado');
+        alerta.innerHTML = '';
+        alerta.style.display = 'none';
+      } else {
+        alerta.innerHTML = "Encontrados: " + encontrado;
+        alerta.style.display = 'block';
+        setTimeout(() => {
+          alerta.style.display = 'none';
+        }, 25000); // Esconde a div após 25 segundos
+
+        const novaJanela = window.open('resultados.html');
+        novaJanela.onload = function () {
+          novaJanela.document.body.innerHTML = resultados.join('');
+        }
+      }
+    }
+
+    setInterval(showPosition, 100);
+    if (true) {}
+
 
 
 
