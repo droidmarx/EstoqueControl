@@ -453,8 +453,10 @@ span {
 }
 
 input.checkbox-item {
-  width: 10%;
-  margin: 10px;
+  margin: 0px;
+  position: absolute;
+  top: 6px;
+  width: 25px;
 }
 
 li.item-lista {
@@ -477,17 +479,19 @@ p.classe-Data {
   color:white ;
   width: 100%;
   text-align: center;
-  display: flex;
+  display: block;
   align-items: center;
-  justify-content: space-evenly ;
+  justify-content: center ;
   background: #606279;
   border-radius: 2px;
 }
 
 h4.abaDados {
+  height: 140px;
+  position: relative;
   width: 100%;
   margin: 6px;
-  display: block;
+  display: inline-block ;
   background: #606279;
   border-radius: 1px 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -519,6 +523,17 @@ p.abaRegistros  {
   font-size: .6rem;
   border: 5px solid #606279;
 }
+
+ h4.classe-link-mapa{
+ width: 30px;
+ position: relative;
+ bottom: 50px;
+ left: 120px;
+ 
+}
+
+
+
 
 select#registros {
  width: 80%;
@@ -2078,10 +2093,13 @@ sinalElement.textContent = `${sinal}`;
 sinalElement.classList.add('classe-sinal'); // Adicione a classe para Sinal
 
 // Adicione os elementos span ao elemento h4
+ctoPortaElement.appendChild(dataElement);
 ctoPortaElement.appendChild(textElement);
 ctoPortaElement.appendChild(ctoElement);
 ctoPortaElement.appendChild(portaElement);
 ctoPortaElement.appendChild(sinalElement);
+ctoPortaElement.appendChild(checkboxElement);
+
 
 listItemElement.appendChild(ctoPortaElement);
 
@@ -2108,8 +2126,8 @@ linkElement.target = '_blank'; // Abra o link em uma nova página
 // Crie um elemento <img> para o ícone do marcador de posição
 const iconElement = document.createElement('img');
 iconElement.src = 'https://img.icons8.com/stickers/100/signpost.png'; // Link do ícone fornecido
-iconElement.style.width = '25px'; // Defina a largura do ícone
-iconElement.style.height = '25px'; // Defina a altura do ícone
+iconElement.style.width = '40px'; // Defina a largura do ícone
+iconElement.style.height = '40px'; // Defina a altura do ícone
 
 // Adicione o ícone ao elemento <a>
 linkElement.appendChild(iconElement);
@@ -2117,7 +2135,7 @@ linkElement.appendChild(iconElement);
 // Substitua o elemento h4 pelo elemento <a> para tornar o link clicável
 linkMapaElement.textContent = '';
 linkMapaElement.appendChild(linkElement);
-containerElement.appendChild(linkMapaElement);
+ctoPortaElement.appendChild(linkMapaElement);
 
 
 
@@ -2472,59 +2490,68 @@ function showPosition(position) {
 }
 
 
-
 function toggleSearch() {
     var searchContainer = document.getElementById('search-container');
     if (searchContainer.style.display === 'block') {
-      searchContainer.style.display = 'none';
+        searchContainer.style.display = 'none';
     } else {
-      searchContainer.style.display = 'block';
+        searchContainer.style.display = 'block';
     }
-  }
+}
 
-  function aplicarEstilo() {
-      const valor = document.getElementById('inputFind').value;
-      const itensRegistros = document.querySelectorAll('.abaRegistros');
-      const itensDados = document.querySelectorAll('.abaDados');
-      const alerta = document.getElementById('alerta1');
+function aplicarEstilo() {
+    const valor = document.getElementById('inputFind').value;
+    const itensRegistros = document.querySelectorAll('.classe-Client');
+    const itensDados = document.querySelectorAll('.abaDados');
+    const itensLista = document.querySelectorAll('.item-lista');
+    const alerta = document.getElementById('alerta1');
 
-      let encontrado = 0;
-      let resultados = [];
+    let encontrado = 0;
+    let resultados = [];
 
-      itensRegistros.forEach(item => {
-        if (item.textContent.includes(valor)) {
-          resultados.push(item.outerHTML);
-          encontrado++;
-        }
-      });
+    // Função auxiliar para estilizar e exibir/ocultar itens
+    function estilizarItens(itens) {
+        itens.forEach(item => {
+            if (item.textContent.includes(valor)) {
+                resultados.push(item.outerHTML);
+                item.classList.add('slidein');
+                item.style.display = 'block'; // Mostrar item
+                item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                encontrado++;
+            } else {
+                item.classList.remove('slidein');
+                item.style.display = 'none'; // Ocultar item
+            }
+        });
+    }
 
-      itensDados.forEach(item => {
-        if (item.textContent.includes(valor)) {
-          resultados.push(item.outerHTML);
-          encontrado++;
-        }
-      });
+    // Aplicando estilo aos itensRegistros, itensDados e itensLista
+    estilizarItens(itensRegistros);
+    estilizarItens(itensDados);
+    estilizarItens(itensLista);
 
-      if (encontrado === 0) {
+    if (encontrado === 0) {
         alert('Nada encontrado');
         alerta.innerHTML = '';
         alerta.style.display = 'none';
-      } else {
+    } else {
         alerta.innerHTML = "Encontrados: " + encontrado;
         alerta.style.display = 'block';
         setTimeout(() => {
-          alerta.style.display = 'none';
+            alerta.style.display = 'none';
         }, 25000); // Esconde a div após 25 segundos
 
-        const novaJanela = window.open('resultados.html');
-        novaJanela.onload = function () {
-          novaJanela.document.body.innerHTML = resultados.join('');
+        // Perguntar ao usuário se deseja ver a pesquisa detalhada
+        if (confirm('Deseja ver a pesquisa detalhada?')) {
+            const novaJanela = window.open('resultados.html');
+            novaJanela.onload = function () {
+                novaJanela.document.body.innerHTML = resultados.join('');
+            }
         }
-      }
     }
+}
 
-    setInterval(showPosition, 100);
-    if (true) {}
+setInterval(showPosition, 100);
 
 
 
