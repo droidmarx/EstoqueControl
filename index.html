@@ -1966,7 +1966,10 @@ copiado = copiado.replace(/#/g, '\n');
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.location.href = 'https://t.me/share/url?url=' + encodeURIComponent('** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**');
+var mensagem = '** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**';
+var urlTelegram = 'https://t.me/share/url?url=' + encodeURIComponent(mensagem);
+window.location.href = urlTelegram;
+
 
 
       // Adicionar a string copiada ao array de dadosCopiados
