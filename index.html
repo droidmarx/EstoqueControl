@@ -1812,6 +1812,15 @@ function atualizarTabelaEstoque() {
 
 
 //estrututa da 1• tabela (copiar)
+//copiar quantade de instalações do ultimo mês 
+const listaQuantidade = document.getElementById('quantidade-por-mes');
+const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
+
+if (ultimoElemento !== "") {
+  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
+  copiado += "Instalações no mês de ";
+  copiado += `${primeiroMaiusculo}\n`;
+}
 
 
 
@@ -1897,15 +1906,6 @@ if (comentarios.trim() !== "") {
 }
 
 
-//copiar quantade de instalações do ultimo mês 
-const listaQuantidade = document.getElementById('quantidade-por-mes');
-const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
-
-if (ultimoElemento !== "") {
-  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
-  copiado += "Instalações no mês de ";
-  copiado += `${primeiroMaiusculo}\n`;
-}
 
 
 
@@ -1966,7 +1966,8 @@ copiado = copiado.replace(/#/g, '\n');
 
 
       // Abra o WhatsApp e cole o conteúdo copiado
-      window.open('https://t.me/share/url?url=' + encodeURIComponent('** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**'));
+      window.location.href = 'https://t.me/share/url?url=' + encodeURIComponent('** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**');
+
 
       // Adicionar a string copiada ao array de dadosCopiados
       dadosCopiados.push({
