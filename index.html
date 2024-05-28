@@ -9,6 +9,9 @@
   
   <!-- Ícone da página -->
   <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,11 +76,25 @@ input {
 }
 
 #btn-historico {
+  position: fixed;
+  right: 15px;
+  bottom: 80px;
   margin-bottom: 10px;
-  background: var(--principal) ;
+  background: var(--principal);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   transition: box-shadow 0.3s ease;
+  border: 3px black solid;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
 }
+
+
 
 #enviar {
   margin-bottom: 20px;
@@ -714,24 +731,28 @@ iframe{
   z-index: 10;
   position: fixed;
   bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
+  right: 15px;
+  width: 30px;
+  height: 30px; 
   padding: 10px;
-  border: none;
-  background-color: #1564BA00;
+  border: black solid 3px;
+  background-color: var(--principal);
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  line-height: 60px;
+  line-height: 50px;
   color: white;
   font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
-} 
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
 
-.search-button:hover:focus   {
-  background-color: #0056B385;
 }
+
+
+
 
 .search-container {
   z-index: 10;
@@ -1278,8 +1299,9 @@ iframe{
 
    
     <div class="search-button" onclick="toggleSearch()">
-      &#x1F50D;
-    </div>
+  <i class="fas fa-search"></i>
+</div>
+
     
     <div class="search-container" id="search-container">
       <input type="text" placeholder="Pesquisar..." id="inputFind">
@@ -1295,7 +1317,10 @@ iframe{
      
     <ul id="lista-dados-copiados"></ul>
     
-    <button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">Excluir instalações</button>
+<button id="btn-historico" class="BTN" onclick="excluirItensSelecionados()">
+  <i class="fas fa-trash"></i>
+</button>
+
   </div>
 
 
@@ -2211,6 +2236,7 @@ totalElement.textContent = dadosCopiados.length;
       if (confirmacao) {
         // Ordenar os índices em ordem decrescente
         indicesSelecionados.sort((a, b) => b - a);
+        
 
         // Excluir os itens selecionados do array de dadosCopiados
         indicesSelecionados.forEach((indice) => {
@@ -2554,8 +2580,7 @@ function aplicarEstilo() {
 setInterval(showPosition, 100);
 
 
-
-
+  
   </script>
   
   
