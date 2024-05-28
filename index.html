@@ -87,7 +87,7 @@ input {
   border-radius: 50%;
   width: 55px;
   height: 55px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   color: white;
@@ -2044,12 +2044,24 @@ for (const month in countByMonth) {
     const listItemElement = document.createElement('li');
     listItemElement.classList.add('item-lista');
 
-    // Criar um elemento de caixa de seleção e adicionar a classe 'checkbox-item'
-    const checkboxElement = document.createElement('input');
-    checkboxElement.type = 'checkbox';
-    checkboxElement.classList.add('checkbox-item');
-    checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
-    listItemElement.appendChild(checkboxElement);
+// Criar um elemento de caixa de seleção e adicionar a classe 'checkbox-item'
+const checkboxElement = document.createElement('input');
+checkboxElement.type = 'checkbox';
+checkboxElement.classList.add('checkbox-item');
+checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
+listItemElement.appendChild(checkboxElement);
+
+// Adicionar um ouvinte de eventos para o checkbox
+checkboxElement.addEventListener('click', function() {
+  var button = document.getElementById("btn-historico");
+
+  if (checkboxElement.checked) {
+    button.style.display = "inline-block"; // Mostrar o botão
+  } else {
+    button.style.display = "none"; // Esconder o botão
+  }
+});
+
     
     
 
@@ -2566,14 +2578,7 @@ function aplicarEstilo() {
         setTimeout(() => {
             alerta.style.display = 'none';
         }, 25000); // Esconde a div após 25 segundos
-
-        // Perguntar ao usuário se deseja ver a pesquisa detalhada
-        if (confirm('Deseja ver a pesquisa detalhada?')) {
-            const novaJanela = window.open('resultados.html');
-            novaJanela.onload = function () {
-                novaJanela.document.body.innerHTML = resultados.join('');
-            }
-        }
+      
     }
 }
 
