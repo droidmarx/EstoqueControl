@@ -1279,8 +1279,7 @@ iframe{
     </table>
     <br>
   
-    <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
-  
+      <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
   
   <div id="map"></div>
 
@@ -1814,15 +1813,6 @@ function atualizarTabelaEstoque() {
 
 //estrututa da 1• tabela (copiar)
 
-//copiar quantade de instalações do ultimo mês 
-const listaQuantidade = document.getElementById('quantidade-por-mes');
-const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
-
-if (ultimoElemento !== "") {
-  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
-  copiado += "Instalações no mês de ";
-  copiado += `${primeiroMaiusculo}\n`;
-}
 
 
 
@@ -1907,6 +1897,15 @@ if (comentarios.trim() !== "") {
 }
 
 
+//copiar quantade de instalações do ultimo mês 
+const listaQuantidade = document.getElementById('quantidade-por-mes');
+const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
+
+if (ultimoElemento !== "") {
+  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
+  copiado += "Instalações no mês de ";
+  copiado += `${primeiroMaiusculo}\n`;
+}
 
 
 
@@ -2387,25 +2386,7 @@ function formatInput(e) {
         document.getElementById('sinalCliente').addEventListener('input', formatInput);
         
 
-    //botão toogle menu
 
-    const btnMobile = document.getElementById("btn-mobile");
-
-    function toggleMenu(event) {
-      if (event.type === "touchstart") event.preventDefault();
-      const nav = document.getElementById("nav");
-      nav.classList.toggle("active");
-      const active = nav.classList.contains("active");
-      event.currentTarget.setAttribute("aria-expanded", active);
-      if (active) {
-        event.currentTarget.setAttribute("aria-label", "Fechar Menu");
-      } else {
-        event.currentTarget.setAttribute("aria-label", "Abrir Menu");
-      }
-    }
-
-    btnMobile.addEventListener("click", toggleMenu);
-    btnMobile.addEventListener("touchstart", toggleMenu);
 
     // Obtém os itens do menu
     const menuItems = document.querySelectorAll("#menu li a");
