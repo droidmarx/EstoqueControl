@@ -90,8 +90,10 @@ input {
   display: none;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: black;
   font-size: 20px;
+  animation: slidein .2s ease-in;
+
 }
 
 
@@ -743,7 +745,7 @@ iframe{
   justify-content: center;
   text-align: center;
   line-height: 50px;
-  color: white;
+  color: black;
   font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1304,8 +1306,11 @@ iframe{
 
     
     <div class="search-container" id="search-container">
-      <input type="text" placeholder="Pesquisar..." id="inputFind">
-      <button class="btnPesquisar" onclick="aplicarEstilo()">IR</button>
+<input type="text" placeholder="Pesquisar..." id="inputFind">
+<button class="btnPesquisar" onclick="aplicarEstilo()">
+  <i class="fas fa-arrow-right"></i>
+</button>
+
     </div>
 
 
@@ -2051,16 +2056,28 @@ checkboxElement.classList.add('checkbox-item');
 checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
 listItemElement.appendChild(checkboxElement);
 
-// Adicionar um ouvinte de eventos para o checkbox
-checkboxElement.addEventListener('click', function() {
-  var button = document.getElementById("btn-historico");
+// Selecione todos os checkboxes
+var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+var button = document.getElementById("btn-historico");
 
-  if (checkboxElement.checked) {
+function updateButtonVisibility() {
+  var anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+  if (anyChecked) {
     button.style.display = "inline-block"; // Mostrar o botão
   } else {
     button.style.display = "none"; // Esconder o botão
   }
+}
+
+// Adicionar ouvintes de eventos para todos os checkboxes
+checkboxes.forEach(function(checkbox) {
+  checkbox.addEventListener('click', updateButtonVisibility);
 });
+
+// Inicializar a visibilidade do botão ao carregar a página
+updateButtonVisibility();
+
 
     
     
