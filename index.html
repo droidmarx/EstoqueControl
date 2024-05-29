@@ -1812,17 +1812,6 @@ function atualizarTabelaEstoque() {
 
 
 //estrututa da 1• tabela (copiar)
-//copiar quantade de instalações do ultimo mês 
-const listaQuantidade = document.getElementById('quantidade-por-mes');
-const ultimoElemento = listaQuantidade.lastElementChild.textContent.trim();
-
-if (ultimoElemento !== "") {
-  const primeiroMaiusculo = ultimoElemento.charAt(0).toUpperCase() + ultimoElemento.slice(1);
-  copiado += "Instalações no mês de ";
-  copiado += `${primeiroMaiusculo}\n`;
-}
-
-
 
 
     copiado += `## ${document.getElementById('Trabalho').value}\n`;
@@ -1945,7 +1934,7 @@ copiado = copiado.replace(/#/g, '\n');
         (copiado)
 
       document.getElementById("tecnico").selectedIndex = 0;
-      document.getElementById("cliente").value = "Nome do Cliente";
+      document.getElementById("cliente").value = " do Cliente";
       document.getElementById("fibraMetragem").value = "00";
       document.getElementById("cto").value = "00";
       document.getElementById("porta").selectedIndex = 0;
