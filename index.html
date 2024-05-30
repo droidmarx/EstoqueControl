@@ -18,7 +18,7 @@
   <!-- Importação da fonte Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet">
   
-     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeq0Q507-ePcIpTJzOrUsy6ynSwu28IKg&libraries=places"></script>
+
 
   
   
@@ -676,7 +676,7 @@ select#registros {
     
 
 #mapLink{
-  display: none;
+  display: block;
 }
 
 .temp p{
@@ -1041,7 +1041,6 @@ iframe{
     
  
     
-         <p id="mapLink"></p>
 
 
     
@@ -1055,21 +1054,19 @@ iframe{
     <table>
     
       <tr>
-        <th><div id="weather" class="temp">
+        <th>
+          <div id="weather" class="temp">
           <h2>Carregando...</h2>
         </div>
       </th>
+      
       <td>
-        <div class="location">
-          <div id="rua">
+          <div id="mapLink">
             <h2>Carregando...</h2>
           </div>
-          <div id="location"></div>
-        </div>
                 <div>
                   <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
                 </div>
-        
       </td>
       </tr>
 
@@ -1342,8 +1339,15 @@ iframe{
   
   
   
-  
-  function getLocation() {
+function showPosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
+  document.getElementById('mapLink').innerHTML = mapLink;
+}
+
+function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
@@ -1351,14 +1355,7 @@ iframe{
   }
 }
 
-function showPosition(position) {
-  var latitude = position.coords.latitude;
-  var longitude = position.coords.longitude;
-  var mapLink = 'https://www.google.com/maps/search/?api=1&query=' + latitude + ',' + longitude;
-  document.getElementById('mapLink').innerHTML = mapLink;
-}
-
-getLocation()
+getLocation();
   
   
   
@@ -2506,23 +2503,20 @@ setInterval(verificarTercaFeira, 11000);
 function showPosition(position) {
   var lat = position.coords.latitude;
   var lng = position.coords.longitude;
-  var latlng = new google.maps.LatLng(lat, lng);
-  var geocoder = new google.maps.Geocoder();
 
-  geocoder.geocode({ 'latLng': latlng }, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      if (results[0]) {
-        document.getElementById('rua').innerHTML = results[0].formatted_address;
-        var mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
-        document.getElementById('mapLink').innerHTML = mapLink;
-      } else {
-        alert('No results found');
-      }
-    } else {
-      alert('Geocoder failed due to: ' + status);
-    }
-  });
+  var mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+  document.getElementById('mapLink').innerHTML = '<a href="' + mapLink + '" target="_blank">' + mapLink + '</a>';
 }
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocalização não é suportada por este navegador.");
+  }
+}
+
+getLocation();
 
 
 function toggleSearch() {
