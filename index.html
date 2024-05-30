@@ -588,14 +588,13 @@ select#registros {
 
 @keyframes blink {
   0% {
-    border-color: #FFFFFF;
+    color: #000000;
   }
   50% {
-    border-color: #0077CC;
-    color: #0077CC;
+    color: #8B8B8B;
   }
   100% {
-    border-color: #FFFFFF;
+    color: #000000;
   }
 }
   
@@ -679,13 +678,16 @@ select#registros {
   display: block;
 }
 
-.temp p{
-  font-size: 12px;
+.temp h4{
+  font-size: 20px;
   width: 60%;
   margin: 0 auto;
+  margin-bottom: 25px;
   text-transform: capitalize;
   padding: 0;
+  animation: blink 2s infinite;
 }
+
 
 
 .BtnMap{
@@ -702,7 +704,7 @@ select#registros {
 }
 
 #weather p{
-  font-size: 10px;
+  font-size: 8px;
 }
 
 iframe{
@@ -711,16 +713,21 @@ iframe{
 }
 
 .temp p{
-  font-size: 12px;
+  font-size: 8px;
   margin: 0 auto;
   width: fit-content;
   font-weight: small;
 }
 
-#rua{
-  font-size: 10px;
-  max-width: 180px ;
+.local a{
+  margin-bottom: 20px;
 }
+
+.local img{
+  height: 25px;
+  width: 25px;
+}
+
 
 .abaDados a {
   display: block;
@@ -851,6 +858,8 @@ iframe{
   border-radius: 5px;
   display: none;
 }
+
+
 
 
 
@@ -1041,34 +1050,26 @@ iframe{
     
  
     
-
-
+      <div class="local">
+        
     
-    
-    
-        <h1> </h1>
-    
+          <div id="weather" class="temp">
+            <h4>Obtendo endereço...</h4>
+          </div>
+  
 
+        
+          <div id="mapLink">
+          </div>
+          <div>
+            <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
+          </div>
 
+      </div>
     
     <table>
     
-      <tr>
-        <th>
-          <div id="weather" class="temp">
-          <h2>Carregando...</h2>
-        </div>
-      </th>
-      
-      <td>
-          <div id="mapLink">
-            <h2>Carregando...</h2>
-          </div>
-                <div>
-                  <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
-                </div>
-      </td>
-      </tr>
+
 
     
     
@@ -2576,7 +2577,6 @@ function aplicarEstilo() {
 setInterval(showPosition, 100);
 
 
-  
   </script>
   
   
