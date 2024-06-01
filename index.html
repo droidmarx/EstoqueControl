@@ -39,7 +39,7 @@
 
   /* Estilos gerais */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -100,6 +100,9 @@ input {
 
 #enviar {
   margin-bottom: 20px;
+  animation: scaleAnimation 2s infinite;
+  width: 140px;
+  margin-top: 20px;
 }
 
 button {
@@ -163,13 +166,17 @@ td {
   text-align: center;
   background-color: var(--tabela);
   margin: 0 auto;
-  border: 1px solid black;
-  border-radius: 4px 0px 4px;
+  border: 2px solid black;
+  border-radius: 10px 0px 4px 4px;
   padding: 5px;
   font-size: small ;
   color: var(--texto);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
+  text-transform: uppercase;
+  text-align: center;
+  height: -100px;
+  width: 300px;
 }
 
 td button {
@@ -222,13 +229,14 @@ table#estoque {
 }
 
 #habilitar input {
-  width: fit-content;
+  width: 80%;
+  text-align: center;
 }
 
 select {
   padding: 2px;
   margin-bottom: 4px;
-  width: 100%;
+  width: 80%;
   text-align: center;
 }
 
@@ -259,15 +267,7 @@ nav {
  animation: scaleAnimation 2s infinite;
 }
 
-.sublinhado-ativo2 {
-margin-top: 20px;
-  background: gray;
- box-shadow: 0 2px 8px rgba(01, 0, 0, 01);
- height: 70px;
- width: 200px;
- border-radius: 50%;
- animation: scaleAnimation1 2s infinite;
-}
+
 
 
 
@@ -1055,12 +1055,12 @@ iframe{
     <td>
       <div class="local">
         <div id="weather" class="temp">
-          <span>Obtendo localização...</span>
+          <span>Obtendo previsão do tempo...</span>
         </div>
     </td>
     <th>
       <div class="temp">
-       <span id="address">Carregando a rua...</span> 
+       <span id="address">Obtendo endereço...</span> 
       </div>
       
       </th>
@@ -1266,7 +1266,7 @@ iframe{
  
      
      
-<button id="enviar" class="sublinhado-ativo2" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="99" width="90"></button>
+<button id="enviar" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="99" width="90"></button>
      
   </div>
   
