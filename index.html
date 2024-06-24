@@ -1832,14 +1832,30 @@ const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
 if (quantidadePorMesElement) {
   const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
 
-  // Verificar se há algum elemento <p>
-  if (paragraphs.length > 0) {
-    const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+// Verificar se há algum elemento <p>
+if (paragraphs.length > 0) {
+  const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
 
-    if (lastParagraph.trim() !== "") {
-      copiado += `Instalações no mês de ${lastParagraph}\n`;
+  if (lastParagraph.trim() !== "") {
+    // Extrair o número do mês do parágrafo
+    const monthMatch = lastParagraph.match(/\d+/);
+
+    if (monthMatch) {
+      // Converter para número inteiro e incrementar em 1
+      let month = parseInt(monthMatch[0], 10) + 1;
+
+      // Certificar-se de que o mês não exceda 12
+      if (month > 12) {
+        month = 1; // ou ajustar conforme necessário
+      }
+
+      copiado += `Instalações no mês de ${month}\n`;
+    } else {
+      // Caso não encontre um número no parágrafo, pode lidar com isso como preferir
+      console.error('Nenhum número de mês encontrado no parágrafo.');
     }
   }
+}
 }
 
 
