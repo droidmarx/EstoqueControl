@@ -243,9 +243,59 @@ nav {
   z-index: 10;
   border-bottom: #1067DA solid 3px;
   border-top: #1067DA solid 3px;
-
+  animation: borderAnimation 1s linear;
 }
 
+@keyframes borderAnimation {
+  0% {
+    margin-top: 8px ;
+    align-items: center;
+    box-shadow: -200px 0 20px 5px rgba(0, 0, 255, 0),
+                200px 0 20px 5px rgba(0, 0, 255, 0);
+  }
+  10% {
+    box-shadow: -160px 0 20px 5px rgba(0, 0, 255, 0.4),
+                160px 0 20px 5px rgba(0, 0, 255, 0.4);
+  }
+  20% {
+    box-shadow: -120px 0 20px 5px rgba(0, 0, 255, 0.6),
+                120px 0 20px 5px rgba(0, 0, 255, 0.6);
+  }
+  30% {
+    box-shadow: -80px 0 20px 5px rgba(0, 0, 255, 0.8),
+                80px 0 20px 5px rgba(0, 0, 255, 0.8);
+  }
+  40% {
+    box-shadow: -40px 0 20px 5px rgba(0, 0, 255, 1),
+                40px 0 20px 5px rgba(0, 0, 255, 1);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(0, 0, 255, 1),
+                0 0 20px 5px rgba(0, 0, 255, 1);
+  }
+  60% {
+    box-shadow: 40px 0 20px 5px rgba(0, 0, 255, 1),
+                -40px 0 20px 5px rgba(0, 0, 255, 1);
+  }
+  70% {
+    box-shadow: 80px 0 20px 5px rgba(0, 0, 255, 0.8),
+                -80px 0 20px 5px rgba(0, 0, 255, 0.8);
+  }
+  80% {
+    box-shadow: 120px 0 20px 5px rgba(0, 0, 255, 0.6),
+                -120px 0 20px 5px rgba(0, 0, 255, 0.6);
+  }
+  90% {
+    box-shadow: 160px 0 20px 5px rgba(0, 0, 255, 0.4),
+                -160px 0 20px 5px rgba(0, 0, 255, 0.4);
+  }
+  100% {
+    box-shadow: 200px 0 20px 5px rgba(0, 0, 255, 0),
+                -200px 0 20px 5px rgba(0, 0, 255, 0);
+  }
+}
+  
+  
 .sublinhado-ativo {
  box-shadow: 5px 10px 20px 5px rgba(48, 56, 56, 0.5);
  height: fit-content;
@@ -1842,14 +1892,22 @@ if (paragraphs.length > 0) {
 
     if (monthMatch) {
       // Converter para número inteiro e incrementar em 1
-      let month = parseInt(monthMatch[0], 10) + 1;
+      let month = parseInt(monthMatch[0], 10);
 
-      // Certificar-se de que o mês não exceda 12
-      if (month > 12) {
-        month = 1; // ou ajustar conforme necessário
+      // Verificar se o valor do mês é 0
+      if (month === 0) {
+        copiado += "Você não trabalhou ainda esse mês!\n";
+      } else {
+        // Incrementar o mês em 1
+        month += 1;
+
+        // Certificar-se de que o mês não exceda 12
+        if (month > 12) {
+          month = 1; // ou ajustar conforme necessário
+        }
+
+        copiado += `Instalações no mês de ${month}\n`;
       }
-
-      copiado += `Instalações no mês de ${month}\n`;
     } else {
       // Caso não encontre um número no parágrafo, pode lidar com isso como preferir
       console.error('Nenhum número de mês encontrado no parágrafo.');
