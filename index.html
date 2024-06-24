@@ -1018,7 +1018,7 @@ iframe{
   <div class="habilitar" style="display: block" id="habilitar">
    
   
-    
+    <div id="ultimomes"></div><br>
     
     <script>
       
@@ -2053,11 +2053,22 @@ function getMonthName(monthIndex) {
 const countByMonthElement = document.getElementById('quantidade-por-mes');
 countByMonthElement.innerHTML = '';
 
+let lastMonthValue = null; // Variável para armazenar o valor do último mês
+
 for (const month in countByMonth) {
   const pElement = document.createElement('p');
   pElement.textContent = `${month}: ${countByMonth[month]}`;
   countByMonthElement.appendChild(pElement);
+
+  // Atualiza o valor do último mês a cada iteração
+  lastMonthValue = countByMonth[month];
 }
+
+// Seleciona a div com id 'ultimomes'
+const divUltimoMes = document.getElementById('ultimomes');
+
+// Atualiza o conteúdo da div com o valor do último mês
+divUltimoMes.textContent = `Você fez, ${lastMonthValue} instalações nesse mês !`;
 
   
   
@@ -2093,7 +2104,7 @@ function updateButtonVisibility() {
   if (anyChecked) {
     button.style.display = "inline-block"; // Mostrar o botão
   } else {
-    button.style.display = "none"; // Esconder o botão
+    button.style.display = "block"; // Esconder o botão
   }
 }
 
