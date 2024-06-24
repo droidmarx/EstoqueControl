@@ -30,9 +30,9 @@
 
 
 :root { 
-   --principal: #8F8F8F; 
-   --secundaria: #0077CC;
-   --tabela: #B2B2B2;
+   --principal: #626870; 
+   --secundaria: #425671;
+   --tabela: #9197a0;
    --texto: #0E0E11;
  }
 
@@ -235,17 +235,19 @@ select {
 /* Estilos para navegação */
 nav {
   backdrop-filter: blur(2px); 
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(36, 44, 44, 0.63);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   position: relative;
   z-index: 10;
-  border-bottom: whitesmoke solid 3px;
+  border-bottom: #1067DA solid 3px;
+  border-top: #1067DA solid 3px;
+
 }
 
 .sublinhado-ativo {
- box-shadow: 0px 0px 20px rgba(15, 206, 224, 0.59);
+ box-shadow: 5px 10px 20px 5px rgba(48, 56, 56, 0.5);
  height: fit-content;
  width: fit-content;
  animation: scaleAnimation 1.2s infinite;
@@ -253,20 +255,25 @@ nav {
 
 
 .sublinhado-ativo1 {
- box-shadow: 0 2px 8px rgba(01, 0, 0, 01);
+ box-shadow: 0 2px 8px rgba(1, 0, 0, 1);
  height: fit-content;
  width: fit-content;
  animation: scaleAnimation 2s infinite;
 }
 
 .sublinhado-ativo2 {
-margin-top: 20px;
-  background: gray;
- box-shadow: 0 2px 8px rgba(01, 0, 0, 01);
+z-index: 10;
+position: fixed;
+bottom: 20px;
+right: 15px;
+padding: 10px;
+background: gray;
+box-shadow: 0 2px 8px rgba(01, 0, 0, 01);
  height: 70px;
- width: 200px;
+ width: 70px;
  border-radius: 50%;
- animation: scaleAnimation1 2s infinite;
+ scale: 0.9;
+ animation: scaleAnimation1 10s infinite;
 }
 
 
@@ -274,24 +281,25 @@ margin-top: 20px;
 @keyframes scaleAnimation {
   0% {
   
-
+    border: transparent solid 1px;
     border-radius: 4px;
     transform: scale(1.3);
-    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
+    box-shadow: 10 20px 20px 10 rgba(09, 10, 0, 01);
 
   }
   50% {
-    
-    border-radius: 8px 10px 8px 10px;
+    border: #1067DA dashed 1px;
+    border-radius: 10px 10px 10px 10px;
     transform: scale(1.2);
-    box-shadow: 0px 5px 10px 0px #2E373D
+    box-shadow: 2px 10px 10px 2px #2D2F31
 
   }
   100% {
     
+    border: transparent solid 1px;
     border-radius: 4px;
     transform: scale(1.3);
-    box-shadow: 0 20px 20px 0 rgba(09, 10, 0, 01);
+    box-shadow: 5 20px 20px 5 rgba(09, 10, 0, 01);
 
   }
 }
@@ -307,8 +315,7 @@ margin-top: 20px;
   }
   50% {
     
-    border-radius: 30px;
-    width: 220px;
+    border-radius: 33px;
     transform: scale(1.2);
     box-shadow: 0px 5px 10px 0px #2E373D
 
@@ -917,27 +924,36 @@ iframe{
 
 <div id="manutencaoDiv" style="display: none;">
   
-<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ehbc=2E312F&noprof=1" width="350" height="400"></iframe>
- 
  
  
  <div class="menu">
+   <div style="display: block;">
+     <h4>Editar</h4>
    <a class="sublinhado-ativo1" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13" target="_blank" >
      
-     <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20">
+     <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20"></a>
+     </div>
      
-</a>
+     
+   <div style="display: block;">
+     <h4>Google Earth</h4>
 
-<a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC" >
+<a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC" target="_blank">
   
 <img class="logo" src="https://img.icons8.com/?size=512&id=0JR9TPl4aWU1&format=png" height="20" width="20">
 </a>
+   </div>
 
-   
-   
+<div style="display: block;">
+    <h4>Google Maps</h4>
+
+<a class="sublinhado-ativo1" href="https://goo.gl/maps/88VJ2ZpSiy4F2Qas7?g_st=aw"target="_blank">
+
+  <img class="logo" src="https://img.icons8.com/?size=512&id=Q82WjgdMEzoU&format=png" height="20" width="20"></a>
+</div>
  </div>
 
-
+<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ehbc=2E312F&noprof=1" width="350" height="400"></iframe>
 
 <div style="display: none;">
   
@@ -999,7 +1015,6 @@ iframe{
 
   <!-- Div para a seção de lançamento -->
   <div class="habilitar" style="display: block" id="habilitar">
-   
    
   
     
@@ -1266,7 +1281,7 @@ iframe{
  
      
      
-<button id="enviar" class="sublinhado-ativo2" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="99" width="90"></button>
+<button id="enviar" class="sublinhado-ativo2" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50"></button>
      
   </div>
   
@@ -1469,15 +1484,6 @@ function mostrarEstoque() {
     }
 
     function mostrarManutencao() {
-      
-     setTimeout(function() {
-    if (confirm("Deseja abrir no Maps?")) {
-        window.open("https://goo.gl/maps/88VJ2ZpSiy4F2Qas7?g_st=aw", "_blank");
-    } else {
-        // Continuar na página atual
-    }
-}, 1700);
-
       
       const estoqueDiv = document.getElementById("estoqueDiv");
       const retiradaDiv = document.getElementById("retiradaDiv");
@@ -2074,6 +2080,8 @@ checkboxElement.classList.add('checkbox-item');
 checkboxElement.value = i; // Definir o valor da caixa de seleção como o índice do item
 listItemElement.appendChild(checkboxElement);
 
+
+
 // Selecione todos os checkboxes
 var checkboxes = document.querySelectorAll('input[type="checkbox"]');
 var button = document.getElementById("btn-historico");
@@ -2087,6 +2095,8 @@ function updateButtonVisibility() {
     button.style.display = "none"; // Esconder o botão
   }
 }
+
+
 
 // Adicionar ouvintes de eventos para todos os checkboxes
 checkboxes.forEach(function(checkbox) {
@@ -2597,6 +2607,8 @@ function aplicarEstilo() {
 }
 
 setInterval(showPosition, 100);
+
+
 
 
   </script>
