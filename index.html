@@ -929,8 +929,7 @@ iframe{
   display: none;
 }
 
-ul { list-style-type: none; margin: 0; padding: 0; }
-    li { padding: 8px; margin-bottom: 10px; background: #f2f2f2; }
+
 
 
 
@@ -1080,13 +1079,6 @@ ul { list-style-type: none; margin: 0; padding: 0; }
    
   
     <div id="ultimomes"></div><br>
-    
-    
-      <ul id="messages"></ul>
-  <form id="form">
-    <input id="input" autocomplete="off" /><button>Send</button>
-  </form>
-    
     
     <script>
       
@@ -2792,35 +2784,7 @@ setInterval(showPosition, 100);
   // Chama a função getLocation quando a página é carregada
   window.onload = getLocation;
 </script>
-  <!-- Ably SDK -->
-  <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
-  <script>
-    // Solicitar nome do usuário
-    let username = '';
-    while (!username) {
-      username = prompt('Digite seu nome:');
-    }
-
-    // Sua chave de API do Ably
-    const ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
-    const channel = ably.channels.get('chat');
-
-    // Receber mensagens
-    channel.subscribe('message', function(message) {
-      const data = message.data;
-      const item = document.createElement('li');
-      item.textContent = `${data.name}: ${data.message}`;
-      document.getElementById('messages').appendChild(item);
-    });
-
-    // Enviar mensagens
-    document.getElementById('form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const input = document.getElementById('input');
-      channel.publish('message', { name: username, message: input.value });
-      input.value = '';
-    });
-  </script> 
+  
   
   
 </body>
