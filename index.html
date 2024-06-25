@@ -2161,13 +2161,14 @@ const divUltimoMes = document.getElementById('ultimomes');
 
 // Atualiza o conteúdo da div com o valor do último mês
 if (lastMonthValue !== 0 && lastMonthValue !== null) {
-  if (lastMonthValue > 30) {
-    divUltimoMes.innerHTML = `Parabéns, ja foi <strong>${lastMonthValue}</strong> Instalação nesse mês !`;
+  if (lastMonthValue > 35) {
+    divUltimoMes.innerHTML = `Parabéns, pode descansar, já foi <strong>${lastMonthValue}</strong> instalações nesse mês!`;
+  } else if (lastMonthValue > 20) {
+    divUltimoMes.innerHTML = `Parabéns, já foram <strong>${lastMonthValue}</strong> instalações nesse mês!`;
   } else {
-    divUltimoMes.textContent = `você fez, ${lastMonthValue} instalações nesse mês !`;
+    divUltimoMes.textContent = `Você fez, ${lastMonthValue} instalações nesse mês!`;
   }
 }
-
   
   
   
