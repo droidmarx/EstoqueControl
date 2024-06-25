@@ -2160,7 +2160,13 @@ for (const month in countByMonth) {
 const divUltimoMes = document.getElementById('ultimomes');
 
 // Atualiza o conteúdo da div com o valor do último mês
-divUltimoMes.textContent = `Você fez, ${lastMonthValue} instalações nesse mês !`;
+if (lastMonthValue !== 0 && lastMonthValue !== null) {
+  if (lastMonthValue > 30) {
+    divUltimoMes.innerHTML = `Parabéns, ja foi <strong>${lastMonthValue}</strong> Instalação nesse mês !`;
+  } else {
+    divUltimoMes.textContent = `você fez, ${lastMonthValue} instalações nesse mês !`;
+  }
+}
 
   
   
