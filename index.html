@@ -988,9 +988,9 @@ iframe{
  <div class="menu">
    <div style="display: block;">
      <h4>Editar</h4>
-   <a class="sublinhado-ativo1" href="https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13" target="_blank" >
-     
-     <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20"></a>
+ <a class="sublinhado-ativo1" href="#" id="editLink">
+   <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20">
+ </a>
      </div>
      
      
@@ -1439,7 +1439,15 @@ function getLocation() {
 getLocation();
   
   
-  
+  document.getElementById('editLink').addEventListener('click', function(event) {
+  event.preventDefault();
+  var senha = prompt("Digite a senha para editar:");
+  if (senha === 'editar') {
+    window.open("https://www.google.com/maps/d/u/0/edit?hl=pt-BR&mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=-23.104603351905947%2C-47.26240628194967&z=13", "_blank");
+  } else {
+    alert("Senha incorreta.");
+  }
+});
   
   
   
