@@ -937,7 +937,11 @@ iframe{
 
 <body>
   
+ <audio id="notification" style="display: none" src="/audio/notification.mp3" controls></audio>
 
+<audio id="xselect" style="display: none" src="/audio/ffselect.mp3" controls></audio>
+
+<audio id="recycler" style="display: none" src="/audio/recycler.mp3" controls></audio>
 
   <!-- Barra de navegação -->
   <nav id="nav">
@@ -1454,6 +1458,8 @@ getLocation();
   
   
 function ativarSublinhado(elemento) {
+  const notification = document.getElementById('xselect');
+   xselect.play();
   var elementosA = document.querySelectorAll("#nav a");
   elementosA.forEach(function(a) {
     a.classList.remove("sublinhado-ativo");
@@ -1861,6 +1867,9 @@ function atualizarTabelaEstoque() {
 
     // Função para processar a retirada de produtos
     function enviar() {
+
+const notification = document.getElementById('notification');
+   notification.play();
      getLocation()
       for (let i = 0; i < retirada.length; i++) {
         let produtoRetirado = retirada[i];
@@ -2392,6 +2401,8 @@ totalElement.textContent = dadosCopiados.length;
 
         alert('Itens selecionados foram excluídos com sucesso.');
       }
+      const notification = document.getElementById('recycler');
+recycler.play();
     }
 
     // Função para salvar os dados copiados no armazenamento local
