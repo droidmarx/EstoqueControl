@@ -1391,7 +1391,7 @@ iframe{
 
     
     <div class="search-container" id="search-container">
-<input type="text" placeholder="Pesquisar..." id="inputFind">
+<input type="text" placeholder="Pesquisar..." id="inputFind" required>
 <button class="btnPesquisar" onclick="aplicarEstilo()">
   <i class="fas fa-arrow-right"></i>
 </button>
@@ -2649,50 +2649,49 @@ function toggleSearch() {
 }
 
 function aplicarEstilo() {
-    const valor = document.getElementById('inputFind').value;
-    const itensRegistros = document.querySelectorAll('.classe-Client');
-    const itensDados = document.querySelectorAll('.abaDados');
-    const itensLista = document.querySelectorAll('.item-lista');
-    const alerta = document.getElementById('alerta1');
+  const valor = document.getElementById('inputFind').value;
+  const itensRegistros = document.querySelectorAll('.classe-Client');
+  const itensDados = document.querySelectorAll('.abaDados');
+  const itensLista = document.querySelectorAll('.item-lista');
+  const alerta = document.getElementById('alerta1');
 
-    let encontrado = 0;
-    let resultados = [];
+  let encontrado = 0;
+  let resultados = [];
 
-    // Função auxiliar para estilizar e exibir/ocultar itens
-    function estilizarItens(itens) {
-        itens.forEach(item => {
-            if (item.textContent.includes(valor)) {
-                resultados.push(item.outerHTML);
-                item.classList.add('slidein');
-                item.style.display = 'block'; // Mostrar item
-                item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                encontrado++;
-            } else {
-                item.classList.remove('slidein');
-                item.style.display = 'none'; // Ocultar item
-            }
-        });
-    }
+  // Função auxiliar para estilizar e exibir/ocultar itens
+  function estilizarItens(itens) {
+    itens.forEach(item => {
+      if (item.textContent.includes(valor)) {
+        resultados.push(item.outerHTML);
+        item.classList.add('slidein');
+        item.style.display = 'block'; // Mostrar item
+        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        encontrado++;
+      } else {
+        item.classList.remove('slidein');
+        item.style.display = 'none'; // Ocultar item
+      }
+    });
+  }
 
-    // Aplicando estilo aos itensRegistros, itensDados e itensLista
-    estilizarItens(itensRegistros);
-    estilizarItens(itensDados);
-    estilizarItens(itensLista);
+  // Aplicando estilo aos itensRegistros, itensDados e itensLista
+  estilizarItens(itensRegistros);
+  estilizarItens(itensDados);
+  estilizarItens(itensLista);
 
-    if (encontrado === 0) {
-        alert('Nada encontrado');
-        alerta.innerHTML = '';
-        alerta.style.display = 'none';
-    } else {
-        alerta.innerHTML = "Encontrados: " + encontrado;
-        alerta.style.display = 'block';
-        setTimeout(() => {
-            alerta.style.display = 'none';
-        }, 25000); // Esconde a div após 25 segundos
-      
-    }
+  if (encontrado === 0) {
+    alert('Nada encontrado');
+    alerta.innerHTML = '';
+    alerta.style.display = 'none';
+  } else {
+    let valorDividido = encontrado / 2; // Dividir o valor por 2
+    alerta.innerHTML = "Encontrados: " + valorDividido;
+    alerta.style.display = 'block';
+    setTimeout(() => {
+      alerta.style.display = 'none';
+    }, 25000); // Esconde a div após 25 segundos
+  }
 }
-
 setInterval(showPosition, 100);
 
 
