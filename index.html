@@ -1102,47 +1102,118 @@ iframe{
     <div id="ultimomes"></div><br>
     
     <script>
-      
-  navigator.geolocation.getCurrentPosition(position => {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
+async function reverseGeocode(lat, lon) {
+	const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
-  // Use a API de Geolocalização para obter a cidade com base na latitude e longitude
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error('Erro na solicitação');
+		}
+		const data = await response.json();
+		if (data.address) {
+			const address = data.address;
+			return {
+				road: address.road || '',
+				suburb: address.suburb || address.neighbourhood || '',
+				postcode: address.postcode || ''
+			};
+		} else {
+			return {
+				road: '',
+				suburb: '',
+				postcode: ''
+			};
+		}
+	} catch (error) {
+		return {
+			road: '',
+			suburb: '',
+			postcode: ''
+		};
+	}
+}
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const cidade = data.name;
-      const temperatura = data.main.temp;
-      const descricao = data.weather[0].description;
-      const icon = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-      const umidade = data.main.humidity;
-      const sensacao = data.main.feels_like;
-      const vento = data.wind.speed;
+async function getWeather(lat, lon) {
+	const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
 
-      const nuvens = data.clouds.all;
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error('Erro na solicitação');
+		}
+		const data = await response.json();
+		const cidade = data.name;
+		const temperatura = data.main.temp;
+		const descricao = data.weather[0].description;
+		const sensacao = data.main.feels_like;
 
+		return {
+			cidade,
+			temperatura,
+			descricao,
+			sensacao
+		};
+	} catch (error) {
+		console.error('Erro ao obter dados do clima:', error);
+		return {
+			cidade: '',
+			temperatura: '',
+			descricao: '',
+			sensacao: ''
+		};
+	}
+}
 
+async function getLocation() {
+	const addressDiv = document.getElementById('address');
+	const weatherDiv = document.getElementById('weather');
+	const spinnerDiv = document.getElementById('spinner');
 
-      const weatherDiv = document.getElementById('weather');
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(async (position) => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
 
-      weatherDiv.innerHTML = `
-        <div class="temp">
-          <p>${cidade}</p>
-          <p>${descricao}</p>
+			const endereco = await reverseGeocode(latitude, longitude);
+			const clima = await getWeather(latitude, longitude);
 
-          <p>Temperatura: ${temperatura}°C</p>
-          <p>Sensação: ${sensacao}°C</p>
-    
-        </div>
-      `;
-    })
-    .catch(error => {
-      console.error('Erro ao obter dados do clima:', error);
-    });
-});
+			addressDiv.innerHTML = `
+                        <div class="address-details">
+                            <p>Rua: ${endereco.road}</p>
+                            <p>Bairro: ${endereco.suburb}</p>
+                            <p>CEP: ${endereco.postcode}</p>
+                        </div>
+                    `;
 
+			weatherDiv.innerHTML = `
+                        <div class="weather-details">
+                            <p>Cidade: ${clima.cidade}</p>
+                            <p>Descrição: ${clima.descricao}</p>
+                            <p>Temperatura: ${clima.temperatura}°C</p>
+                            <p>Sensação: ${clima.sensacao}°C</p>
+                        </div>
+                    `;
+
+			spinnerDiv.classList.remove('spinner');
+		}, (error) => {
+			spinnerDiv.classList.remove('spinner');
+			addressDiv.textContent = 'Erro ao obter localização';
+			weatherDiv.textContent = 'Erro ao obter clima';
+		});
+	} else {
+		spinnerDiv.classList.remove('spinner');
+		addressDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+		weatherDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+	}
+}
+
+function enviar() {
+	document.getElementById('spinner').classList.add('spinner');
+	getLocation();
+}
+
+document.addEventListener('DOMContentLoaded', getLocation);
     </script>
     
     <table>
@@ -2732,67 +2803,7 @@ setInterval(showPosition, 100);
   </script>
   
 <script>
-  async function reverseGeocode(lat, lon) {
-	const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
-
-	try {
-		const response = await fetch(url);
-		if (!response.ok) {
-			throw new Error('Erro na solicitação');
-		}
-		const data = await response.json();
-		if (data.address) {
-			const address = data.address;
-			return {
-				road: address.road || '',
-				suburb: address.suburb || address.neighbourhood || '',
-				postcode: address.postcode || ''
-			};
-		} else {
-			return {
-				road: '',
-				suburb: '',
-				postcode: ''
-			};
-		}
-	} catch (error) {
-		return {
-			road: '',
-			suburb: '',
-			postcode: ''
-		};
-	}
-}
-
-function getLocation() {
-	const addressDiv = document.getElementById('address');
-	const spinnerDiv = document.getElementById('spinner');
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(async (position) => {
-			const latitude = position.coords.latitude;
-			const longitude = position.coords.longitude;
-
-			const endereco = await reverseGeocode(latitude, longitude);
-
-			addressDiv.innerHTML = `
-                        <div class="address-details">
-                            <p>Rua: ${endereco.road}</p>
-                            <p>Bairro: ${endereco.suburb}</p>
-                            <p>CEP: ${endereco.postcode}</p>
-                        </div>
-                    `;
-
-			spinnerDiv.classList.remove('spinner');
-		}, (error) => {
-			spinnerDiv.classList.remove('spinner');
-			addressDiv.textContent = 'Erro ao obter localização';
-		});
-	} else {
-		spinnerDiv.classList.remove('spinner');
-		addressDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
-	}
-}
-window.onload = getLocation;
+  
 </script>
   
   
