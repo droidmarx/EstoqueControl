@@ -929,6 +929,23 @@ iframe{
   display: none;
 }
 
+        .spinner {
+        	   position: relative;
+        	   bottom: 66px;
+        	   right: 15px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
 
 
@@ -1346,7 +1363,11 @@ iframe{
  
      
      
-<button id="enviar" class="sublinhado-ativo2" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50"></button>
+<button id="enviar" class="sublinhado-ativo2" onclick="enviar()"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50">
+
+<div id="spinner" class="spinner"></div>
+
+</button>
      
   </div>
   
@@ -2712,63 +2733,66 @@ setInterval(showPosition, 100);
   
 <script>
   async function reverseGeocode(lat, lon) {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+	const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Erro na solicitação');
-      }
-      const data = await response.json();
-      if (data.address) {
-        const address = data.address;
-        return {
-          road: address.road || '',
-          suburb: address.suburb || address.neighbourhood || '',
-          postcode: address.postcode || ''
-        };
-      } else {
-        return {
-          road: '',
-          suburb: '',
-          postcode: ''
-        };
-      }
-    } catch (error) {
-      return {
-        road: '',
-        suburb: '',
-        postcode: ''
-      };
-    }
-  }
+	try {
+		const response = await fetch(url);
+		if (!response.ok) {
+			throw new Error('Erro na solicitação');
+		}
+		const data = await response.json();
+		if (data.address) {
+			const address = data.address;
+			return {
+				road: address.road || '',
+				suburb: address.suburb || address.neighbourhood || '',
+				postcode: address.postcode || ''
+			};
+		} else {
+			return {
+				road: '',
+				suburb: '',
+				postcode: ''
+			};
+		}
+	} catch (error) {
+		return {
+			road: '',
+			suburb: '',
+			postcode: ''
+		};
+	}
+}
 
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+function getLocation() {
+	const addressDiv = document.getElementById('address');
+	const spinnerDiv = document.getElementById('spinner');
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(async (position) => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
 
-        const endereco = await reverseGeocode(latitude, longitude);
+			const endereco = await reverseGeocode(latitude, longitude);
 
-        const addressDiv = document.getElementById('address');
-        addressDiv.innerHTML = `
-                    <div class="address-details">
-                        <p>Rua: ${endereco.road}</p>
-                        <p>Bairro: ${endereco.suburb}</p>
-                        <p>CEP: ${endereco.postcode}</p>
-                    </div>
-                `;
-      }, (error) => {
-        document.getElementById('address').textContent = 'Erro ao obter localização';
-      });
-    } else {
-      document.getElementById('address').textContent = 'Geolocalização não é suportada pelo seu navegador';
-    }
-  }
+			addressDiv.innerHTML = `
+                        <div class="address-details">
+                            <p>Rua: ${endereco.road}</p>
+                            <p>Bairro: ${endereco.suburb}</p>
+                            <p>CEP: ${endereco.postcode}</p>
+                        </div>
+                    `;
 
-  // Chama a função getLocation quando a página é carregada
-  window.onload = getLocation;
+			spinnerDiv.classList.remove('spinner');
+		}, (error) => {
+			spinnerDiv.classList.remove('spinner');
+			addressDiv.textContent = 'Erro ao obter localização';
+		});
+	} else {
+		spinnerDiv.classList.remove('spinner');
+		addressDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+	}
+}
+window.onload = getLocation;
 </script>
   
   
