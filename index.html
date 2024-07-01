@@ -22,7 +22,7 @@
 
   
   
-  <title>Painel de Controle</title>
+  <title>IndaiaFibra</title>
   <body onload="verificarTercaFeira()">
 </head>
 
@@ -593,7 +593,7 @@ div1{
 }
 
 h4{
-  color:white ;
+  color:#FFFFFF ;
   font-size: 8px;
   margin:10px;
 }
@@ -1009,7 +1009,7 @@ iframe{
  
  
  <div class="menu">
-   <div style="display: block;">
+   <div class="map" style="display: block;">
      <h4>Editar</h4>
  <a class="sublinhado-ativo1" href="#" id="editLink">
    <img class="logo" src="https://img.icons8.com/?size=512&id=QjsrTsVL665z&format=png" height="20" width="20">
@@ -1017,8 +1017,8 @@ iframe{
      </div>
      
      
-   <div style="display: block;">
-     <h4>Google Earth</h4>
+   <div class="map" style="display: block;">
+     <h4>Earth</h4>
 
 <a class="sublinhado-ativo1" href="https://earth.app.goo.gl/?apn=com.google.earth&isi=293622097&ius=googleearth&link=https%3a%2f%2fearth.google.com%2fweb%2f%40-23.05937339,-47.31164855,637.82978119a,3835.30342676d,30.00033061y,0h,0t,0r%2fdata%3dMigKJgokCiAxbF9jaDZxdXB1WHowRG53Nmg5VmhvbTFZMWczaWJhWSAC" target="_blank">
   
@@ -1026,8 +1026,8 @@ iframe{
 </a>
    </div>
 
-<div style="display: block;">
-    <h4>Google Maps</h4>
+<div cla style="display: block;">
+    <h4>Maps</h4>
 
 <a class="sublinhado-ativo1" href="https://goo.gl/maps/88VJ2ZpSiy4F2Qas7?g_st=aw"target="_blank">
 
@@ -1102,119 +1102,119 @@ iframe{
     <div id="ultimomes"></div><br>
     
     <script>
-async function reverseGeocode(lat, lon) {
-	const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+	async function reverseGeocode(lat, lon) {
+		const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
 
-	try {
-		const response = await fetch(url);
-		if (!response.ok) {
-			throw new Error('Erro na solicitação');
-		}
-		const data = await response.json();
-		if (data.address) {
-			const address = data.address;
-			return {
-				road: address.road || '',
-				suburb: address.suburb || address.neighbourhood || '',
-				postcode: address.postcode || ''
-			};
-		} else {
+		try {
+			const response = await fetch(url);
+			if (!response.ok) {
+				throw new Error('Erro na solicitação');
+			}
+			const data = await response.json();
+			if (data.address) {
+				const address = data.address;
+				return {
+					road: address.road || '',
+					suburb: address.suburb || address.neighbourhood || '',
+					postcode: address.postcode || ''
+				};
+			} else {
+				return {
+					road: '',
+					suburb: '',
+					postcode: ''
+				};
+			}
+		} catch (error) {
 			return {
 				road: '',
 				suburb: '',
 				postcode: ''
 			};
 		}
-	} catch (error) {
-		return {
-			road: '',
-			suburb: '',
-			postcode: ''
-		};
 	}
-}
 
-async function getWeather(lat, lon) {
-	const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
+	async function getWeather(lat, lon) {
+		const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=pt_br&units=metric&APPID=247b887404d2c17d430365e56d58d514`;
 
-	try {
-		const response = await fetch(url);
-		if (!response.ok) {
-			throw new Error('Erro na solicitação');
+		try {
+			const response = await fetch(url);
+			if (!response.ok) {
+				throw new Error('Erro na solicitação');
+			}
+			const data = await response.json();
+			const cidade = data.name;
+			const temperatura = data.main.temp;
+			const descricao = data.weather[0].description;
+			const sensacao = data.main.feels_like;
+
+			return {
+				cidade,
+				temperatura,
+				descricao,
+				sensacao
+			};
+		} catch (error) {
+			console.error('Erro ao obter dados do clima:', error);
+			return {
+				cidade: '',
+				temperatura: '',
+				descricao: '',
+				sensacao: ''
+			};
 		}
-		const data = await response.json();
-		const cidade = data.name;
-		const temperatura = data.main.temp;
-		const descricao = data.weather[0].description;
-		const sensacao = data.main.feels_like;
-
-		return {
-			cidade,
-			temperatura,
-			descricao,
-			sensacao
-		};
-	} catch (error) {
-		console.error('Erro ao obter dados do clima:', error);
-		return {
-			cidade: '',
-			temperatura: '',
-			descricao: '',
-			sensacao: ''
-		};
 	}
-}
 
-async function getLocation() {
-	const addressDiv = document.getElementById('address');
-	const weatherDiv = document.getElementById('weather');
-	const spinnerDiv = document.getElementById('spinner');
+	async function atualizarLocalizacao() {
+		const addressDiv = document.getElementById('address');
+		const weatherDiv = document.getElementById('weather');
+		const spinnerDiv = document.getElementById('spinner');
 
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(async (position) => {
-			const latitude = position.coords.latitude;
-			const longitude = position.coords.longitude;
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(async (position) => {
+				const latitude = position.coords.latitude;
+				const longitude = position.coords.longitude;
 
-			const endereco = await reverseGeocode(latitude, longitude);
-			const clima = await getWeather(latitude, longitude);
+				console.log(`Atualizando localização: Latitude ${latitude}, Longitude ${longitude}`);
 
-			addressDiv.innerHTML = `
-                        <div class="address-details">
-                            <p>Rua: ${endereco.road}</p>
-                            <p>Bairro: ${endereco.suburb}</p>
-                            <p>CEP: ${endereco.postcode}</p>
-                        </div>
-                    `;
+				const endereco = await reverseGeocode(latitude, longitude);
+				const clima = await getWeather(latitude, longitude);
 
-			weatherDiv.innerHTML = `
-                        <div class="weather-details">
-                            <p>Cidade: ${clima.cidade}</p>
-                            <p>Descrição: ${clima.descricao}</p>
-                            <p>Temperatura: ${clima.temperatura}°C</p>
-                            <p>Sensação: ${clima.sensacao}°C</p>
-                        </div>
-                    `;
+				addressDiv.innerHTML = `
+                <div class="address-details">
+                    <p>Rua: ${endereco.road}</p>
+                    <p>Bairro: ${endereco.suburb}</p>
+                    <p>CEP: ${endereco.postcode}</p>
+                </div>
+            `;
 
+				weatherDiv.innerHTML = `
+                <div class="weather-details">
+                    <p>Cidade: ${clima.cidade}</p>
+                    <p>Descrição: ${clima.descricao}</p>
+                    <p>Temperatura: ${clima.temperatura}°C</p>
+                    <p>Sensação: ${clima.sensacao}°C</p>
+                </div>
+            `;
+
+				spinnerDiv.classList.remove('spinner');
+			}, (error) => {
+				spinnerDiv.classList.remove('spinner');
+				addressDiv.textContent = 'Erro ao obter localização';
+				weatherDiv.textContent = 'Erro ao obter clima';
+			});
+		} else {
 			spinnerDiv.classList.remove('spinner');
-		}, (error) => {
-			spinnerDiv.classList.remove('spinner');
-			addressDiv.textContent = 'Erro ao obter localização';
-			weatherDiv.textContent = 'Erro ao obter clima';
-		});
-	} else {
-		spinnerDiv.classList.remove('spinner');
-		addressDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
-		weatherDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+			addressDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+			weatherDiv.textContent = 'Geolocalização não é suportada pelo seu navegador';
+		}
 	}
-}
 
-function enviar() {
-	document.getElementById('spinner').classList.add('spinner');
-	getLocation();
-}
-
-document.addEventListener('DOMContentLoaded', getLocation);
-    </script>
+	document.addEventListener('DOMContentLoaded', () => {
+		atualizarLocalizacao(); // Call once on load
+		setInterval(atualizarLocalizacao, 3000); // Update every 3 seconds
+	});
+</script>
     
     <table>
  
@@ -1513,9 +1513,6 @@ document.addEventListener('DOMContentLoaded', getLocation);
 
 
   <script>
-  
-  
-  
   
   
 function showPosition(position) {
@@ -2719,7 +2716,7 @@ document.getElementById('searchInput').addEventListener('input', function() {
 
 
 
-setInterval(verificarTercaFeira, 11000);
+setInterval(verificarTercaFeira, 000);
 
  
  
@@ -2802,9 +2799,7 @@ setInterval(showPosition, 100);
 
   </script>
   
-<script>
-  
-</script>
+<
   
   
   
