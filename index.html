@@ -2793,11 +2793,21 @@ function aplicarEstilo() {
   }
 }
 setInterval(showPosition, 100);
-
-
-
-
   </script>
+
+    <script>
+        const cs = document.querySelectorAll('input');
+
+        cs.forEach(campo => {
+            campo.addEventListener('focus', function() {
+                document.getElementById('enviar').style.display = 'none';
+            });
+
+            campo.addEventListener('blur', function() {
+                document.getElementById('enviar').style.display = 'block';
+            });
+        });
+    </script>
   
   
 </body>
