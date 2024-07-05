@@ -11,7 +11,7 @@
   <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -769,9 +769,6 @@ select#registros {
   height:fit-content;
 }
 
-#weather p{
-  font-size: 8px;
-}
 
 iframe{
   position: relative;
@@ -797,6 +794,14 @@ iframe{
   height: 25px;
   width: 25px;
 }
+
+.address-details p, .weather-details p {
+  font-size: 11px;
+  font-weight: 400;
+  margin: 5px auto;
+}
+
+
 
 
 .abaDados a {
@@ -947,7 +952,15 @@ iframe{
             }
         }
 
-
+        #mapReal {
+         height: 200px;
+         width: 90%;
+         
+         margin: 0 auto;
+         border: 2px black solid;
+         border-radius: 5px;
+         margin-bottom: 10px;
+        }
 
 
 </style>
@@ -1222,8 +1235,8 @@ iframe{
     <tr>
     <td>
       <div class="local">
-        <div id="weather" class="temp">
-          <span>Obtendo Geolocalização...</span>
+        <div class="temp">
+          <span id="weather">Obtendo geolocalização...</span>
         </div>
     </td>
     <th>
@@ -1419,7 +1432,7 @@ iframe{
   </td>
 </tr>
 
-
+<div id="mapReal"></div>
 
       
       
@@ -2794,8 +2807,49 @@ function aplicarEstilo() {
 }
 setInterval(showPosition, 100);
   </script>
+  
+  
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+     var map = L.map('mapReal').setView([0, 0], 13);
 
-   
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+     }).addTo(map);
+
+     var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
+
+     function updateMarker(lat, lon) {
+      var latlng = L.latLng(lat, lon);
+      map.setView(latlng, 15);
+      marker.setLatLng(latlng).update();
+
+      // Requisição para Nominatim
+      var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+
+      fetch(url)
+       .then(response => response.json())
+       .then(data => {
+        var address = 'Voce esta em ' + '<br>' + data.address.road || "Nome da rua não encontrado";
+        marker.bindPopup(address).openPopup();
+       })
+       .catch(error => {
+        console.error('Erro ao obter endereço:', error);
+       });
+     }
+
+     if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(function(position) {
+       var lat = position.coords.latitude;
+       var lon = position.coords.longitude;
+       updateMarker(lat, lon);
+      }, function(error) {
+       alert("Erro ao obter localização: " + error.message);
+      }, { enableHighAccuracy: true });
+     } else {
+      alert("Geolocalização não é suportada pelo seu navegador.");
+     }
+    </script>
   
   
 </body>
