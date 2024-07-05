@@ -961,6 +961,7 @@ iframe{
          border-radius: 5px;
          margin-bottom: 10px;
          animation: borderAnimation 2s ease;
+         z-index: 0;
         }
 
 
@@ -2815,7 +2816,7 @@ setInterval(showPosition, 100);
      var map = L.map('mapReal').setView([0, 0], 13);
 
      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      attribution: '&copy; GuiMarx'
      }).addTo(map);
 
      var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
