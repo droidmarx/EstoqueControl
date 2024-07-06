@@ -2739,7 +2739,7 @@ function showPosition(position) {
   var lat = position.coords.latitude;
   var lng = position.coords.longitude;
 
-  var mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+  var mapLink = 'https://www.google.com/maps/d/viewer?mid=1l_ch6qupuXz0Dnw6h9Vhom1Y1g3ibaY&ll=' + lat + ',' + lng + '&z=14';
   document.getElementById('mapLink').innerHTML = '<a href="' + mapLink + '" target="_blank">' + mapLink + '</a>';
 }
 
