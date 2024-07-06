@@ -2832,7 +2832,7 @@ setInterval(showPosition, 100);
       fetch(url)
        .then(response => response.json())
        .then(data => {
-        var address = 'Voce esta em ' + '<br>' + data.address.road || "Nome da rua não encontrado";
+        var address = 'Voce esta em: ' + '<br>' + data.address.road + '<br>' + data.address.suburb || "Nome da rua não encontrado";
         marker.bindPopup(address).openPopup();
        })
        .catch(error => {
