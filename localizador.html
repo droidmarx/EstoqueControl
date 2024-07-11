@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa de Localização do Usuário</title>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <div id="mapOther" style="width: 100%; height: 500px;"></div>
+
+  <script>
+    var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+    var channel = ably.channels.get('user-location');
+
+    var map = L.map('mapOther').setView([0, 0], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; GuiMarx'
+    }).addTo(map);
+    var marker = L.marker([0, 0]).addTo(map).bindPopup("Localização do usuário").openPopup();
+
+    channel.subscribe('location-update', function(message) {
+      var lat = message.data.lat;
+      var lon = message.data.lon;
+      var latlng = L.latLng(lat, lon);
+      map.setView(latlng, 15);
+      marker.setLatLng(latlng).update();
+
+      var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          var address = 'Usuário está em: ' + '<br>' + data.address.road + '<br>' + data.address.suburb || "Nome da rua não encontrado";
+          marker.bindPopup(address).openPopup();
+        })
+        .catch(error => {
+          console.error('Erro ao obter endereço:', error);
+        });
+    });
+  </script>
+</body>
+</html>
