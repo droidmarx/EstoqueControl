@@ -39,11 +39,29 @@
     var userLocations = {}; // Dictionary to keep track of user locations by userId
     var userListItems = document.getElementById('userListItems'); // Reference to the user list
 
+    function saveToLocalStorage() {
+      localStorage.setItem('userNames', JSON.stringify(userNames));
+      localStorage.setItem('userLocations', JSON.stringify(userLocations));
+    }
+
+    function loadFromLocalStorage() {
+      var savedUserNames = localStorage.getItem('userNames');
+      var savedUserLocations = localStorage.getItem('userLocations');
+      if (savedUserNames) {
+        userNames = JSON.parse(savedUserNames);
+      }
+      if (savedUserLocations) {
+        userLocations = JSON.parse(savedUserLocations);
+      }
+      updateUserList();
+    }
+
     function addUserName() {
       var userId = document.getElementById('userIdInput').value;
       var userName = document.getElementById('userNameInput').value;
       if (userId && userName) {
         userNames[userId] = userName;
+        saveToLocalStorage();
         updateUserList();
       }
     }
@@ -77,12 +95,17 @@
           var location = (data.address.road || 'Nome da rua não encontrado') + ', ' + (data.address.suburb || '');
           markers[userId].bindPopup(address).openPopup();
           userLocations[userId] = location;
+          saveToLocalStorage();
           updateUserList();
         })
         .catch(error => {
           console.error('Erro ao obter endereço:', error);
         });
     });
+
+    // Load saved data from localStorage when the page loads
+    window.onload = function() {
+      loadFromLocalStorage();
+    };
   </script>
 </body>
-</html>
