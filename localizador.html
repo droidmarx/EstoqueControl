@@ -86,12 +86,12 @@
     function updateUserList() {
       userListItems.innerHTML = ''; // Limpa a lista atual
       for (var userId in userLogs) {
-        var listItem = document.createElement('li');
         var userNameDiv = document.createElement('div');
         userNameDiv.className = 'user-name';
         userNameDiv.textContent = userNames[userId] || 'Usuário ' + userId;
-        listItem.appendChild(userNameDiv);
-        
+        userListItems.appendChild(userNameDiv);
+
+        var listItem = document.createElement('li');
         // Adiciona os logs na ordem inversa
         userLogs[userId].slice().reverse().forEach(log => {
           listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
