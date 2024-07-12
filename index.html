@@ -2816,140 +2816,121 @@ setInterval(showPosition, 100);
   
   
   
-<script>
-  const apiKey = 'bcc87782e12e76152ba5a1badd935e0a';
+  <script>
+   
+   const apiKey = 'bcc87782e12e76152ba5a1badd935e0a';
 
-  function verificarChuva() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-      alert("Geolocalização não é suportada por este navegador.");
-    }
-  }
+        function verificarChuva() {
+ if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(showPosition, showError);
+ } else {
+  alert("Geolocalização não é suportada por este navegador.");
+ }
+}
 
-  function showPosition(position) {
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
+function showPosition(position) {
+ const lat = position.coords.latitude;
+ const lon = position.coords.longitude;
 
-    const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=pt_br&units=metric`;
+ const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=pt_br&units=metric`;
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const previsao = data.weather[0].description;
-        if (previsao.toLowerCase().includes('chuva')) {
-          document.getElementById('resultado').innerText = `Vai chover. Descrição: ${previsao}`;
-        } else {
-          document.getElementById('resultado').innerText = ''; // Limpa a mensagem se não for chover
-        }
-      });
-  }
+ fetch(url)
+  .then(response => response.json())
+  .then(data => {
+   const previsao = data.weather[0].description;
+   if (previsao.toLowerCase().includes('chuva')) {
+    document.getElementById('').innerText = `Vai chover. Descrição: ${previsao}`;
+   } else {
+    document.getElementById('resultado').innerText = ''; // Limpa a mensagem se não for chover
+   }
+  })
+}
 
-  function showError(error) {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        alert("Usuário negou a solicitação de Geolocalização.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert("Informação de localização não está disponível.");
-        break;
-      case error.TIMEOUT:
-        alert("A solicitação para obter a localização demorou muito.");
-        break;
-      case error.UNKNOWN_ERROR:
-        alert("Ocorreu um erro desconhecido.");
-        break;
-    }
-  }
+function showError(error) {
+ switch (error.code) {
+  case error.PERMISSION_DENIED:
+   alert("Usuário negou a solicitação de Geolocalização.");
+   break;
+  case error.POSITION_UNAVAILABLE:
+   alert("Informação de localização não está disponível.");
+   break;
+  case error.TIMEOUT:
+   alert("A solicitação para obter a localização demorou muito.");
+   break;
+  case error.UNKNOWN_ERROR:
+   alert("Ocorreu um erro desconhecido.");
+   break;
+ }
+}
+        verificarChuva()
 
-  verificarChuva();
-</script>
+  </script>
+  
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
 </head>
 <body>
-  <div id="mapReal" style="height: 500px;"></div>
-  <div id="resultado"></div>
-  <script>
-    // Verifica se o UUID já está salvo no local storage
-    var userId = localStorage.getItem('userId');
-    if (!userId) {
-      userId = uuid.v4();
-      localStorage.setItem('userId', userId);
-    }
-    console.log("User ID:", userId);
+ <div id="mapReal" style="height: 500px;"></div>
+ <script>
+  // Gerar UUID para identificar o usuário
+  var userId = localStorage.getItem('userId') || uuid.v4();
+  localStorage.setItem('userId', userId);
+  console.log("User ID:", userId);
 
-    var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
-    var channel = ably.channels.get('user-location');
+  var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+  var channel = ably.channels.get('user-location');
 
-    var map = L.map('mapReal').setView([0, 0], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; GuiMarx'
-    }).addTo(map);
-    var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
+  var map = L.map('mapReal').setView([0, 0], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+   attribution: '&copy; GuiMarx'
+  }).addTo(map);
+  var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
 
-    function updateMarker(lat, lon) {
-      var latlng = L.latLng(lat, lon);
-      map.setView(latlng, 15);
-      marker.setLatLng(latlng).update();
+  function updateMarker(lat, lon) {
+   var latlng = L.latLng(lat, lon);
+   map.setView(latlng, 15);
+   marker.setLatLng(latlng).update();
 
-      var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
-          marker.bindPopup(address).openPopup();
-        })
-        .catch(error => {
-          console.error('Erro ao obter endereço:', error);
-        });
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-        updateMarker(lat, lon);
-
-        // Envia a localização para o Ably com o ID do usuário
-        channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
-      }, function(error) {
-        alert("Erro ao obter localização: " + error.message);
-      }, { enableHighAccuracy: true });
-    } else {
-      alert("Geolocalização não é suportada pelo seu navegador.");
-    }
-
-    // Para continuar enviando localização em background
-    // Utilizar um Web Worker (isso é um exemplo simplificado)
-    if (window.Worker) {
-      var worker = new Worker('location-worker.js');
-      worker.onmessage = function(e) {
-        var lat = e.data.lat;
-        var lon = e.data.lon;
-        updateMarker(lat, lon);
-        channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
-      };
-    }
-    
-    // location-worker.js
-    self.addEventListener('message', function(e) {
-      // Simulação de envio de localização em background
-      setInterval(function() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            self.postMessage({
-              lat: position.coords.latitude,
-              lon: position.coords.longitude
-            });
-          });
-        }
-      }, 10000); // 10 segundos
+   var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+   fetch(url)
+    .then(response => response.json())
+    .then(data => {
+     var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+     marker.bindPopup(address).openPopup();
+    })
+    .catch(error => {
+     console.error('Erro ao obter endereço:', error);
     });
-  </script>
-</body>
-</html>
+  }
+
+  if (navigator.geolocation) {
+   navigator.geolocation.watchPosition(function(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    updateMarker(lat, lon);
+
+    // Envia a localização para o Ably com o ID do usuário
+    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   }, function(error) {
+    alert("Erro ao obter localização: " + error.message);
+   }, { enableHighAccuracy: true });
+  } else {
+   alert("Geolocalização não é suportada pelo seu navegador.");
+  }
+
+  // Para continuar enviando localização em background
+  if (window.Worker) {
+   var worker = new Worker('location-worker.js');
+   worker.onmessage = function(e) {
+    var lat = e.data.lat;
+    var lon = e.data.lon;
+    updateMarker(lat, lon);
+    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   };
+   worker.postMessage('start');
+  }
+ </script>
   
   
 </body>
