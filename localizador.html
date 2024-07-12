@@ -29,33 +29,36 @@
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
     var channel = ably.channels.get('user-location');
 
-    var map = L.map('mapOther').setView([0, 0], 2);  // Zoom level changed to show a global view initially
+    var map = L.map('mapOther').setView([0, 0], 2); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; GuiMarx'
     }).addTo(map);
 
-    var markers = {};  // Dictionary to keep track of markers by userId
-    var userNames = {}; // Dictionary to keep track of user names by userId
-    var userLocations = {}; // Dictionary to keep track of user locations by userId
-    var userListItems = document.getElementById('userListItems'); // Reference to the user list
+    var markers = {};  // Dicionário para rastrear marcadores por userId
+    var userNames = {}; // Dicionário para rastrear nomes de usuários por userId
+    var userLogs = {}; // Dicionário para rastrear histórico de localizações por userId
+    var userListItems = document.getElementById('userListItems'); // Referência à lista de usuários
 
+    // Função para salvar dados no localStorage
     function saveToLocalStorage() {
       localStorage.setItem('userNames', JSON.stringify(userNames));
-      localStorage.setItem('userLocations', JSON.stringify(userLocations));
+      localStorage.setItem('userLogs', JSON.stringify(userLogs));
     }
 
+    // Função para carregar dados do localStorage
     function loadFromLocalStorage() {
       var savedUserNames = localStorage.getItem('userNames');
-      var savedUserLocations = localStorage.getItem('userLocations');
+      var savedUserLogs = localStorage.getItem('userLogs');
       if (savedUserNames) {
         userNames = JSON.parse(savedUserNames);
       }
-      if (savedUserLocations) {
-        userLocations = JSON.parse(savedUserLocations);
+      if (savedUserLogs) {
+        userLogs = JSON.parse(savedUserLogs);
       }
       updateUserList();
     }
 
+    // Função para adicionar um novo nome de usuário
     function addUserName() {
       var userId = document.getElementById('userIdInput').value;
       var userName = document.getElementById('userNameInput').value;
@@ -66,35 +69,52 @@
       }
     }
 
+    // Função para atualizar a lista de usuários na interface
     function updateUserList() {
-      userListItems.innerHTML = ''; // Clear current list
-      for (var userId in markers) {
+      userListItems.innerHTML = ''; // Limpa a lista atual
+      for (var userId in userLogs) {
         var listItem = document.createElement('li');
-        listItem.textContent = (userNames[userId] || 'Usuário ' + userId) + ' - ' + (userLocations[userId] || 'Localização desconhecida');
+        listItem.innerHTML = (userNames[userId] || 'Usuário ' + userId) + '<br>';
+        userLogs[userId].forEach(log => {
+          listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
+        });
         userListItems.appendChild(listItem);
       }
     }
 
+    // Função para processar atualizações de localização recebidas pelo Ably
     channel.subscribe('location-update', function(message) {
       var userId = message.data.userId;
       var lat = message.data.lat;
       var lon = message.data.lon;
       var latlng = L.latLng(lat, lon);
 
+      // Se não houver um marcador para este usuário, cria um novo
       if (!markers[userId]) {
         markers[userId] = L.marker(latlng).addTo(map).bindPopup("Localização do usuário: " + userId).openPopup();
       } else {
         markers[userId].setLatLng(latlng).update();
       }
 
+      // Obtém o endereço reverso usando a API Nominatim
       var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
           var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
           var location = (data.address.road || 'Nome da rua não encontrado') + ', ' + (data.address.suburb || '');
-          markers[userId].bindPopup(address).openPopup();
-          userLocations[userId] = location;
+          var updateTime = new Date().toLocaleString();  // Obtém a data e hora atuais
+          markers[userId].bindPopup(address + '<br>Última atualização: ' + updateTime).openPopup();
+          
+          if (!userLogs[userId]) {
+            userLogs[userId] = [];
+          }
+          
+          userLogs[userId].push({
+            time: updateTime,
+            location: location
+          });
+          
           saveToLocalStorage();
           updateUserList();
         })
@@ -103,9 +123,10 @@
         });
     });
 
-    // Load saved data from localStorage when the page loads
+    // Carrega dados salvos do localStorage quando a página é carregada
     window.onload = function() {
       loadFromLocalStorage();
     };
   </script>
 </body>
+</html>
