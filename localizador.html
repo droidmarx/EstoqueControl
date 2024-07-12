@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mapa de Localização do Usuário</title>
+  <title>Mapa de Localização dos Usuários</title>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -13,25 +13,31 @@
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
     var channel = ably.channels.get('user-location');
 
-    var map = L.map('mapOther').setView([0, 0], 13);
+    var map = L.map('mapOther').setView([0, 0], 2);  // Zoom level changed to show a global view initially
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; GuiMarx'
     }).addTo(map);
-    var marker = L.marker([0, 0]).addTo(map).bindPopup("Localização do usuário").openPopup();
+
+    var markers = {};  // Dictionary to keep track of markers by userId
 
     channel.subscribe('location-update', function(message) {
+      var userId = message.data.userId;
       var lat = message.data.lat;
       var lon = message.data.lon;
       var latlng = L.latLng(lat, lon);
-      map.setView(latlng, 15);
-      marker.setLatLng(latlng).update();
+
+      if (!markers[userId]) {
+        markers[userId] = L.marker(latlng).addTo(map).bindPopup("Localização do usuário: " + userId).openPopup();
+      } else {
+        markers[userId].setLatLng(latlng).update();
+      }
 
       var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          var address = 'Usuário está em: ' + '<br>' + data.address.road + '<br>' + data.address.suburb || "Nome da rua não encontrado";
-          marker.bindPopup(address).openPopup();
+          var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+          markers[userId].bindPopup(address).openPopup();
         })
         .catch(error => {
           console.error('Erro ao obter endereço:', error);
