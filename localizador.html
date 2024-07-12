@@ -10,11 +10,15 @@
       margin-bottom: 20px;
     }
     #userListItems li {
-      margin-bottom: 10px;
+      margin-bottom: 20px; /* Espaço extra para o nome do usuário */
       max-height: 150px; /* Altura máxima para cada item de log */
       overflow-y: auto; /* Adiciona a barra de rolagem */
       border: 1px solid #ddd; /* Borda para distinguir os logs */
       padding: 5px;
+    }
+    .user-name {
+      font-weight: bold; /* Negrito para o nome do usuário */
+      margin-bottom: 5px; /* Espaço entre o nome e o log */
     }
   </style>
 </head>
@@ -31,6 +35,7 @@
     <h2>Usuários Online</h2>
     <ul id="userListItems"></ul>
   </div>
+  <audio id="notificationSound" src="/audio/ffselect.mp3"></audio>
 
   <script>
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
@@ -45,6 +50,7 @@
     var userNames = {}; // Dicionário para rastrear nomes de usuários por userId
     var userLogs = {}; // Dicionário para rastrear histórico de localizações por userId
     var userListItems = document.getElementById('userListItems'); // Referência à lista de usuários
+    var notificationSound = document.getElementById('notificationSound');
 
     // Função para salvar dados no localStorage
     function saveToLocalStorage() {
@@ -81,8 +87,13 @@
       userListItems.innerHTML = ''; // Limpa a lista atual
       for (var userId in userLogs) {
         var listItem = document.createElement('li');
-        listItem.innerHTML = '<strong>' + (userNames[userId] || 'Usuário ' + userId) + '</strong><br>';
-        userLogs[userId].forEach(log => {
+        var userNameDiv = document.createElement('div');
+        userNameDiv.className = 'user-name';
+        userNameDiv.textContent = userNames[userId] || 'Usuário ' + userId;
+        listItem.appendChild(userNameDiv);
+        
+        // Adiciona os logs na ordem inversa
+        userLogs[userId].slice().reverse().forEach(log => {
           listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
         });
         userListItems.appendChild(listItem);
@@ -99,6 +110,7 @@
       // Se não houver um marcador para este usuário, cria um novo
       if (!markers[userId]) {
         markers[userId] = L.marker(latlng).addTo(map).bindPopup("Localização do usuário: " + userId).openPopup();
+        notificationSound.play(); // Toca o som quando um novo usuário aparece
       } else {
         markers[userId].setLatLng(latlng).update();
       }
