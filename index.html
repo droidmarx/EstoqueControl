@@ -1438,7 +1438,56 @@ iframe{
 
 <div id="mapReal"></div>
 <p id="resultado"></p>
+<button id="exportBtn">Exportar Cookies</button>
+<input type="file" id="importFile" accept=".txt">
+<button id="importBtn">Importar Cookies</button>
 
+<script>
+ // Função para obter cookies como uma string
+ function getCookies() {
+  return document.cookie;
+ }
+
+ // Função para definir cookies a partir de uma string
+ function setCookies(cookies) {
+  const cookiesArray = cookies.split(';').map(cookie => cookie.trim());
+  cookiesArray.forEach(cookie => {
+   document.cookie = cookie;
+  });
+ }
+
+ // Função para exportar cookies para um arquivo
+ function exportCookies() {
+  const cookies = getCookies();
+  const blob = new Blob([cookies], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cookies.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+ }
+
+ // Função para importar cookies de um arquivo
+ function importCookies(event) {
+  const file = event.target.files[0];
+  if (file) {
+   const reader = new FileReader();
+   reader.onload = function(e) {
+    const cookies = e.target.result;
+    setCookies(cookies);
+    alert('Cookies importados com sucesso!');
+   };
+   reader.readAsText(file);
+  } else {
+   alert('Nenhum arquivo selecionado.');
+  }
+ }
+
+ // Adicionar eventos aos botões
+ document.getElementById('exportBtn').addEventListener('click', exportCookies);
+ document.getElementById('importFile').addEventListener('change', importCookies);
+</script>
       
       
     </table>
@@ -2870,63 +2919,63 @@ function showError(error) {
 <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
  <script>
-  // Gerar UUID para identificar o usuário
-  var userId = localStorage.getItem('userId') || uuid.v4();
-  localStorage.setItem('userId', userId);
-  console.log("User ID:", userId);
+// Gerar UUID para identificar o usuário
+var userId = localStorage.getItem('userId') || uuid.v4();
+localStorage.setItem('userId', userId);
+console.log("User ID:", userId);
 
-  var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
-  var channel = ably.channels.get('user-location');
+var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+var channel = ably.channels.get('user-location');
 
-  var map = L.map('mapReal').setView([0, 0], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-   attribution: '&copy; GuiMarx'
-  }).addTo(map);
-  var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
+var map = L.map('mapReal').setView([0, 0], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ attribution: '&copy; GuiMarx'
+}).addTo(map);
+var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
 
-  function updateMarker(lat, lon) {
-   var latlng = L.latLng(lat, lon);
-   map.setView(latlng, 15);
-   marker.setLatLng(latlng).update();
+function updateMarker(lat, lon) {
+ var latlng = L.latLng(lat, lon);
+ map.setView(latlng, 15);
+ marker.setLatLng(latlng).update();
 
-   var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-   fetch(url)
-    .then(response => response.json())
-    .then(data => {
-     var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
-     marker.bindPopup(address).openPopup();
-    })
-    .catch(error => {
-     console.error('Erro ao obter endereço:', error);
-    });
-  }
+ var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+ fetch(url)
+  .then(response => response.json())
+  .then(data => {
+   var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+   marker.bindPopup(address).openPopup();
+  })
+  .catch(error => {
+   console.error('Erro ao obter endereço:', error);
+  });
+}
 
-  if (navigator.geolocation) {
-   navigator.geolocation.watchPosition(function(position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
-    updateMarker(lat, lon);
+if (navigator.geolocation) {
+ navigator.geolocation.watchPosition(function(position) {
+  var lat = position.coords.latitude;
+  var lon = position.coords.longitude;
+  updateMarker(lat, lon);
 
-    // Envia a localização para o Ably com o ID do usuário
-    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
-   }, function(error) {
-    alert("Erro ao obter localização: " + error.message);
-   }, { enableHighAccuracy: true });
-  } else {
-   alert("Geolocalização não é suportada pelo seu navegador.");
-  }
+  // Envia a localização para o Ably com o ID do usuário
+  channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+ }, function(error) {
+  alert("Erro ao obter localização: " + error.message);
+ }, { enableHighAccuracy: true });
+} else {
+ alert("Geolocalização não é suportada pelo seu navegador.");
+}
 
-  // Para continuar enviando localização em background
-  if (window.Worker) {
-   var worker = new Worker('location-worker.js');
-   worker.onmessage = function(e) {
-    var lat = e.data.lat;
-    var lon = e.data.lon;
-    updateMarker(lat, lon);
-    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
-   };
-   worker.postMessage('start');
-  }
+// Para continuar enviando localização em background
+if (window.Worker) {
+ var worker = new Worker('location-worker.js');
+ worker.onmessage = function(e) {
+  var lat = e.data.lat;
+  var lon = e.data.lon;
+  updateMarker(lat, lon);
+  channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+ };
+ worker.postMessage('start');
+}
  </script>
   
   
