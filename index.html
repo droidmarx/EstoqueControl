@@ -1438,56 +1438,6 @@ iframe{
 
 <div id="mapReal"></div>
 <p id="resultado"></p>
-<button id="exportBtn">Exportar Cookies</button>
-<input type="file" id="importFile" accept=".txt">
-<button id="importBtn">Importar Cookies</button>
-
-<script>
- // Função para obter cookies como uma string
- function getCookies() {
-  return document.cookie;
- }
-
- // Função para definir cookies a partir de uma string
- function setCookies(cookies) {
-  const cookiesArray = cookies.split(';').map(cookie => cookie.trim());
-  cookiesArray.forEach(cookie => {
-   document.cookie = cookie;
-  });
- }
-
- // Função para exportar cookies para um arquivo
- function exportCookies() {
-  const cookies = getCookies();
-  const blob = new Blob([cookies], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'cookies.txt';
-  a.click();
-  URL.revokeObjectURL(url);
- }
-
- // Função para importar cookies de um arquivo
- function importCookies(event) {
-  const file = event.target.files[0];
-  if (file) {
-   const reader = new FileReader();
-   reader.onload = function(e) {
-    const cookies = e.target.result;
-    setCookies(cookies);
-    alert('Cookies importados com sucesso!');
-   };
-   reader.readAsText(file);
-  } else {
-   alert('Nenhum arquivo selecionado.');
-  }
- }
-
- // Adicionar eventos aos botões
- document.getElementById('exportBtn').addEventListener('click', exportCookies);
- document.getElementById('importFile').addEventListener('change', importCookies);
-</script>
       
       
     </table>
