@@ -5,9 +5,25 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #userForm {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
+  <div id="userForm">
+    <label for="userIdInput">ID do Usuário:</label>
+    <input type="text" id="userIdInput" placeholder="Digite o ID do usuário">
+    <label for="userNameInput">Nome do Usuário:</label>
+    <input type="text" id="userNameInput" placeholder="Digite o nome do usuário">
+    <button onclick="addUserName()">Salvar Nome</button>
+  </div>
   <div id="mapOther" style="width: 100%; height: 500px;"></div>
+  <div id="userList">
+    <h2>Usuários Online</h2>
+    <ul id="userListItems"></ul>
+  </div>
 
   <script>
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
@@ -19,6 +35,27 @@
     }).addTo(map);
 
     var markers = {};  // Dictionary to keep track of markers by userId
+    var userNames = {}; // Dictionary to keep track of user names by userId
+    var userLocations = {}; // Dictionary to keep track of user locations by userId
+    var userListItems = document.getElementById('userListItems'); // Reference to the user list
+
+    function addUserName() {
+      var userId = document.getElementById('userIdInput').value;
+      var userName = document.getElementById('userNameInput').value;
+      if (userId && userName) {
+        userNames[userId] = userName;
+        updateUserList();
+      }
+    }
+
+    function updateUserList() {
+      userListItems.innerHTML = ''; // Clear current list
+      for (var userId in markers) {
+        var listItem = document.createElement('li');
+        listItem.textContent = (userNames[userId] || 'Usuário ' + userId) + ' - ' + (userLocations[userId] || 'Localização desconhecida');
+        userListItems.appendChild(listItem);
+      }
+    }
 
     channel.subscribe('location-update', function(message) {
       var userId = message.data.userId;
@@ -37,7 +74,10 @@
         .then(response => response.json())
         .then(data => {
           var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+          var location = (data.address.road || 'Nome da rua não encontrado') + ', ' + (data.address.suburb || '');
           markers[userId].bindPopup(address).openPopup();
+          userLocations[userId] = location;
+          updateUserList();
         })
         .catch(error => {
           console.error('Erro ao obter endereço:', error);
