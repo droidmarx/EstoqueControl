@@ -2865,51 +2865,85 @@ function showError(error) {
         verificarChuva()
 
   </script>
+ <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+ <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+</head>
+<body>
+ <div id="mapReal" style="height: 500px;"></div>
+ <script>
+  // Gerar UUID para identificar o usuário
+  var userId = uuid.v4();
+  console.log("User ID:", userId);
+
+  var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+  var channel = ably.channels.get('user-location');
+
+  var map = L.map('mapReal').setView([0, 0], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+   attribution: '&copy; GuiMarx'
+  }).addTo(map);
+  var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
+
+  function updateMarker(lat, lon) {
+   var latlng = L.latLng(lat, lon);
+   map.setView(latlng, 15);
+   marker.setLatLng(latlng).update();
+
+   var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+   fetch(url)
+    .then(response => response.json())
+    .then(data => {
+     var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+     marker.bindPopup(address).openPopup();
+    })
+    .catch(error => {
+     console.error('Erro ao obter endereço:', error);
+    });
+  }
+
+  if (navigator.geolocation) {
+   navigator.geolocation.watchPosition(function(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    updateMarker(lat, lon);
+
+    // Envia a localização para o Ably com o ID do usuário
+    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   }, function(error) {
+    alert("Erro ao obter localização: " + error.message);
+   }, { enableHighAccuracy: true });
+  } else {
+   alert("Geolocalização não é suportada pelo seu navegador.");
+  }
+
+  // Para continuar enviando localização em background
+  // Utilizar um Web Worker (isso é um exemplo simplificado)
+  if (window.Worker) {
+   var worker = new Worker('location-worker.js');
+   worker.onmessage = function(e) {
+    var lat = e.data.lat;
+    var lon = e.data.lon;
+    updateMarker(lat, lon);
+    channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   };
+  }
   
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
-<script>
- var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
- var channel = ably.channels.get('user-location');
-
- var map = L.map('mapReal').setView([0, 0], 13);
- L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; GuiMarx'
- }).addTo(map);
- var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
-
- function updateMarker(lat, lon) {
-  var latlng = L.latLng(lat, lon);
-  map.setView(latlng, 15);
-  marker.setLatLng(latlng).update();
-
-  var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-  fetch(url)
-   .then(response => response.json())
-   .then(data => {
-    var address = 'Voce esta em: ' + '<br>' + data.address.road + '<br>' + data.address.suburb || "Nome da rua não encontrado";
-    marker.bindPopup(address).openPopup();
-   })
-   .catch(error => {
-    console.error('Erro ao obter endereço:', error);
+  // location-worker.js
+self.addEventListener('message', function(e) {
+ // Simulação de envio de localização em background
+ setInterval(function() {
+  if (navigator.geolocation) {
+   navigator.geolocation.getCurrentPosition(function(position) {
+    self.postMessage({
+     lat: position.coords.latitude,
+     lon: position.coords.longitude
+    });
    });
- }
-
- if (navigator.geolocation) {
-  navigator.geolocation.watchPosition(function(position) {
-   var lat = position.coords.latitude;
-   var lon = position.coords.longitude;
-   updateMarker(lat, lon);
-
-   // Envia a localização para o Ably
-   channel.publish('location-update', { lat: lat, lon: lon });
-  }, function(error) {
-   alert("Erro ao obter localização: " + error.message);
-  }, { enableHighAccuracy: true });
- } else {
-  alert("Geolocalização não é suportada pelo seu navegador.");
- }
-</script>
+  }
+ }, 10000); // 10 segundos
+});
+ </script>
   
   
 </body>
