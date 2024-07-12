@@ -9,6 +9,13 @@
     #userForm {
       margin-bottom: 20px;
     }
+    #userListItems li {
+      margin-bottom: 10px;
+      max-height: 150px; /* Altura máxima para cada item de log */
+      overflow-y: auto; /* Adiciona a barra de rolagem */
+      border: 1px solid #ddd; /* Borda para distinguir os logs */
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
@@ -74,7 +81,7 @@
       userListItems.innerHTML = ''; // Limpa a lista atual
       for (var userId in userLogs) {
         var listItem = document.createElement('li');
-        listItem.innerHTML = (userNames[userId] || 'Usuário ' + userId) + '<br>';
+        listItem.innerHTML = '<strong>' + (userNames[userId] || 'Usuário ' + userId) + '</strong><br>';
         userLogs[userId].forEach(log => {
           listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
         });
