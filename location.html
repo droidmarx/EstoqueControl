@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa de Localização dos Usuários</title>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #userListItems li {
+      margin-bottom: 20px;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 5px;
+    }
+    .user-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+    .editing {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="mapOther" style="width: 100%; height: 500px;"></div>
+  <div id="userList">
+    <h2>Usuários Online</h2>
+    <ul id="userListItems"></ul>
+  </div>
+  <audio id="notificationSound" src="/audio/ffselect.mp3"></audio>
+
+  <script>
+    var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+    var channel = ably.channels.get('user-location');
+
+    var map = L.map('mapOther').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; GuiMarx'
+    }).addTo(map);
+
+    var markers = {};
+    var userNames = {};
+    var userLogs = {};
+    var userListItems = document.getElementById('userListItems');
+    var notificationSound = document.getElementById('notificationSound');
+
+    // Função para salvar dados no localStorage
+    function saveToLocalStorage() {
+      localStorage.setItem('userNames', JSON.stringify(userNames));
+      localStorage.setItem('userLogs', JSON.stringify(userLogs));
+    }
+
+    // Função para carregar dados do localStorage
+    function loadFromLocalStorage() {
+      var savedUserNames = localStorage.getItem('userNames');
+      var savedUserLogs = localStorage.getItem('userLogs');
+      if (savedUserNames) {
+        userNames = JSON.parse(savedUserNames);
+      }
+      if (savedUserLogs) {
+        userLogs = JSON.parse(savedUserLogs);
+      }
+      updateUserList();
+    }
+
+    // Função para atualizar a lista de usuários na interface
+    function updateUserList() {
+      userListItems.innerHTML = '';
+      for (var userId in userLogs) {
+        var userNameDiv = document.createElement('div');
+        userNameDiv.className = 'user-name';
+        userNameDiv.textContent = userNames[userId] || 'Usuário ' + userId;
+        userNameDiv.setAttribute('data-user-id', userId);
+        userNameDiv.onclick = editUserName;
+        userListItems.appendChild(userNameDiv);
+
+        var listItem = document.createElement('li');
+        userLogs[userId].slice().reverse().forEach(log => {
+          listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
+        });
+        userListItems.appendChild(listItem);
+      }
+    }
+
+    // Função para editar o nome do usuário
+    function editUserName(event) {
+      var userNameDiv = event.target;
+      var userId = userNameDiv.getAttribute('data-user-id');
+      var currentName = userNames[userId] || 'Usuário ' + userId;
+
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.value = currentName;
+      input.className = 'editing';
+      input.setAttribute('data-user-id', userId);
+
+      userNameDiv.replaceWith(input);
+      input.focus();
+
+      input.onblur = function() {
+        var newName = input.value;
+        userNames[userId] = newName;
+        saveToLocalStorage();
+        updateUserList();
+      };
+    }
+
+    // Função para processar atualizações de localização recebidas pelo Ably
+    function processLocationUpdate(message) {
+      var userId = message.data.userId;
+      var lat = message.data.lat;
+      var lon = message.data.lon;
+      var latlng = L.latLng(lat, lon);
+
+      if (!markers[userId]) {
+        markers[userId] = L.marker(latlng).addTo(map).bindPopup("Localização do usuário: " + userId).openPopup();
+        notificationSound.play();
+      } else {
+        markers[userId].setLatLng(latlng).update();
+      }
+
+      var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+          var location = (data.address.road || 'Nome da rua não encontrado') + ', ' + (data.address.suburb || '');
+var updateTime = new Date().toLocaleString();
+          markers[userId].bindPopup(address + '<br>Última atualização: ' + updateTime).openPopup();
+
+          if (!userLogs[userId]) {
+            userLogs[userId] = [];
+          }
+
+          userLogs[userId].push({
+            time: updateTime,
+            location: location
+          });
+
+          saveToLocalStorage();
+          updateUserList();
+        })
+        .catch(error => {
+          console.error('Erro ao obter endereço:', error);
+        });
+    }
+
+    // Carregar mensagens históricas ao abrir a página
+    channel.history({ limit: 1000 }, function(err, resultPage) {
+      if (err) {
+        console.error('Erro ao carregar mensagens históricas:', err);
+        return;
+      }
+
+      resultPage.items.forEach(function(message) {
+        processLocationUpdate(message);
+      });
+
+      // Continuar recebendo atualizações de localização em tempo real
+      channel.subscribe('location-update', processLocationUpdate);
+    });
+
+    // Carregar dados salvos do localStorage quando a página é carregada
+    window.onload = function() {
+      loadFromLocalStorage();
+    };
+  </script>
+</body>
+</html>
