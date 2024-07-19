@@ -7,19 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #userListItems li {
-      margin-bottom: 20px;
-      max-height: 150px;
-      overflow-y: auto;
-      border: 1px solid #ddd;
+      margin-bottom: 20px; /* Espaço extra para o nome do usuário */
+      max-height: 150px; /* Altura máxima para cada item de log */
+      overflow-y: auto; /* Adiciona a barra de rolagem */
+      border: 1px solid #ddd; /* Borda para distinguir os logs */
       padding: 5px;
     }
     .user-name {
-      font-weight: bold;
-      margin-bottom: 5px;
-      cursor: pointer;
+      font-weight: bold; /* Negrito para o nome do usuário */
+      margin-bottom: 5px; /* Espaço entre o nome e o log */
+      cursor: pointer; /* Cursor de ponteiro para indicar que é editável */
     }
     .editing {
       margin-bottom: 5px;
+    }
+    .delete-button {
+      color: red;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -31,19 +35,54 @@
   </div>
   <audio id="notificationSound" src="/audio/ffselect.mp3"></audio>
 
-  <script>
+  <!-- Formulário de login -->
+  <div id="authDiv">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Senha" required>
+      <button type="submit">Login</button>
+    </form>
+    <button id="logoutButton" style="display:none;">Logout</button>
+  </div>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+    import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMaTBJVg_JOMusj4lL6pxtRq76AJfRhx8",
+      authDomain: "estoque-6ab30.firebaseapp.com",
+      databaseURL: "https://estoque-6ab30-default-rtdb.firebaseio.com",
+      projectId: "estoque-6ab30",
+      storageBucket: "estoque-6ab30.appspot.com",
+      messagingSenderId: "141604968422",
+      appId: "1:141604968422:web:e318db22e4ee5cd01ba827",
+      measurementId: "G-7DVY8DZN6G"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
     var channel = ably.channels.get('user-location');
 
-    var map = L.map('mapOther').setView([0, 0], 2);
+    var map = L.map('mapOther').setView([0, 0], 2); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; GuiMarx'
     }).addTo(map);
 
-    var markers = {};
-    var userNames = {};
-    var userLogs = {};
-    var userListItems = document.getElementById('userListItems');
+    var markers = {};  // Dicionário para rastrear marcadores por userId
+    var userNames = {}; // Dicionário para rastrear nomes de usuários por userId
+    var userLogs = {}; // Dicionário para rastrear histórico de localizações por userId
+    var userListItems = document.getElementById('userListItems'); // Referência à lista de usuários
     var notificationSound = document.getElementById('notificationSound');
 
     // Função para salvar dados no localStorage
@@ -67,7 +106,7 @@
 
     // Função para atualizar a lista de usuários na interface
     function updateUserList() {
-      userListItems.innerHTML = '';
+      userListItems.innerHTML = ''; // Limpa a lista atual
       for (var userId in userLogs) {
         var userNameDiv = document.createElement('div');
         userNameDiv.className = 'user-name';
@@ -77,9 +116,18 @@
         userListItems.appendChild(userNameDiv);
 
         var listItem = document.createElement('li');
+        // Adiciona os logs na ordem inversa
         userLogs[userId].slice().reverse().forEach(log => {
           listItem.innerHTML += log.time + ' - ' + log.location + '<br>';
         });
+        
+        // Adiciona o botão de exclusão
+        var deleteButton = document.createElement('span');
+        deleteButton.textContent = 'Excluir Logs';
+        deleteButton.className = 'delete-button';
+        deleteButton.onclick = function() { deleteUserLogs(userId); };
+        listItem.appendChild(deleteButton);
+
         userListItems.appendChild(listItem);
       }
     }
@@ -89,7 +137,7 @@
       var userNameDiv = event.target;
       var userId = userNameDiv.getAttribute('data-user-id');
       var currentName = userNames[userId] || 'Usuário ' + userId;
-
+      
       var input = document.createElement('input');
       input.type = 'text';
       input.value = currentName;
@@ -99,6 +147,7 @@
       userNameDiv.replaceWith(input);
       input.focus();
 
+      // Quando clicar fora do input, salvar o nome
       input.onblur = function() {
         var newName = input.value;
         userNames[userId] = newName;
@@ -107,64 +156,126 @@
       };
     }
 
+    // Função para excluir logs de um usuário
+    function deleteUserLogs(userId) {
+      if (confirm('Você tem certeza que deseja excluir os logs deste usuário?')) {
+        delete userLogs[userId];
+        remove(ref(database, 'userLogs/' + userId)); // Remove os logs do Firebase
+        saveToLocalStorage();
+        updateUserList();
+      }
+    }
+
     // Função para processar atualizações de localização recebidas pelo Ably
-    function processLocationUpdate(message) {
+    channel.subscribe('location-update', function(message) {
       var userId = message.data.userId;
       var lat = message.data.lat;
       var lon = message.data.lon;
       var latlng = L.latLng(lat, lon);
 
+      // Se não houver um marcador para este usuário, cria um novo
       if (!markers[userId]) {
         markers[userId] = L.marker(latlng).addTo(map).bindPopup("Localização do usuário: " + userId).openPopup();
-        notificationSound.play();
+        notificationSound.play().catch(error => {
+          console.log('Erro ao tentar reproduzir:', error);
+        }); // Toca o som quando um novo usuário aparece
       } else {
         markers[userId].setLatLng(latlng).update();
       }
 
+      // Obtém o endereço reverso usando a API Nominatim
       var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
+          var address = 'Usuário ' + userId + ' está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' +(data.address.suburb || '');
           var location = (data.address.road || 'Nome da rua não encontrado') + ', ' + (data.address.suburb || '');
-var updateTime = new Date().toLocaleString();
+          var updateTime = new Date().toLocaleString();  // Obtém a data e hora atuais
           markers[userId].bindPopup(address + '<br>Última atualização: ' + updateTime).openPopup();
-
+          
           if (!userLogs[userId]) {
             userLogs[userId] = [];
           }
-
-          userLogs[userId].push({
+          
+          var log = {
             time: updateTime,
             location: location
-          });
+          };
 
+          userLogs[userId].push(log);
           saveToLocalStorage();
           updateUserList();
+
+          // Armazenar o log no Firebase
+          storeLogInFirebase(userId, log);
         })
         .catch(error => {
           console.error('Erro ao obter endereço:', error);
         });
-    }
-
-    // Carregar mensagens históricas ao abrir a página
-    channel.history({ limit: 1000 }, function(err, resultPage) {
-      if (err) {
-        console.error('Erro ao carregar mensagens históricas:', err);
-        return;
-      }
-
-      resultPage.items.forEach(function(message) {
-        processLocationUpdate(message);
-      });
-
-      // Continuar recebendo atualizações de localização em tempo real
-      channel.subscribe('location-update', processLocationUpdate);
     });
 
-    // Carregar dados salvos do localStorage quando a página é carregada
+    // Função para armazenar logs no Firebase
+    function storeLogInFirebase(userId, log) {
+      push(ref(database, 'userLogs/' + userId), log);
+    }
+
+    // Função para carregar logs do Firebase
+    function loadFromFirebase() {
+      const userLogsRef = ref(database, 'userLogs');
+      onValue(userLogsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          userLogs = data;
+          updateUserList();
+        }
+      });
+    }
+
+    // Autenticação do usuário
+    const loginForm = document.getElementById('loginForm');
+    const logoutButton = document.getElementById('logoutButton');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log('Usuário logado:', userCredential.user);
+          loginForm.style.display = 'none';
+          logoutButton.style.display = 'block';
+        })
+        .catch((error) => {
+          console.error('Erro ao fazer login:', error);
+        });
+    });
+
+    logoutButton.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        console.log('Usuário deslogado');
+        loginForm.style.display = 'block';
+        logoutButton.style.display = 'none';
+      }).catch((error) => {
+        console.error('Erro ao fazer logout:', error);
+      });
+    });
+
+    // Carrega dados salvos do localStorage e do Firebase quando a página é carregada
     window.onload = function() {
       loadFromLocalStorage();
+      loadFromFirebase();
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log('Usuário autenticado:', user);
+          loginForm.style.display = 'none';
+          logoutButton.style.display = 'block';
+        } else {
+          console.log('Nenhum usuário autenticado');
+          loginForm.style.display = 'block';
+          logoutButton.style.display = 'none';
+        }
+      });
     };
   </script>
 </body>
