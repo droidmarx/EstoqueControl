@@ -1457,9 +1457,10 @@ iframe{
      
 <button id="enviar" class="sublinhado-ativo2" onclick="enviar(); sendMessageToTelegram();">
  <img class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50">
+ <div id="spinner" class="spinner"></div>
+
 </button>
 
-<div id="spinner" class="spinner"></div>
      
   </div>
   
@@ -2978,7 +2979,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
 const localizacao = document.getElementById('mapLink').textContent;
 if (localizacao.trim() !== "") {
- copiado += "🚩 Localização:\n";
+ copiado += "##🚩 Localização:\n";
  copiado += `${localizacao}\n`;
 }
 
