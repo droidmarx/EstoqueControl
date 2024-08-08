@@ -101,6 +101,32 @@ input {
   margin-bottom: 20px;
   backdrop-filter: blur(1px);
   background: #42445A78;
+  transition: transform 1s ease-in-out;
+}
+
+
+#enviar.active {
+  animation: flyToCenterZoom 2s ease-in-out forwards;
+}
+
+@keyframes flyToCenterZoom {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(calc(-60vw - 50%), calc(-60vh - 50%)) scale(10);
+  }
+
+  75% {
+    transform: translate(calc(-70vw - 50%), calc(-70vh - 50%)) scale(0);
+  }
+  
+  
+  
+  100% {
+    transform: translate(calc(10vw - 50%), calc(10vh - 50%)) scale(100);
+    rotate: 20deg;
+  }
 }
 
 button {
@@ -968,7 +994,6 @@ iframe{
          color: white;
         }
 
-
 </style>
 
 <body>
@@ -1455,10 +1480,9 @@ iframe{
  
      
      
-<button id="enviar" class="sublinhado-ativo2" onclick="enviar(); sendMessageToTelegram();">
+<button id="enviar" class="sublinhado-ativo2 scale-button" onclick="enviar(); sendMessageToTelegram();">
  <img class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50">
  <div id="spinner" class="spinner"></div>
-
 </button>
 
      
@@ -1978,29 +2002,38 @@ function atualizarTabelaEstoque() {
 
     // Função para processar a retirada de produtos
     function enviar() {
+ const notification = document.getElementById('notification');
+ const botaoEnviar = document.getElementById('enviar'); // Botão com o ID 'enviar'
 
-const notification = document.getElementById('notification');
-   notification.play();
-     getLocation()
-      for (let i = 0; i < retirada.length; i++) {
-        let produtoRetirado = retirada[i];
-        for (let j = 0; j < produtos.length; j++) {
-          if (produtos[j].nome === produtoRetirado.nome) {
-            produtos[j].quantidade -= produtoRetirado.quantidade;
-            break;
-          }
-        }
-        produtoRetirado.quantidade = 0;
-      }
+ // Aplicar o efeito de escala
+ botaoEnviar.classList.add('active');
 
+ // Remover o efeito de escala após 3 segundos
+ setTimeout(() => {
+  botaoEnviar.classList.remove('active');
+ }, 3000);
 
-      atualizarTabelaEstoque();
-      atualizarTabelaRetirada();
-      salvarDados();
+ notification.play();
+ getLocation();
 
-      // Chamar a função para copiar o conteúdo após o envio
-      setTimeout(copiarConteudo, 200)
-    }
+ for (let i = 0; i < retirada.length; i++) {
+  let produtoRetirado = retirada[i];
+  for (let j = 0; j < produtos.length; j++) {
+   if (produtos[j].nome === produtoRetirado.nome) {
+    produtos[j].quantidade -= produtoRetirado.quantidade;
+    break;
+   }
+  }
+  produtoRetirado.quantidade = 0;
+ }
+
+ atualizarTabelaEstoque();
+ atualizarTabelaRetirada();
+ salvarDados();
+
+ // Chamar a função para copiar o conteúdo após o envio
+ setTimeout(copiarConteudo, 200);
+}
 
     // Array para armazenar os dados copiados
     let dadosCopiados = [];
@@ -2912,23 +2945,23 @@ if (window.Worker) {
  </script>
  
 <script>
-  function sendMessageToTelegram() {
-    const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
-    const chatId = '-1002189220962';
+function sendMessageToTelegram() {
+const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
+const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nesta lista
 
-    // Obtendo o conteúdo copiado
-    let copiado = '';
+// Obtendo o conteúdo copiado
+let copiado = '';
 
 // Estrutura da 1ª tabela (copiar)
 const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
 if (quantidadePorMesElement) {
- const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
- if (paragraphs.length > 0) {
-  const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-  if (lastParagraph.trim() !== "") {
-   copiado += `Instalações no mês de ${lastParagraph}\n`;
-  }
- }
+const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+if (paragraphs.length > 0) {
+const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+if (lastParagraph.trim() !== "") {
+copiado += `Instalações no mês de ${lastParagraph}\n`;
+}
+}
 }
 
 copiado += `## ${document.getElementById('Trabalho').value}\n`;
@@ -2941,32 +2974,32 @@ copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n
 copiado += `## 📦 Materiais:\n`;
 
 const campos = {
- 'fibraMetragem': 'Metragem da Fibra',
- 'scApc': 'Conector APC',
- 'scUpc': 'Conector UPC',
- 'esticadores': 'Esticadores',
- 'roldana': 'Roldana',
- 'fecho': 'Fecho',
- 'anel': 'Anel',
- 'fitaAco': 'Fita de Aço',
- 'fixaFio': 'Fixa fio',
- 'isolante': 'Isolante',
- 'caboRede': 'Cabo de rede',
- 'concRj45': 'Conector RJ45',
- 'kitFusao': 'Kit fusão'
+'fibraMetragem': 'Metragem da Fibra',
+'scApc': 'Conector APC',
+'scUpc': 'Conector UPC',
+'esticadores': 'Esticadores',
+'roldana': 'Roldana',
+'fecho': 'Fecho',
+'anel': 'Anel',
+'fitaAco': 'Fita de Aço',
+'fixaFio': 'Fixa fio',
+'isolante': 'Isolante',
+'caboRede': 'Cabo de rede',
+'concRj45': 'Conector RJ45',
+'kitFusao': 'Kit fusão'
 };
 
 let algumMaterialUtilizado = false;
 Object.keys(campos).forEach((campo) => {
- const valorCampo = document.getElementById(campo).value;
- if (valorCampo.trim() !== "") {
-  copiado += `${campos[campo]}: ${valorCampo}\n`;
-  algumMaterialUtilizado = true;
- }
+const valorCampo = document.getElementById(campo).value;
+if (valorCampo.trim() !== "") {
+copiado += `${campos[campo]}: ${valorCampo}\n`;
+algumMaterialUtilizado = true;
+}
 });
 
 if (!algumMaterialUtilizado) {
- copiado += "Não foi utilizado materiais!\n";
+copiado += "Não foi utilizado materiais!\n";
 }
 
 copiado += `## 🛜 Configurações:\n`;
@@ -2979,35 +3012,35 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
 const localizacao = document.getElementById('mapLink').textContent;
 if (localizacao.trim() !== "") {
- copiado += "##🚩 Localização:\n";
- copiado += `${localizacao}\n`;
+copiado += "##🚩 Localização:\n";
+copiado += `${localizacao}\n`;
 }
 
 const comentarios = document.getElementById('comentarios1').value;
 if (comentarios.trim() !== "") {
- copiado += "##Comentários:\n";
- copiado += `${comentarios}\n`;
+copiado += "##Comentários:\n";
+copiado += `${comentarios}\n`;
 }
-  
 
-    copiado = copiado.replace(/#/g, '\n');
+copiado = copiado.replace(/#/g, '\n');
 
-    // Enviar a mensagem para o bot do Telegram
-    const mensagem = ' IndaiaFibra \n' + copiado + '\n\nObrigado !';
+// Enviar a mensagem para cada chat_id
+chatIds.forEach(chatId => {
+const mensagem = ' IndaiaFibra \n' + copiado + '\n\n';
+const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
 
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.ok) {
-          console.log("Mensagem enviada com sucesso");
-        } else {
-          console.error("Erro ao enviar mensagem:", data.description);
-        }
-      })
-      .catch(error => console.error("Erro ao conectar com o Telegram:", error));
-  }
+fetch(url)
+.then(response => response.json())
+.then(data => {
+if (data.ok) {
+console.log(`Mensagem enviada com sucesso para ${chatId}`);
+} else {
+console.error(`Erro ao enviar mensagem para ${chatId}:`, data.description);
+}
+})
+.catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
+});
+}
 </script>
   
   
