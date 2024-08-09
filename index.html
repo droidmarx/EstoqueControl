@@ -124,7 +124,7 @@ input {
   
   
   100% {
-    transform: translate(calc(10vw - 50%), calc(10vh - 50%)) scale(100);
+    transform: translate(calc(10vw - 50%), calc(10vh - 50%)) scale(400);
     rotate: 20deg;
   }
 }
@@ -1297,8 +1297,8 @@ iframe{
   <th>Tipo de trabalho:</th>
   <td>
        <select name="Trabalho" id="Trabalho">Trabalho
-  <option value="🛠 Instalação:">Instalação</option>
-  <option value="🏘 Mudança de Endereço:">Mudança de endereço</option>
+  <option value="Instalação">Instalação</option>
+  <option value="Mudança de Endereço">Mudança de endereço</option>
 </select>
   </td>
 </tr>
@@ -2065,7 +2065,7 @@ if (quantidadePorMesElement) {
 
 
 
-copiado += `## ${document.getElementById('Trabalho').value}\n`;
+copiado += `##🛠 ${document.getElementById('Trabalho').value}:\n`;
 copiado += `Técnico: ${document.getElementById('tecnico').value}\n`;
 copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
 copiado += `CTO: ${document.getElementById('cto').value}\n`;
@@ -2162,28 +2162,28 @@ copiado = copiado.replace(/#/g, '\n');
         (copiado)
 
       document.getElementById("tecnico").selectedIndex = 0;
-      document.getElementById("cliente").value = " do Cliente";
-      document.getElementById("fibraMetragem").value = "00";
-      document.getElementById("cto").value = "00";
+      document.getElementById("cliente").value = "";
+      document.getElementById("fibraMetragem").value = "";
+      document.getElementById("cto").value = "";
       document.getElementById("porta").selectedIndex = 0;
-      document.getElementById("sinalCto").value = "-00.00";
-      document.getElementById("sinalCliente").value = "-00.00";
-      document.getElementById("scApc").value = "00";
-      document.getElementById("scUpc").value = "00";
-      document.getElementById("esticadores").value = "00";
-      document.getElementById("roldana").value = "00";
-      document.getElementById("fecho").value = "00";
-      document.getElementById("anel").value = "00";
-      document.getElementById("fitaAco").value = "00";
-      document.getElementById("fixaFio").value = "00";
-      document.getElementById("isolante").value = "00";
-      document.getElementById("caboRede").value = "00";
-      document.getElementById("concRj45").value = "00";
-      document.getElementById("kitFusao").value = "00";
+      document.getElementById("sinalCto").value = "";
+      document.getElementById("sinalCliente").value = "";
+      document.getElementById("scApc").value = "";
+      document.getElementById("scUpc").value = "";
+      document.getElementById("esticadores").value = "";
+      document.getElementById("roldana").value = "";
+      document.getElementById("fecho").value = "";
+      document.getElementById("anel").value = "";
+      document.getElementById("fitaAco").value = "";
+      document.getElementById("fixaFio").value = "";
+      document.getElementById("isolante").value = "";
+      document.getElementById("caboRede").value = "";
+      document.getElementById("concRj45").value = "";
+      document.getElementById("kitFusao").value = "";
 
 
       // Abra o WhatsApp e cole o conteúdo copiado pin1
-var mensagem = '** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**';
+//var mensagem = '** ⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒**\n' + copiado + '\n\n**Obrigado !**';
 
 //var urlTelegram = 'https://t.me/share/url?url=' + encodeURIComponent(mensagem);window.location.href = urlTelegram;
 
@@ -2952,21 +2952,15 @@ const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nest
 // Obtendo o conteúdo copiado
 let copiado = '';
 
-// Estrutura da 1ª tabela (copiar)
-const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-if (quantidadePorMesElement) {
-const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-if (paragraphs.length > 0) {
-const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-if (lastParagraph.trim() !== "") {
-copiado += `Instalações no mês de ${lastParagraph}\n`;
-}
-}
-}
 
-copiado += `## ${document.getElementById('Trabalho').value}\n`;
-copiado += `Técnico: ${document.getElementById('tecnico').value}\n`;
-copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
+copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
+
+
+copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
+
+copiado += `##Cliente: ${document.getElementById('cliente').value}\n`;
+
+
 copiado += `CTO: ${document.getElementById('cto').value}\n`;
 copiado += `Porta: ${document.getElementById('porta').value}\n`;
 copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
@@ -3022,11 +3016,23 @@ copiado += "##Comentários:\n";
 copiado += `${comentarios}\n`;
 }
 
+// Estrutura da 1ª tabela (copiar)
+const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+if (quantidadePorMesElement) {
+const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+if (paragraphs.length > 0) {
+const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+if (lastParagraph.trim() !== "") {
+copiado += `##Instalações no mês de ${lastParagraph}\n`;
+}
+}
+}
+
 copiado = copiado.replace(/#/g, '\n');
 
 // Enviar a mensagem para cada chat_id
 chatIds.forEach(chatId => {
-const mensagem = ' IndaiaFibra \n' + copiado + '\n\n';
+const mensagem = ' \n' + copiado + '\n\n';
 const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
 
 fetch(url)
