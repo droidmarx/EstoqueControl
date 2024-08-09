@@ -2758,7 +2758,7 @@ function showPosition(position) {
   var lat = position.coords.latitude;
   var lng = position.coords.longitude;
 
-  var mapLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+  var mapLink = '   https://www.google.com/maps?q=' + lat + ',' + lng;
   document.getElementById('mapLink').innerHTML = '<a href="' + mapLink + '" target="_blank">' + mapLink + '</a>';
 }
 
@@ -2953,6 +2953,18 @@ const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nest
 // Obtendo o conteúdo copiado
 let copiado = '';
 
+// Estrutura da 1ª tabela (copiar)
+const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+if (quantidadePorMesElement) {
+const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+if (paragraphs.length > 0) {
+const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+if (lastParagraph.trim() !== "") {
+copiado += `##Instalações no mês de ${lastParagraph}\n`;
+}
+}
+}
+
 
 copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
 
@@ -3017,17 +3029,7 @@ copiado += "##Comentários:\n";
 copiado += `${comentarios}\n`;
 }
 
-// Estrutura da 1ª tabela (copiar)
-const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-if (quantidadePorMesElement) {
-const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-if (paragraphs.length > 0) {
-const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-if (lastParagraph.trim() !== "") {
-copiado += `##Instalações no mês de ${lastParagraph}\n`;
-}
-}
-}
+
 
 copiado = copiado.replace(/#/g, '\n');
 
