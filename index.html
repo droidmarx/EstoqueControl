@@ -994,6 +994,26 @@ iframe{
         #ultimomes{
          color: white;
         }
+          #imageInput {
+    display: none;
+  }
+
+  /* Estiliza o botão para simular o comportamento */
+  .custom-file-input {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+  }
+
+  /* Exibe o texto para nenhum arquivo selecionado */
+  #fileName {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+  }
 
 </style>
 
@@ -1464,6 +1484,17 @@ iframe{
       <!-- Adicione mais canais, se necessário -->
     </select>
   </td>
+</tr>
+
+<tr>
+ <th>Upload de Imagens:</th>
+ <td>
+  <form id="imageForm">
+   <label class="custom-file-input" for="imageInput">Escolher imagens</label>
+   <input type="file" id="imageInput" accept="image/*" multiple onchange="showFileCount()"><br>
+   <span id="fileCount">Nenhuma imagem</span>
+  </form>
+ </td>
 </tr>
 
 <div id="mapReal"></div>
@@ -2946,112 +2977,142 @@ if (window.Worker) {
  </script>
  
 <script>
-function sendMessageToTelegram() {
-const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
-const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nesta lista
+ function sendMessageToTelegram() {
+    const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
+  const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nesta lista
 
-// Obtendo o conteúdo copiado
-let copiado = '';
+  // Obtendo o conteúdo copiado
+  let copiado = '';
 
-// Estrutura da 1ª tabela (copiar)
-const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-if (quantidadePorMesElement) {
-const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-if (paragraphs.length > 0) {
-const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-if (lastParagraph.trim() !== "") {
-copiado += `##Instalações no mês de ${lastParagraph}\n`;
-}
-}
-}
+  // Estrutura da 1ª tabela (copiar)
+  const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+  if (quantidadePorMesElement) {
+   const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+   if (paragraphs.length > 0) {
+    const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+    if (lastParagraph.trim() !== "") {
+     copiado += `##Instalações no mês de ${lastParagraph}\n`;
+    }
+   }
+  }
 
+  copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
+  copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
+  copiado += `##Cliente: ${document.getElementById('cliente').value}\n`;
+  copiado += `CTO: ${document.getElementById('cto').value}\n`;
+  copiado += `Porta: ${document.getElementById('porta').value}\n`;
+  copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
+  copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
+  copiado += `## 📦 Materiais:\n`;
 
-copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
+  const campos = {
+   'fibraMetragem': 'Metragem da Fibra',
+   'scApc': 'Conector APC',
+   'scUpc': 'Conector UPC',
+   'esticadores': 'Esticadores',
+   'roldana': 'Roldana',
+   'fecho': 'Fecho',
+   'anel': 'Anel',
+   'fitaAco': 'Fita de Aço',
+   'fixaFio': 'Fixa fio',
+   'isolante': 'Isolante',
+   'caboRede': 'Cabo de rede',
+   'concRj45': 'Conector RJ45',
+   'kitFusao': 'Kit fusão'
+  };
 
+  let algumMaterialUtilizado = false;
+  Object.keys(campos).forEach((campo) => {
+   const valorCampo = document.getElementById(campo).value;
+   if (valorCampo.trim() !== "") {
+    copiado += `${campos[campo]}: ${valorCampo}\n`;
+    algumMaterialUtilizado = true;
+   }
+  });
 
-copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
+  if (!algumMaterialUtilizado) {
+   copiado += "Não foi utilizado materiais!\n";
+  }
 
-copiado += `##Cliente: ${document.getElementById('cliente').value}\n`;
+  copiado += `## 🛜 Configurações:\n`;
+  copiado += `Wifi 2.4GHz:\n`;
+  copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
+  copiado += ` ${document.getElementById('canais24GHz').value}\n`;
+  copiado += `# Wifi 5GHz:\n`;
+  copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
+  copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
+  const localizacao = document.getElementById('mapLink').textContent;
+  if (localizacao.trim() !== "") {
+   copiado += "##🚩 Localização:\n";
+   copiado += `${localizacao}\n`;
+  }
 
-copiado += `CTO: ${document.getElementById('cto').value}\n`;
-copiado += `Porta: ${document.getElementById('porta').value}\n`;
-copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
-copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `## 📦 Materiais:\n`;
+  const comentarios = document.getElementById('comentarios1').value;
+  if (comentarios.trim() !== "") {
+   copiado += "##Comentários:\n";
+   copiado += `${comentarios}\n`;
+  }
 
-const campos = {
-'fibraMetragem': 'Metragem da Fibra',
-'scApc': 'Conector APC',
-'scUpc': 'Conector UPC',
-'esticadores': 'Esticadores',
-'roldana': 'Roldana',
-'fecho': 'Fecho',
-'anel': 'Anel',
-'fitaAco': 'Fita de Aço',
-'fixaFio': 'Fixa fio',
-'isolante': 'Isolante',
-'caboRede': 'Cabo de rede',
-'concRj45': 'Conector RJ45',
-'kitFusao': 'Kit fusão'
-};
+  copiado = copiado.replace(/#/g, '\n');
 
-let algumMaterialUtilizado = false;
-Object.keys(campos).forEach((campo) => {
-const valorCampo = document.getElementById(campo).value;
-if (valorCampo.trim() !== "") {
-copiado += `${campos[campo]}: ${valorCampo}\n`;
-algumMaterialUtilizado = true;
+  // Enviar a mensagem para cada chat_id
+  chatIds.forEach(chatId => {
+   const mensagem = ' \n' + copiado + '\n\n';
+   const urlMensagem = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
+
+   // Enviar a mensagem de texto
+   fetch(urlMensagem)
+    .then(response => response.json())
+    .then(data => {
+     if (data.ok) {
+      console.log(`Mensagem enviada com sucesso para ${chatId}`);
+     } else {
+      console.error(`Erro ao enviar mensagem para ${chatId}:`, data.description);
+     }
+    })
+    .catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
+
+// Enviar imagens (se houver)
+const imageInput = document.getElementById('imageInput');
+if (imageInput.files.length > 0) {
+ Array.from(imageInput.files).forEach(imageFile => {
+  const formData = new FormData();
+  formData.append('chat_id', chatId);
+  formData.append('photo', imageFile);
+
+  const urlImagem = `https://api.telegram.org/bot${botToken}/sendPhoto`;
+
+  fetch(urlImagem, {
+    method: 'POST',
+    body: formData
+   })
+   .then(response => response.json())
+   .then(data => {
+    if (data.ok) {
+     console.log(`Imagem enviada com sucesso para ${chatId}`);
+    } else {
+     console.error(`Erro ao enviar imagem para ${chatId}:`, data.description);
+    }
+   })
+   .catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
+ });
 }
 });
-
-if (!algumMaterialUtilizado) {
-copiado += "Não foi utilizado materiais!\n";
 }
 
-copiado += `## 🛜 Configurações:\n`;
-copiado += `Wifi 2.4GHz:\n`;
-copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
-copiado += ` ${document.getElementById('canais24GHz').value}\n`;
-copiado += `# Wifi 5GHz:\n`;
-copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
-copiado += ` ${document.getElementById('canais5GHz').value}\n`;
+function showFileCount() {
+ const input = document.getElementById('imageInput');
+ const fileCount = document.getElementById('fileCount');
 
-const localizacao = document.getElementById('mapLink').textContent;
-if (localizacao.trim() !== "") {
-copiado += "##🚩 Localização:\n";
-copiado += `${localizacao}\n`;
+ if (input.files.length > 0) {
+  fileCount.textContent = `${input.files.length} arquivo(s)`;
+ } else {
+  fileCount.textContent = 'nenhuma imagem';
+ }
 }
 
-const comentarios = document.getElementById('comentarios1').value;
-if (comentarios.trim() !== "") {
-copiado += "##Comentários:\n";
-copiado += `${comentarios}\n`;
-}
-
-
-
-copiado = copiado.replace(/#/g, '\n');
-
-// Enviar a mensagem para cada chat_id
-chatIds.forEach(chatId => {
-const mensagem = ' \n' + copiado + '\n\n';
-const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
-
-fetch(url)
-.then(response => response.json())
-.then(data => {
-if (data.ok) {
-console.log(`Mensagem enviada com sucesso para ${chatId}`);
-} else {
-console.error(`Erro ao enviar mensagem para ${chatId}:`, data.description);
-}
-})
-.catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
-});
-}
-</script>
-  
+</script>  
   
 </body>
 </html>
