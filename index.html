@@ -1014,6 +1014,10 @@ iframe{
     margin-top: 5px;
     color: #666;
   }
+ 
+ label{
+  width: 80%;
+ }
 
 </style>
 
@@ -1487,13 +1491,12 @@ iframe{
 </tr>
 
 <tr>
- <th>Upload de Imagens:</th>
+ <th id="fileCount">Nenhuma imagem
  <td>
-  <form id="imageForm">
-   <label class="custom-file-input" for="imageInput">Escolher imagens</label>
-   <input type="file" id="imageInput" accept="image/*" multiple onchange="showFileCount()"><br>
-   <span id="fileCount">Nenhuma imagem</span>
-  </form>
+   <form id="imageForm">
+  <label class="custom-file-input" for="imageInput">Escolher imagens</label>
+  <input type="file" id="imageInput" accept="image/*" multiple onchange="showFileCount()"></th>
+ </form>
  </td>
 </tr>
 
