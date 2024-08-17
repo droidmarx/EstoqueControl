@@ -2222,6 +2222,9 @@ copiado = copiado.replace(/#/g, '\n');
 
 //var urlTelegram = 'https://t.me/share/url?url=' + encodeURIComponent(mensagem);window.location.href = urlTelegram;
 
+setTimeout(function() {
+ window.open('https://t.me/c/1989058391/38071', '_blank');
+}, 2500);
 
 
       // Adicionar a string copiada ao array de dadosCopiados
@@ -2916,73 +2919,78 @@ function showError(error) {
 
   </script>
   
+  </script>
+  
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
- <script>
-// Gerar UUID para identificar o usuário
-var userId = localStorage.getItem('userId') || uuid.v4();
-localStorage.setItem('userId', userId);
-console.log("User ID:", userId);
+<script>
+ // Gerar UUID para identificar o usuário
+ var userId = localStorage.getItem('userId') || uuid.v4();
+ localStorage.setItem('userId', userId);
+ console.log("User ID:", userId);
 
-var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
-var channel = ably.channels.get('user-location');
+ var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
+ var channel = ably.channels.get('user-location');
 
-var map = L.map('mapReal').setView([0, 0], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
- attribution: '&copy; GuiMarx'
-}).addTo(map);
-var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
+ var map = L.map('mapReal').setView([0, 0], 13);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; GuiMarx'
+ }).addTo(map);
+ var marker = L.marker([0, 0]).addTo(map).bindPopup("Você está aqui!").openPopup();
 
-function updateMarker(lat, lon) {
- var latlng = L.latLng(lat, lon);
- map.setView(latlng, 15);
- marker.setLatLng(latlng).update();
+ var nomeRua = ''; // Variável global para armazenar o nome da rua
 
- var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
- fetch(url)
-  .then(response => response.json())
-  .then(data => {
-   var address = 'Você está em: ' + '<br>' + (data.address.road || 'Nome da rua não encontrado') + '<br>' + (data.address.suburb || '');
-   marker.bindPopup(address).openPopup();
-  })
-  .catch(error => {
-   console.error('Erro ao obter endereço:', error);
-  });
-}
+ function updateMarker(lat, lon) {
+  var latlng = L.latLng(lat, lon);
+  map.setView(latlng, 15);
+  marker.setLatLng(latlng).update();
 
-if (navigator.geolocation) {
- navigator.geolocation.watchPosition(function(position) {
-  var lat = position.coords.latitude;
-  var lon = position.coords.longitude;
-  updateMarker(lat, lon);
+  var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+  fetch(url)
+   .then(response => response.json())
+   .then(data => {
+    nomeRua = data.address.road || 'Nome da rua não encontrado'; // Armazena o nome da rua
+    var address = 'Você está em: ' + '<br>' + nomeRua + '<br>' + (data.address.suburb || '');
+    marker.bindPopup(address).openPopup();
+   })
+   .catch(error => {
+    console.error('Erro ao obter endereço:', error);
+   });
+ }
 
-  // Envia a localização para o Ably com o ID do usuário
-  channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
- }, function(error) {
-  alert("Erro ao obter localização: " + error.message);
- }, { enableHighAccuracy: true });
-} else {
- alert("Geolocalização não é suportada pelo seu navegador.");
-}
+ if (navigator.geolocation) {
+  navigator.geolocation.watchPosition(function(position) {
+   var lat = position.coords.latitude;
+   var lon = position.coords.longitude;
+   updateMarker(lat, lon);
 
-// Para continuar enviando localização em background
-if (window.Worker) {
- var worker = new Worker('location-worker.js');
- worker.onmessage = function(e) {
-  var lat = e.data.lat;
-  var lon = e.data.lon;
-  updateMarker(lat, lon);
-  channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
- };
- worker.postMessage('start');
-}
+   // Envia a localização para o Ably com o ID do usuário
+   channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+  }, function(error) {
+   alert("Erro ao obter localização: " + error.message);
+  }, { enableHighAccuracy: true });
+ } else {
+  alert("Geolocalização não é suportada pelo seu navegador.");
+ }
+
+ // Para continuar enviando localização em background
+ if (window.Worker) {
+  var worker = new Worker('location-worker.js');
+  worker.onmessage = function(e) {
+   var lat = e.data.lat;
+   var lon = e.data.lon;
+   updateMarker(lat, lon);
+   channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+  };
+  worker.postMessage('start');
+ }
  </script>
  
 <script>
  function sendMessageToTelegram() {
     const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
-  const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nesta lista
+  const chatIds = ['-1002189#220962', '5759760387']; // Adicione mais chat_ids nesta lista
 
   // Obtendo o conteúdo copiado
   let copiado = '';
@@ -3047,7 +3055,8 @@ if (window.Worker) {
 
   const localizacao = document.getElementById('mapLink').textContent;
   if (localizacao.trim() !== "") {
-   copiado += "##🚩 Localização:\n";
+    // Adiciona o nome da rua ao texto copiado
+   copiado += `#🚩 Próximo de#${nomeRua}\n`;
    copiado += `${localizacao}\n`;
   }
 
@@ -3076,44 +3085,10 @@ if (window.Worker) {
     })
     .catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
 
-// Enviar imagens (se houver)
-const imageInput = document.getElementById('imageInput');
-if (imageInput.files.length > 0) {
- Array.from(imageInput.files).forEach(imageFile => {
-  const formData = new FormData();
-  formData.append('chat_id', chatId);
-  formData.append('photo', imageFile);
-
-  const urlImagem = `https://api.telegram.org/bot${botToken}/sendPhoto`;
-
-  fetch(urlImagem, {
-    method: 'POST',
-    body: formData
-   })
-   .then(response => response.json())
-   .then(data => {
-    if (data.ok) {
-     console.log(`Imagem enviada com sucesso para ${chatId}`);
-    } else {
-     console.error(`Erro ao enviar imagem para ${chatId}:`, data.description);
-    }
-   })
-   .catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
- });
-}
 });
 }
 
-function showFileCount() {
- const input = document.getElementById('imageInput');
- const fileCount = document.getElementById('fileCount');
 
- if (input.files.length > 0) {
-  fileCount.textContent = `${input.files.length} arquivo(s)`;
- } else {
-  fileCount.textContent = 'nenhuma imagem';
- }
-}
 
 </script>  
   
