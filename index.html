@@ -22,7 +22,7 @@
 
   
   
-  <title>⚙ 𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒</title>
+  <title>𝕀𝕟𝕕𝕒𝕚𝕒𝔽𝕚𝕓𝕣𝕒</title>
   <body onload="verificarTercaFeira()">
 </head>
 
@@ -1482,7 +1482,7 @@ iframe{
 
 
 <div id="mapReal"></div>
-<p id="resultado"></p>
+<p id="resultado">.</p>
       
       
     </table>
@@ -2056,90 +2056,81 @@ function atualizarTabelaEstoque() {
 
     // Função para copiar o conteúdo atualizado para a área de transferência
     function copiarConteudo() {
-      let copiado = '';
+  // Obtendo o conteúdo copiado
+  let copiado = '';
 
-
-
-
-//estrututa da 1• tabela (copiar)
-// Obter o elemento com o id "quantidade-por-mes"
-const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-
-// Verificar se o elemento existe e contém elementos <p>
-if (quantidadePorMesElement) {
-  const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-
-  // Verificar se há algum elemento <p>
-  if (paragraphs.length > 0) {
+  // Estrutura da 1ª tabela (copiar)
+  const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+  if (quantidadePorMesElement) {
+   const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+   if (paragraphs.length > 0) {
     const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-
     if (lastParagraph.trim() !== "") {
-      copiado += `Instalações no mês de ${lastParagraph}\n`;
+     copiado += `##Instalações no mês de ${lastParagraph}\n`;
     }
+   }
   }
-}
 
+  copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
+  copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
+  copiado += `##Cliente: ${document.getElementById('cliente').value}\n`;
+  copiado += `CTO: ${document.getElementById('cto').value}\n`;
+  copiado += `Porta: ${document.getElementById('porta').value}\n`;
+  copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
+  copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
+  copiado += `## 📦 Materiais:\n`;
 
+  const campos = {
+   'fibraMetragem': 'Metragem da Fibra',
+   'scApc': 'Conector APC',
+   'scUpc': 'Conector UPC',
+   'esticadores': 'Esticadores',
+   'roldana': 'Roldana',
+   'fecho': 'Fecho',
+   'anel': 'Anel',
+   'fitaAco': 'Fita de Aço',
+   'fixaFio': 'Fixa fio',
+   'isolante': 'Isolante',
+   'caboRede': 'Cabo de rede',
+   'concRj45': 'Conector RJ45',
+   'kitFusao': 'Kit fusão'
+  };
 
-copiado += `##🛠 ${document.getElementById('Trabalho').value}:\n`;
-copiado += `Técnico: ${document.getElementById('tecnico').value}\n`;
-copiado += `Cliente: ${document.getElementById('cliente').value}\n`;
-copiado += `CTO: ${document.getElementById('cto').value}\n`;
-copiado += `Porta: ${document.getElementById('porta').value}\n`;
-copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
-copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `## 📦 Materiais:\n`;
+  let algumMaterialUtilizado = false;
+  Object.keys(campos).forEach((campo) => {
+   const valorCampo = document.getElementById(campo).value;
+   if (valorCampo.trim() !== "") {
+    copiado += `${campos[campo]}: ${valorCampo}\n`;
+    algumMaterialUtilizado = true;
+   }
+  });
 
-const campos = {
- 'fibraMetragem': 'Metragem da Fibra',
- 'scApc': 'Conector APC',
- 'scUpc': 'Conector UPC',
- 'esticadores': 'Esticadores',
- 'roldana': 'Roldana',
- 'fecho': 'Fecho',
- 'anel': 'Anel',
- 'fitaAco': 'Fita de Aço',
- 'fixaFio': 'Fixa fio',
- 'isolante': 'Isolante',
- 'caboRede': 'Cabo de rede',
- 'concRj45': 'Conector RJ45',
- 'kitFusao': 'Kit fusão'
-};
+  if (!algumMaterialUtilizado) {
+   copiado += "Não foi utilizado materiais!\n";
+  }
 
-let algumMaterialUtilizado = false;
-Object.keys(campos).forEach((campo) => {
- const valorCampo = document.getElementById(campo).value;
- if (valorCampo.trim() !== "") {
-  copiado += `${campos[campo]}: ${valorCampo}\n`;
-  algumMaterialUtilizado = true;
- }
-});
+  copiado += `## 🛜 Configurações:\n`;
+  copiado += `Wifi 2.4GHz:\n`;
+  copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
+  copiado += ` ${document.getElementById('canais24GHz').value}\n`;
+  copiado += `# Wifi 5GHz:\n`;
+  copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
+  copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
-if (!algumMaterialUtilizado) {
- copiado += "Não foi utilizado materiais!\n";
-}
+  const localizacao = document.getElementById('mapLink').textContent;
+  if (localizacao.trim() !== "") {
+   // Adiciona o nome da rua ao texto copiado
+   copiado += `#🚩 Próximo de#${nomeRua}\n`;
+   copiado += `${localizacao}\n`;
+  }
 
-copiado += `## 🛜 Configurações:\n`;
-copiado += `Wifi 2.4GHz:\n`;
-copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
-copiado += ` ${document.getElementById('canais24GHz').value}\n`;
+  const comentarios = document.getElementById('comentarios1').value;
+  if (comentarios.trim() !== "") {
+   copiado += "##Comentários:\n";
+   copiado += `${comentarios}\n`;
+  }
 
-copiado += `# Wifi 5GHz:\n`;
-copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
-copiado += ` ${document.getElementById('canais5GHz').value}\n`;
-
-const localizacao = document.getElementById('mapLink').textContent;
-if (localizacao.trim() !== "") {
- copiado += "##🚩 Localização:\n";
- copiado += `${localizacao}\n`;
-}
-
-const comentarios = document.getElementById('comentarios1').value;
-if (comentarios.trim() !== "") {
- copiado += "##Comentários:\n";
- copiado += `${comentarios}\n`;
-}
-
+  copiado = copiado.replace(/#/g, '\n');
 
 
 
@@ -2426,7 +2417,7 @@ listItemElement.appendChild(ctoPortaElement);
 
 // Função para extrair a informação do link do mapa do conteúdo copiado
 function extrairLinkMapa(conteudo) {
-  const indiceInicioLinkMapa = conteudo.indexOf('Localização:') + 15; // Adicionado 12 para compensar o comprimento da palavra "Localização:"
+  const indiceInicioLinkMapa = conteudo.indexOf('https') ; // Adicionado 12 para compensar o comprimento da palavra "Localização:"
   const indiceFimLinkMapa = conteudo.indexOf('\n', indiceInicioLinkMapa);
   const linkMapa = conteudo.substring(indiceInicioLinkMapa, indiceFimLinkMapa);
   return linkMapa;
@@ -3049,10 +3040,14 @@ function showError(error) {
 
   copiado = copiado.replace(/#/g, '\n');
 
+
+
   // Enviar a mensagem para cada chat_id
   chatIds.forEach(chatId => {
    const mensagem = ' \n' + copiado + '\n\n';
    const urlMensagem = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(mensagem)}`;
+   
+  
 
    // Enviar a mensagem de texto
    fetch(urlMensagem)
@@ -3066,11 +3061,8 @@ function showError(error) {
     })
     .catch(error => console.error(`Erro ao conectar com o Telegram para ${chatId}:`, error));
 
-});
+  });
 }
-
-
-
 </script>  
   
 </body>
