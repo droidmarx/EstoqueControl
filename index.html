@@ -997,18 +997,105 @@ iframe{
           #imageInput {
     display: none;
   }
+  
+.preferencias {
+    margin-top: 80px;
+    width: 80%;
+    height: auto;
+    background: ;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
 
-  /* Estiliza o botão para simular o comportamento */
-  .custom-file-input {
+.preferencias h1{
+ width: 100vw;
+ font-size: 20px;
+ color: white;
+}
+
+/* Estilizando o container do switch e descrição */
+.switch-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estiliza o botão para simular o comportamento */
+.custom-file-input {
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f8f8f8;
-  }
+    background-color: #F8F8F8;
+}
 
+/* Estilizando o container do switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    scale: .9;
+}
 
+/* Escondendo o checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Estilo do slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+/* Estilo da "bolinha" do slider */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Cor quando o switch está ativado */
+input:checked + .slider {
+    background-color: #3498db;
+}
+
+/* Movimento da "bolinha" quando ativado */
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Estilo adicional para arredondar os cantos do slider */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.botaoCopiar{
+ font-size: .8rem;
+}
 </style>
 
 <body>
@@ -1035,6 +1122,9 @@ iframe{
 
 
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png
+    " height="90" width="90"></a>
+    
+<a onclick="ativarSublinhado(this);mostrarPreferencias"><img onclick="mostrarPreferencias()" class="logo" src="https://img.icons8.com/?size=512&id=H5wZE53Q7ZHP&format=png
     " height="90" width="90"></a>
     
     <div class="alert" id="alerta">
@@ -1276,6 +1366,10 @@ iframe{
 	});
 </script>
     
+   
+
+   
+
     
     <table>
  
@@ -1482,7 +1576,7 @@ iframe{
 
 
 <div id="mapReal"></div>
-<p id="resultado">.</p>
+<p id="resultado"></p>
       
       
     </table>
@@ -1503,6 +1597,65 @@ iframe{
 
      
   </div>
+  
+  <div id="preferenciasDiv" class="preferencias" style="display: none">
+   
+   
+   <h1>Preferencias do usuário</h1>
+   
+   
+    <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" id="toggleCopy" checked>
+            <span class="slider round"></span>
+        </label>
+        <span class="botaoCopiar">Enviar quantidade de instalações</span>
+    </div>
+
+    <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" id="toggleCopys" checked>
+            <span class="slider round"></span>
+        </label>
+        <span class="botaoCopiar">Enviar localização aproximada</span>
+    </div>
+    
+        <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" id="toggleMap" checked>
+            <span class="slider round"></span>
+        </label>
+        <span class="botaoCopiar">Mostrar Mini Mapa na tela</span>
+    </div>
+    
+    <h1>Preferencias de botões</h1>
+    
+    
+<div class="switch-container">
+ <label class="switch">
+  <input type="checkbox" id="toggleInstalacoes">
+  <span class="slider round"></span>
+ </label>
+ <span class="botaoCopiar">Mostrar histórico de Instalações</span>
+</div>
+
+<div class="switch-container">
+ <label class="switch">
+  <input type="checkbox" id="toggleEstoque">
+  <span class="slider round"></span>
+ </label>
+ <span class="botaoCopiar">Mostrar Estoque</span>
+</div>
+
+<div class="switch-container">
+ <label class="switch">
+  <input type="checkbox" id="toggleManutencao">
+  <span class="slider round"></span>
+ </label>
+ <span class="botaoCopiar">Mostrar mapa de CTO</span>
+</div>
+    
+</div>
   
   
 
@@ -1665,66 +1818,94 @@ clearStorageBtn.addEventListener("click", () => {
 
 
 function mostrarEstoque() {
-      const estoqueDiv = document.getElementById("estoqueDiv");
-      const retiradaDiv = document.getElementById("retiradaDiv");
-      const habilitar = document.getElementById("habilitar");
-      const instalacoes = document.getElementById("instalacoes");
+ const estoqueDiv = document.getElementById("estoqueDiv");
+ const retiradaDiv = document.getElementById("retiradaDiv");
+ const habilitar = document.getElementById("habilitar");
+ const instalacoes = document.getElementById("instalacoes");
+ const manutencaoDiv = document.getElementById("manutencaoDiv");
+ const preferenciasDiv = document.getElementById("preferenciasDiv");
 
-      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
-        estoqueDiv.style.display = "block";
-        retiradaDiv.style.display = "none";
-        habilitar.style.display = "none";
-        instalacoes.style.display = "none";
-        manutencaoDiv.style.display = "none";
-      }
-    }
+ if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
+  estoqueDiv.style.display = "block";
+  retiradaDiv.style.display = "none";
+  habilitar.style.display = "none";
+  instalacoes.style.display = "none";
+  manutencaoDiv.style.display = "none";
+  preferenciasDiv.style.display = "none";
+ }
+}
 
-    function mostrarRetirada() {
-      const estoqueDiv = document.getElementById("estoqueDiv");
-      const retiradaDiv = document.getElementById("retiradaDiv");
-      const habilitar = document.getElementById("habilitar");
-      const instalacoes = document.getElementById("instalacoes");
-      
-      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
-        estoqueDiv.style.display = "none";
-        retiradaDiv.style.display = "block";
-        habilitar.style.display = "block";
-        instalacoes.style.display = "none";
-        manutencaoDiv.style.display = "none";
-      }
-    }
+function mostrarRetirada() {
+ const estoqueDiv = document.getElementById("estoqueDiv");
+ const retiradaDiv = document.getElementById("retiradaDiv");
+ const habilitar = document.getElementById("habilitar");
+ const instalacoes = document.getElementById("instalacoes");
+ const manutencaoDiv = document.getElementById("manutencaoDiv");
+ const preferenciasDiv = document.getElementById("preferenciasDiv");
 
-    function mostrarInstalacoes() {
-      const estoqueDiv = document.getElementById("estoqueDiv");
-      const retiradaDiv = document.getElementById("retiradaDiv");
-      const habilitar = document.getElementById("habilitar");
-      const instalacoes = document.getElementById("instalacoes");
+ if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
+  estoqueDiv.style.display = "none";
+  retiradaDiv.style.display = "block";
+  habilitar.style.display = "block";
+  instalacoes.style.display = "none";
+  manutencaoDiv.style.display = "none";
+  preferenciasDiv.style.display = "none";
+ }
+}
 
-      if (estoqueDiv && retiradaDiv && habilitar && instalacoes) {
-        estoqueDiv.style.display = "none";
-        retiradaDiv.style.display = "none";
-        habilitar.style.display = "none";
-        instalacoes.style.display = "block";
-        manutencaoDiv.style.display = "none";
-      }
-    }
+function mostrarInstalacoes() {
+ const estoqueDiv = document.getElementById("estoqueDiv");
+ const retiradaDiv = document.getElementById("retiradaDiv");
+ const habilitar = document.getElementById("habilitar");
+ const instalacoes = document.getElementById("instalacoes");
+ const manutencaoDiv = document.getElementById("manutencaoDiv");
+ const preferenciasDiv = document.getElementById("preferenciasDiv");
 
-    function mostrarManutencao() {
-      
-      const estoqueDiv = document.getElementById("estoqueDiv");
-      const retiradaDiv = document.getElementById("retiradaDiv");
-      const habilitar = document.getElementById("habilitar");
-      const instalacoes = document.getElementById("instalacoes");
-      const manutencaoDiv = document.getElementById("manutencaoDiv");
+ if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
+  estoqueDiv.style.display = "none";
+  retiradaDiv.style.display = "none";
+  habilitar.style.display = "none";
+  instalacoes.style.display = "block";
+  manutencaoDiv.style.display = "none";
+  preferenciasDiv.style.display = "none";
+ }
+}
 
-      if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv) {
-        estoqueDiv.style.display = "none";
-        retiradaDiv.style.display = "none";
-        habilitar.style.display = "none";
-        instalacoes.style.display = "none";
-        manutencaoDiv.style.display = "block";
-      }
-    }
+function mostrarManutencao() {
+ const estoqueDiv = document.getElementById("estoqueDiv");
+ const retiradaDiv = document.getElementById("retiradaDiv");
+ const habilitar = document.getElementById("habilitar");
+ const instalacoes = document.getElementById("instalacoes");
+ const manutencaoDiv = document.getElementById("manutencaoDiv");
+ const preferenciasDiv = document.getElementById("preferenciasDiv");
+
+ if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
+  estoqueDiv.style.display = "none";
+  retiradaDiv.style.display = "none";
+  habilitar.style.display = "none";
+  instalacoes.style.display = "none";
+  manutencaoDiv.style.display = "block";
+  preferenciasDiv.style.display = "none";
+ }
+}
+
+function mostrarPreferencias() {
+ const estoqueDiv = document.getElementById("estoqueDiv");
+ const retiradaDiv = document.getElementById("retiradaDiv");
+ const habilitar = document.getElementById("habilitar");
+ const instalacoes = document.getElementById("instalacoes");
+ const manutencaoDiv = document.getElementById("manutencaoDiv");
+ const preferenciasDiv = document.getElementById("preferenciasDiv");
+
+ if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
+  estoqueDiv.style.display = "none";
+  retiradaDiv.style.display = "none";
+  habilitar.style.display = "none";
+  instalacoes.style.display = "none";
+  manutencaoDiv.style.display = "none";
+  preferenciasDiv.style.display = "block";
+ }
+}
 
 
 
@@ -2056,20 +2237,26 @@ function atualizarTabelaEstoque() {
 
     // Função para copiar o conteúdo atualizado para a área de transferência
     function copiarConteudo() {
+
   // Obtendo o conteúdo copiado
   let copiado = '';
 
-  // Estrutura da 1ª tabela (copiar)
-  const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-  if (quantidadePorMesElement) {
-   const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-   if (paragraphs.length > 0) {
-    const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-    if (lastParagraph.trim() !== "") {
-     copiado += `##Instalações no mês de ${lastParagraph}\n`;
-    }
+// Verifica se o toggle está ativado
+const incluirQuantidadePorMes = document.getElementById('toggleCopy').checked;
+
+// Estrutura da 1ª tabela (copiar)
+if (incluirQuantidadePorMes) {
+ const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+ if (quantidadePorMesElement) {
+  const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+  if (paragraphs.length > 0) {
+   const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+   if (lastParagraph.trim() !== "") {
+    copiado += `##Instalações no mês de ${lastParagraph}\n`;
    }
   }
+ }
+}
 
   copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
   copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
@@ -2117,12 +2304,17 @@ function atualizarTabelaEstoque() {
   copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
   copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
-  const localizacao = document.getElementById('mapLink').textContent;
-  if (localizacao.trim() !== "") {
-   // Adiciona o nome da rua ao texto copiado
-   copiado += `#🚩 Próximo de#${nomeRua}\n`;
-   copiado += `${localizacao}\n`;
-  }
+  // Verifica se o toggle está ativado
+const copiarLocalizacao = document.getElementById('toggleCopys').checked;
+
+if (copiarLocalizacao) {
+ const localizacao = document.getElementById('mapLink').textContent;
+ if (localizacao.trim() !== "") {
+  // Adiciona o nome da rua ao texto copiado
+  copiado += `#🚩 Localização aproximada:#${nomeRua}\n`;
+  copiado += `${localizacao}\n`;
+ }
+}
 
   const comentarios = document.getElementById('comentarios1').value;
   if (comentarios.trim() !== "") {
@@ -2962,7 +3154,7 @@ function showError(error) {
 <script>
  function sendMessageToTelegram() {
     const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
-  const chatIds = ['-1002189220962', '5759760387']; // Adicione mais chat_ids nesta lista
+  const chatIds = ['-100218#9220962', '5759760387']; // Adicione mais chat_ids nesta lista
 
   // Obtendo o conteúdo copiado
   let copiado = '';
@@ -3064,6 +3256,103 @@ function showError(error) {
   });
 }
 </script>  
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleInstalacoes = document.getElementById("toggleInstalacoes");
+        const toggleEstoque = document.getElementById("toggleEstoque");
+        const toggleManutencao = document.getElementById("toggleManutencao");
+
+        const anchorInstalacoes = document.querySelector("a[onclick*='mostrarInstalacoes']");
+        const anchorEstoque = document.querySelector("a[onclick*='mostrarEstoque']");
+        const anchorManutencao = document.querySelector("a[onclick*='mostrarManutencao']");
+
+        // Carregar as preferências salvas
+        toggleInstalacoes.checked = localStorage.getItem("toggleInstalacoes") === "true";
+        toggleEstoque.checked = localStorage.getItem("toggleEstoque") === "true";
+        toggleManutencao.checked = localStorage.getItem("toggleManutencao") === "true";
+
+        // Mostrar/ocultar as ancoras com base nos estados salvos
+        anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
+        anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
+        anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
+
+        // Salvar as preferências quando os checkboxes forem alterados
+        toggleInstalacoes.addEventListener("change", function() {
+            localStorage.setItem("toggleInstalacoes", toggleInstalacoes.checked);
+            anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
+        });
+
+        toggleEstoque.addEventListener("change", function() {
+            localStorage.setItem("toggleEstoque", toggleEstoque.checked);
+            anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
+        });
+
+        toggleManutencao.addEventListener("change", function() {
+            localStorage.setItem("toggleManutencao", toggleManutencao.checked);
+            anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleMap = document.getElementById("toggleMap");
+        const mapReal = document.getElementById("mapReal");
+
+        // Carregar a preferência salva
+        toggleMap.checked = localStorage.getItem("toggleMap") === "true";
+
+        // Mostrar/ocultar a div mapReal com base no estado salvo
+        mapReal.style.display = toggleMap.checked ? "block" : "none";
+
+        // Salvar a preferência quando o checkbox for alterado
+        toggleMap.addEventListener("change", function() {
+            localStorage.setItem("toggleMap", toggleMap.checked);
+            // Mostrar/ocultar a div mapReal
+            mapReal.style.display = toggleMap.checked ? "block" : "none";
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleCopy = document.getElementById("toggleCopy");
+        const toggleCopys = document.getElementById("toggleCopys");
+
+        // Carregar as preferências salvas
+        toggleCopy.checked = localStorage.getItem("toggleCopy") === "true";
+        toggleCopys.checked = localStorage.getItem("toggleCopys") === "true";
+
+        // Salvar as preferências quando os checkboxes forem alterados
+        toggleCopy.addEventListener("change", function() {
+            localStorage.setItem("toggleCopy", toggleCopy.checked);
+        });
+
+        toggleCopys.addEventListener("change", function() {
+            localStorage.setItem("toggleCopys", toggleCopys.checked);
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tecnicoSelect = document.getElementById("tecnico");
+
+        // Carregar a seleção do técnico salva
+        const savedTecnico = localStorage.getItem("selectedTecnico");
+        if (savedTecnico) {
+            tecnicoSelect.value = savedTecnico;
+        }
+
+        // Salvar a seleção do técnico quando alterado
+        tecnicoSelect.addEventListener("change", function() {
+            localStorage.setItem("selectedTecnico", tecnicoSelect.value);
+        });
+    });
+</script>
   
 </body>
 </html>
