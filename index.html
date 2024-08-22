@@ -1628,7 +1628,7 @@ input:checked + .slider:before {
         <span class="botaoCopiar">Mostrar Mini Mapa na tela</span>
     </div>
     
-    <h1>Preferencias de botões</h1>
+    <h1>Botões</h1>
     
     
 <div class="switch-container">
@@ -1653,6 +1653,16 @@ input:checked + .slider:before {
   <span class="slider round"></span>
  </label>
  <span class="botaoCopiar">Mostrar mapa de CTO</span>
+</div>
+
+<h1>Som</h1>
+
+<div class="switch-container">
+ <label class="switch">
+  <input type="checkbox" id="toggleMute">
+  <span class="slider round"></span>
+ </label>
+ <span class="botaoCopiar">Mutar Som</span>
 </div>
     
 </div>
@@ -3352,6 +3362,27 @@ function showError(error) {
             localStorage.setItem("selectedTecnico", tecnicoSelect.value);
         });
     });
+</script>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+  const toggleMute = document.getElementById("toggleMute");
+  const audios = [
+            document.getElementById("notification"),
+            document.getElementById("xselect"),
+            document.getElementById("recycler")
+        ];
+
+  // Carregar a preferência de som salva
+  toggleMute.checked = localStorage.getItem("toggleMute") === "true";
+  audios.forEach(audio => audio.muted = toggleMute.checked);
+
+  // Salvar a preferência de som e mutar/desmutar os áudios
+  toggleMute.addEventListener("change", function() {
+   localStorage.setItem("toggleMute", toggleMute.checked);
+   audios.forEach(audio => audio.muted = toggleMute.checked);
+  });
+ });
 </script>
   
 </body>
