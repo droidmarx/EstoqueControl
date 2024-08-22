@@ -999,6 +999,7 @@ iframe{
   }
   
 .preferencias {
+    margin-left: 10px;
     margin-top: 80px;
     width: 80%;
     height: auto;
@@ -1010,9 +1011,11 @@ iframe{
 }
 
 .preferencias h1{
- width: 100vw;
+ margin: 8px;
+ width: 90vw;
  font-size: 20px;
  color: white;
+ text-align: left;
 }
 
 /* Estilizando o container do switch e descrição */
@@ -3230,7 +3233,7 @@ function showError(error) {
   const localizacao = document.getElementById('mapLink').textContent;
   if (localizacao.trim() !== "") {
     // Adiciona o nome da rua ao texto copiado
-   copiado += `#🚩 Próximo de#${nomeRua}\n`;
+   copiado += `#🚩 Localização aproximada:# ${nomeRua}\n`;
    copiado += `${localizacao}\n`;
   }
 
