@@ -3271,121 +3271,110 @@ function showError(error) {
 </script>  
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toggleInstalacoes = document.getElementById("toggleInstalacoes");
-        const toggleEstoque = document.getElementById("toggleEstoque");
-        const toggleManutencao = document.getElementById("toggleManutencao");
-
-        const anchorInstalacoes = document.querySelector("a[onclick*='mostrarInstalacoes']");
-        const anchorEstoque = document.querySelector("a[onclick*='mostrarEstoque']");
-        const anchorManutencao = document.querySelector("a[onclick*='mostrarManutencao']");
-
-        // Carregar as preferências salvas
-        toggleInstalacoes.checked = localStorage.getItem("toggleInstalacoes") === "true";
-        toggleEstoque.checked = localStorage.getItem("toggleEstoque") === "true";
-        toggleManutencao.checked = localStorage.getItem("toggleManutencao") === "true";
-
-        // Mostrar/ocultar as ancoras com base nos estados salvos
-        anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
-        anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
-        anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
-
-        // Salvar as preferências quando os checkboxes forem alterados
-        toggleInstalacoes.addEventListener("change", function() {
-            localStorage.setItem("toggleInstalacoes", toggleInstalacoes.checked);
-            anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
-        });
-
-        toggleEstoque.addEventListener("change", function() {
-            localStorage.setItem("toggleEstoque", toggleEstoque.checked);
-            anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
-        });
-
-        toggleManutencao.addEventListener("change", function() {
-            localStorage.setItem("toggleManutencao", toggleManutencao.checked);
-            anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
-        });
-    });
-</script>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toggleMap = document.getElementById("toggleMap");
-        const mapReal = document.getElementById("mapReal");
-
-        // Carregar a preferência salva
-        toggleMap.checked = localStorage.getItem("toggleMap") === "true";
-
-        // Mostrar/ocultar a div mapReal com base no estado salvo
-        mapReal.style.display = toggleMap.checked ? "block" : "none";
-
-        // Salvar a preferência quando o checkbox for alterado
-        toggleMap.addEventListener("change", function() {
-            localStorage.setItem("toggleMap", toggleMap.checked);
-            // Mostrar/ocultar a div mapReal
-            mapReal.style.display = toggleMap.checked ? "block" : "none";
-        });
-    });
-</script>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toggleCopy = document.getElementById("toggleCopy");
-        const toggleCopys = document.getElementById("toggleCopys");
-
-        // Carregar as preferências salvas
-        toggleCopy.checked = localStorage.getItem("toggleCopy") === "true";
-        toggleCopys.checked = localStorage.getItem("toggleCopys") === "true";
-
-        // Salvar as preferências quando os checkboxes forem alterados
-        toggleCopy.addEventListener("change", function() {
-            localStorage.setItem("toggleCopy", toggleCopy.checked);
-        });
-
-        toggleCopys.addEventListener("change", function() {
-            localStorage.setItem("toggleCopys", toggleCopys.checked);
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tecnicoSelect = document.getElementById("tecnico");
-
-        // Carregar a seleção do técnico salva
-        const savedTecnico = localStorage.getItem("selectedTecnico");
-        if (savedTecnico) {
-            tecnicoSelect.value = savedTecnico;
-        }
-
-        // Salvar a seleção do técnico quando alterado
-        tecnicoSelect.addEventListener("change", function() {
-            localStorage.setItem("selectedTecnico", tecnicoSelect.value);
-        });
-    });
-</script>
-
-<script>
  document.addEventListener("DOMContentLoaded", function() {
-  const toggleMute = document.getElementById("toggleMute");
-  const audios = [
-            document.getElementById("notification"),
-            document.getElementById("xselect"),
-            document.getElementById("recycler")
-        ];
+ const toggleInstalacoes = document.getElementById("toggleInstalacoes");
+ const toggleEstoque = document.getElementById("toggleEstoque");
+ const toggleManutencao = document.getElementById("toggleManutencao");
 
-  // Carregar a preferência de som salva
-  toggleMute.checked = localStorage.getItem("toggleMute") === "true";
-  audios.forEach(audio => audio.muted = toggleMute.checked);
+ const anchorInstalacoes = document.querySelector("a[onclick*='mostrarInstalacoes']");
+ const anchorEstoque = document.querySelector("a[onclick*='mostrarEstoque']");
+ const anchorManutencao = document.querySelector("a[onclick*='mostrarManutencao']");
 
-  // Salvar a preferência de som e mutar/desmutar os áudios
-  toggleMute.addEventListener("change", function() {
-   localStorage.setItem("toggleMute", toggleMute.checked);
-   audios.forEach(audio => audio.muted = toggleMute.checked);
-  });
+ // Carregar as preferências salvas ou definir como true se não estiver definido
+ toggleInstalacoes.checked = localStorage.getItem("toggleInstalacoes") !== "false";
+ toggleEstoque.checked = localStorage.getItem("toggleEstoque") !== "false";
+ toggleManutencao.checked = localStorage.getItem("toggleManutencao") !== "false";
+
+ // Mostrar/ocultar as ancoras com base nos estados salvos
+ anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
+ anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
+ anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
+
+ // Salvar as preferências quando os checkboxes forem alterados
+ toggleInstalacoes.addEventListener("change", function() {
+  localStorage.setItem("toggleInstalacoes", toggleInstalacoes.checked);
+  anchorInstalacoes.style.display = toggleInstalacoes.checked ? "inline" : "none";
  });
+
+ toggleEstoque.addEventListener("change", function() {
+  localStorage.setItem("toggleEstoque", toggleEstoque.checked);
+  anchorEstoque.style.display = toggleEstoque.checked ? "inline" : "none";
+ });
+
+ toggleManutencao.addEventListener("change", function() {
+  localStorage.setItem("toggleManutencao", toggleManutencao.checked);
+  anchorManutencao.style.display = toggleManutencao.checked ? "inline" : "none";
+ });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+ const toggleMap = document.getElementById("toggleMap");
+ const mapReal = document.getElementById("mapReal");
+
+ // Carregar a preferência salva ou definir como true se não estiver definido
+ toggleMap.checked = localStorage.getItem("toggleMap") !== "false";
+
+ // Mostrar/ocultar a div mapReal com base no estado salvo
+ mapReal.style.display = toggleMap.checked ? "block" : "none";
+
+ // Salvar a preferência quando o checkbox for alterado
+ toggleMap.addEventListener("change", function() {
+  localStorage.setItem("toggleMap", toggleMap.checked);
+  mapReal.style.display = toggleMap.checked ? "block" : "none";
+ });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+ const toggleCopy = document.getElementById("toggleCopy");
+ const toggleCopys = document.getElementById("toggleCopys");
+
+ // Carregar as preferências salvas ou definir como true se não estiver definido
+ toggleCopy.checked = localStorage.getItem("toggleCopy") !== "false";
+ toggleCopys.checked = localStorage.getItem("toggleCopys") !== "false";
+
+ // Salvar as preferências quando os checkboxes forem alterados
+ toggleCopy.addEventListener("change", function() {
+  localStorage.setItem("toggleCopy", toggleCopy.checked);
+ });
+
+ toggleCopys.addEventListener("change", function() {
+  localStorage.setItem("toggleCopys", toggleCopys.checked);
+ });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+ const tecnicoSelect = document.getElementById("tecnico");
+
+ // Carregar a seleção do técnico salva
+ const savedTecnico = localStorage.getItem("selectedTecnico");
+ if (savedTecnico) {
+  tecnicoSelect.value = savedTecnico;
+ }
+
+ // Salvar a seleção do técnico quando alterado
+ tecnicoSelect.addEventListener("change", function() {
+  localStorage.setItem("selectedTecnico", tecnicoSelect.value);
+ });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+ const toggleMute = document.getElementById("toggleMute");
+ const audios = [
+        document.getElementById("notification"),
+        document.getElementById("xselect"),
+        document.getElementById("recycler")
+    ];
+
+ // Carregar a preferência de som salva ou definir como false se não estiver definido
+ toggleMute.checked = localStorage.getItem("toggleMute") === "true";
+ audios.forEach(audio => audio.muted = toggleMute.checked);
+
+ // Salvar a preferência de som e mutar/desmutar os áudios
+ toggleMute.addEventListener("change", function() {
+  localStorage.setItem("toggleMute", toggleMute.checked);
+  audios.forEach(audio => audio.muted = toggleMute.checked);
+ });
+});
 </script>
   
 </body>
