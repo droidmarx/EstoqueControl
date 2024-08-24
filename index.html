@@ -1099,6 +1099,22 @@ input:checked + .slider:before {
 .botaoCopiar{
  font-size: .8rem;
 }
+
+@keyframes girar {
+  from {
+    transform: rotate(-330deg);
+    scale: .3;
+  }
+  to {
+    transform: rotate(960deg);
+    scale: 1.5;
+  }
+}
+
+.girar-img {
+  animation: girar 1s ease-out;
+}
+
 </style>
 
 <body>
@@ -1129,8 +1145,9 @@ input:checked + .slider:before {
 <a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png
     " height="90" width="90"></a>
     
-<a onclick="ativarSublinhado(this);mostrarPreferencias"><img onclick="mostrarPreferencias()" class="logo" src="https://img.icons8.com/fluency/48/settings.png
-    " height="90" width="90"></a>
+<a onclick="ativarSublinhado(this); mostrarPreferencias(); girarImagem(this.querySelector('img'));">
+ <img class="logo" src="https://img.icons8.com/fluency/48/settings.png" height="100" width="100">
+</a>
     
     <div class="alert" id="alerta">
 
@@ -1905,12 +1922,12 @@ function mostrarManutencao() {
 }
 
 function mostrarPreferencias() {
- const estoqueDiv = document.getElementById("estoqueDiv");
- const retiradaDiv = document.getElementById("retiradaDiv");
- const habilitar = document.getElementById("habilitar");
- const instalacoes = document.getElementById("instalacoes");
- const manutencaoDiv = document.getElementById("manutencaoDiv");
- const preferenciasDiv = document.getElementById("preferenciasDiv");
+ const estoqueDiv = document.getElementById('estoqueDiv');
+ const retiradaDiv = document.getElementById('retiradaDiv');
+ const habilitar = document.getElementById('habilitar');
+ const instalacoes = document.getElementById('instalacoes');
+ const manutencaoDiv = document.getElementById('manutencaoDiv');
+ const preferenciasDiv = document.getElementById('preferenciasDiv');
 
  if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
   estoqueDiv.style.display = "none";
@@ -1920,6 +1937,15 @@ function mostrarPreferencias() {
   manutencaoDiv.style.display = "none";
   preferenciasDiv.style.display = "block";
  }
+}
+
+function girarImagem(imagem) {
+ imagem.classList.add('girar-img');
+
+ // Remove a classe após a animação, para que ela possa ser aplicada novamente em outro clique
+ imagem.addEventListener('animationend', function() {
+  imagem.classList.remove('girar-img');
+ }, { once: true });
 }
 
 
@@ -2347,7 +2373,7 @@ if (copiarLocalizacao) {
 //esse é o que copia *favor habilitar
 for (let i = 0; i < produtos.length; i++) "###**Meu Estoque**#"
 
-//{copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;}
+{copiado += `${produtos[i].nome}:${produtos[i].quantidade}#`;}
 
 // Substituir o "#" por quebras de linha (\n)
 copiado = copiado.replace(/#/g, '\n');
@@ -2452,9 +2478,6 @@ for (let i = 0; i < dadosCopiados.length; i++) {
     continue; // Pule para a próxima iteração do loop
   }
 }
-
-
-// Restante do seu código para exibir a quantidade por mês
 
 
 function getMonthName(monthIndex) {
@@ -3098,7 +3121,6 @@ function showError(error) {
 
   </script>
   
-  </script>
   
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
