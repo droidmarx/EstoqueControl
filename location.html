@@ -1,6 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- Ícone da página -->
+  <link rel="icon" href="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" type="image/png">
+ 
   <title>Mapa de Localização dos Usuários</title>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.ably.io/lib/ably.min-1.js"></script>
@@ -35,42 +44,7 @@
   </div>
   <audio id="notificationSound" src="/audio/ffselect.mp3"></audio>
 
-  <!-- Formulário de login -->
-  <div id="authDiv">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Senha" required>
-      <button type="submit">Login</button>
-    </form>
-    <button id="logoutButton" style="display:none;">Logout</button>
-  </div>
-
   <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
-    import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDMaTBJVg_JOMusj4lL6pxtRq76AJfRhx8",
-      authDomain: "estoque-6ab30.firebaseapp.com",
-      databaseURL: "https://estoque-6ab30-default-rtdb.firebaseio.com",
-      projectId: "estoque-6ab30",
-      storageBucket: "estoque-6ab30.appspot.com",
-      messagingSenderId: "141604968422",
-      appId: "1:141604968422:web:e318db22e4ee5cd01ba827",
-      measurementId: "G-7DVY8DZN6G"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const database = getDatabase(app);
-    const auth = getAuth(app);
-
     var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
     var channel = ably.channels.get('user-location');
 
@@ -160,7 +134,6 @@
     function deleteUserLogs(userId) {
       if (confirm('Você tem certeza que deseja excluir os logs deste usuário?')) {
         delete userLogs[userId];
-        remove(ref(database, 'userLogs/' + userId)); // Remove os logs do Firebase
         saveToLocalStorage();
         updateUserList();
       }
@@ -205,77 +178,15 @@
           userLogs[userId].push(log);
           saveToLocalStorage();
           updateUserList();
-
-          // Armazenar o log no Firebase
-          storeLogInFirebase(userId, log);
         })
         .catch(error => {
           console.error('Erro ao obter endereço:', error);
         });
     });
 
-    // Função para armazenar logs no Firebase
-    function storeLogInFirebase(userId, log) {
-      push(ref(database, 'userLogs/' + userId), log);
-    }
-
-    // Função para carregar logs do Firebase
-    function loadFromFirebase() {
-      const userLogsRef = ref(database, 'userLogs');
-      onValue(userLogsRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          userLogs = data;
-          updateUserList();
-        }
-      });
-    }
-
-    // Autenticação do usuário
-    const loginForm = document.getElementById('loginForm');
-    const logoutButton = document.getElementById('logoutButton');
-
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          console.log('Usuário logado:', userCredential.user);
-          loginForm.style.display = 'none';
-          logoutButton.style.display = 'block';
-        })
-        .catch((error) => {
-          console.error('Erro ao fazer login:', error);
-        });
-    });
-
-    logoutButton.addEventListener('click', () => {
-      signOut(auth).then(() => {
-        console.log('Usuário deslogado');
-        loginForm.style.display = 'block';
-        logoutButton.style.display = 'none';
-      }).catch((error) => {
-        console.error('Erro ao fazer logout:', error);
-      });
-    });
-
-    // Carrega dados salvos do localStorage e do Firebase quando a página é carregada
+    // Carrega dados salvos do localStorage quando a página é carregada
     window.onload = function() {
       loadFromLocalStorage();
-      loadFromFirebase();
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log('Usuário autenticado:', user);
-          loginForm.style.display = 'none';
-          logoutButton.style.display = 'block';
-        } else {
-          console.log('Nenhum usuário autenticado');
-          loginForm.style.display = 'block';
-          logoutButton.style.display = 'none';
-        }
-      });
     };
   </script>
 </body>
