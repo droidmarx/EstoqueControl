@@ -3245,8 +3245,6 @@ function showError(error) {
   copiado += ` ${document.getElementById('ssid').value}\n`;
   copiado += ` ${document.getElementById('senha').value}\n`;
 
-  // Adiciona o nome da rua ao texto copiado
-  copiado += `Rua: ${nomeRua}\n`;
 
   // Seu código existente continua
 
@@ -3319,20 +3317,18 @@ copiado += `# Wifi 5GHz:\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 
-if (localizacao.trim() !== "")
-copiado += `## Wifi:\n`;
-copiado += ` ${document.getElementById('ssid').value}\n`;
-copiado += ` ${document.getElementById('senha').value}\n`;
 
-  // Adiciona o nome da rua ao texto copiado
-  copiado += `Rua: ${nomeRua}\n`;
 
-const localizacao = document.getElementById('mapLink').textContent;
-if (localizacao.trim() !== "") {
-copiado += `Rua: ${nomeRua}\n`;
-copiado += "##🚩 Localização:\n";
-copiado += `${localizacao}\n`;
-}
+//copiado += `## Wifi:\n`;
+//copiado += ` ${document.getElementById('ssid').value}\n`;
+//copiado += ` ${document.getElementById('senha').value}\n`;
+
+  const localizacao = document.getElementById('mapLink').textContent;
+  if (localizacao.trim() !== "") {
+   // Adiciona o nome da rua ao texto copiado
+   copiado += `#🚩 Localização aproximada:# ${nomeRua}\n`;
+   copiado += `${localizacao}\n`;
+  }
 
 const comentarios = document.getElementById('comentarios1').value;
 if (comentarios.trim() !== "") {
