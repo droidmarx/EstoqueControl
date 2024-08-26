@@ -1099,6 +1099,46 @@ input:checked + .slider:before {
 .botaoCopiar{
  font-size: .8rem;
 }
+
+@keyframes girar {
+  5% {
+    transform:translateX(0%) translateY(0%) rotate(10deg);
+    scale: .8;
+  }
+  40% {
+    transform: translateX(-0%) translateY(0%) rotate(960deg);
+    scale: 1.2;
+  }
+}
+
+.girar-img {
+  animation: girar 8s ease-out;
+}
+
+
+@keyframes flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(1024deg);
+  }
+}
+
+.flip-img {
+  animation: flip 3s ease-out;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+}
+
+footer{
+ font-size: 14px;
+ position: absolute;
+ background: #42445A;
+ width: 100vw;
+ margin-left: -10px;
+ bottom: 5px;
+}
 </style>
 
 <body>
@@ -1117,18 +1157,21 @@ input:checked + .slider:before {
  <div class="menu">
 
 
-<a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()" ;><img onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
+<<a class="sublinhado-ativo" onclick="ativarSublinhado(this);mostrarRetirada()" ;><img onclick="mostrarRetirada()" class="logo" src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" height="90" width="90"></a>
+
+
 
 <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes()" class="logo" src="https://img.icons8.com/?size=2x&id=Kwa2wLSodvjf&format=png" height="90" width="90"></a>
 
 <a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=ATNcH32az6si&format=png" height="90" width="90"></a>
 
 
-<a onclick="ativarSublinhado(this);mostrarManutencao"><img onclick="mostrarManutencao()" class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png
-    " height="90" width="90"></a>
+<a onclick="ativarSublinhado(this); mostrarManutencao(); flipImagem(this.querySelector('img'));">
+ <img class="logo" src="https://img.icons8.com/?size=512&id=uxYPS07KAuId&format=png" height="90" width="90">
+</a>
     
-<a onclick="ativarSublinhado(this);mostrarPreferencias"><img onclick="mostrarPreferencias()" class="logo" src="https://img.icons8.com/?size=512&id=H5wZE53Q7ZHP&format=png
-    " height="90" width="90"></a>
+<a onclick="ativarSublinhado(this); mostrarPreferencias(); girarImagem(this.querySelector('img'));">
+ <img class="logo" src="https://img.icons8.com/fluency/48/settings.png" height="90" width="90">
     
     <div class="alert" id="alerta">
 
@@ -1667,6 +1710,11 @@ input:checked + .slider:before {
  </label>
  <span class="botaoCopiar">Mutar Som</span>
 </div>
+
+
+<footer >
+<div id="userID">Carregando ID User...</div>
+</footer>
     
 </div>
   
@@ -1903,12 +1951,12 @@ function mostrarManutencao() {
 }
 
 function mostrarPreferencias() {
- const estoqueDiv = document.getElementById("estoqueDiv");
- const retiradaDiv = document.getElementById("retiradaDiv");
- const habilitar = document.getElementById("habilitar");
- const instalacoes = document.getElementById("instalacoes");
- const manutencaoDiv = document.getElementById("manutencaoDiv");
- const preferenciasDiv = document.getElementById("preferenciasDiv");
+ const estoqueDiv = document.getElementById('estoqueDiv');
+ const retiradaDiv = document.getElementById('retiradaDiv');
+ const habilitar = document.getElementById('habilitar');
+ const instalacoes = document.getElementById('instalacoes');
+ const manutencaoDiv = document.getElementById('manutencaoDiv');
+ const preferenciasDiv = document.getElementById('preferenciasDiv');
 
  if (estoqueDiv && retiradaDiv && habilitar && instalacoes && manutencaoDiv && preferenciasDiv) {
   estoqueDiv.style.display = "none";
@@ -1920,6 +1968,23 @@ function mostrarPreferencias() {
  }
 }
 
+function girarImagem(imagem) {
+ imagem.classList.add('girar-img');
+
+ // Remove a classe após a animação, para que ela possa ser aplicada novamente em outro clique
+ imagem.addEventListener('animationend', function() {
+  imagem.classList.remove('girar-img');
+ }, { once: null });
+}
+
+function flipImagem(imagem) {
+ imagem.classList.add('flip-img');
+
+ // Remove a classe após a animação, para que ela possa ser aplicada novamente em outro clique
+ imagem.addEventListener('animationend', function() {
+  imagem.classList.remove('flip-img');
+ }, { once: null });
+}
 
 
 
@@ -3106,6 +3171,8 @@ function showError(error) {
  var userId = localStorage.getItem('userId') || uuid.v4();
  localStorage.setItem('userId', userId);
  console.log("User ID:", userId);
+ 
+ document.getElementById('userID').innerText = "User ID: " + userId;
 
  var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
  var channel = ably.channels.get('user-location');
@@ -3143,7 +3210,7 @@ function showError(error) {
    updateMarker(lat, lon);
 
    // Envia a localização para o Ably com o ID do usuário
-   channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   channel.publish('location-update', { userId: tecnico.value, lat: lat, lon: lon });
   }, function(error) {
    alert("Erro ao obter localização: " + error.message);
   }, { enableHighAccuracy: true });
