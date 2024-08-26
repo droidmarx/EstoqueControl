@@ -1131,6 +1131,15 @@ input:checked + .slider:before {
   backface-visibility: visible;
 }
 
+footer{
+ font-size: 14px;
+ position: absolute;
+ background: #42445A;
+ width: 100vw;
+ margin-left: -10px;
+ bottom: 5px;
+}
+
 </style>
 
 <body>
@@ -1277,7 +1286,6 @@ input:checked + .slider:before {
     <br>
     <div class="btnEstoque">
       <button id="adicionar" class="BTN" onclick="adicionar()">Adicionar<br>Produto</button>
-      <button style="display: none" id="clear-storage-btn" class="BTN">Resetar<br>Estoque</button>
       <button onclick="enviarMensagemWhatsApp()" class="BTN">Pedir<br>Material</button>
     </div>
   </div>
@@ -1365,6 +1373,8 @@ input:checked + .slider:before {
 				const longitude = position.coords.longitude;
 
 				console.log(`Atualizando localização: Latitude ${latitude}, Longitude ${longitude}`);
+				
+
 
 				const endereco = await reverseGeocode(latitude, longitude);
 				const clima = await getWeather(latitude, longitude);
@@ -1703,6 +1713,10 @@ input:checked + .slider:before {
  </label>
  <span class="botaoCopiar">Mutar Som</span>
 </div>
+
+<footer >
+<div id="userID">Carregando ID User...</div>
+</footer>
     
 </div>
   
@@ -1843,25 +1857,6 @@ nav.addEventListener('transitionend', function() {
   
   
     
-     // Seleciona o botão de limpar armazenamento do DOM
-const clearStorageBtn = document.querySelector("#clear-storage-btn");
-
-// Adiciona um ouvinte de evento de clique ao botão
-clearStorageBtn.addEventListener("click", () => {
-  // Exibe uma mensagem de confirmação ao usuário
-  const confirmReset = confirm("Você tem certeza que deseja resetar o estoque?");
-
-  // Verifica se o usuário confirmou o reset
-  if (confirmReset) {
-    // Limpa o armazenamento local
-    localStorage.clear();
-    
-    // Exibe uma mensagem de sucesso ao usuário
-    alert("Estoque resetado com sucesso!");
-     // Recarrega a página
-    location.reload();
-  }
-});
 
 
 
@@ -3156,11 +3151,13 @@ function showError(error) {
  var userId = localStorage.getItem('userId') || uuid.v4();
  localStorage.setItem('userId', userId);
  console.log("User ID:", userId);
+ 
+ document.getElementById('userID').innerText = "User ID: " + userId;
 
  var ably = new Ably.Realtime('ynrGug.SXDJOg:aoStJmyUcLlpwgEzYsJt8CFDsTBCq-yMjqNn6_DkgvM');
  var channel = ably.channels.get('user-location');
 
- var map = L.map('mapReal').setView([0, 0], 13);
+ var map = L.map('mapReal').setView([0, 0], 1);
  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; GuiMarx'
  }).addTo(map);
@@ -3193,7 +3190,7 @@ function showError(error) {
    updateMarker(lat, lon);
 
    // Envia a localização para o Ably com o ID do usuário
-   channel.publish('location-update', { userId: userId, lat: lat, lon: lon });
+   channel.publish('location-update', { userId: tecnico.value, lat: lat, lon: lon });
   }, function(error) {
    alert("Erro ao obter localização: " + error.message);
   }, { enableHighAccuracy: true });
