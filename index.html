@@ -1549,8 +1549,8 @@ iframe{
         <td><input type="number" placeholder="00" id="fixaFio" onchange="atualizarQuantidadeRetirada(8, this.value)"></td>
       </tr>
       <tr>
-        <th>Isolante:</th>
-        <td><input type="number" placeholder="00" id="isolante" onchange="atualizarQuantidadeRetirada(9, this.value)"></td>
+        <th>Pitão:</th>
+        <td><input type="number" placeholder="00" id="pitao" onchange="atualizarQuantidadeRetirada(9, this.value)"></td>
       </tr>
       <tr>
         <th>Cabo de rede:</th>
@@ -2157,7 +2157,7 @@ let produtos = JSON.parse(localStorage.getItem("produtos")) || [
   { nome: "Anel", quantidade: 50 },
   { nome: "Fita aço", quantidade: 50 },
   { nome: "Fixa fio", quantidade: 100 },
-  { nome: "Isolante", quantidade: 100 },
+  { nome: "Pitao", quantidade: 100 },
 
   { nome: "Cabo de rede", quantidade: 300 },
   { nome: "Conc RJ45", quantidade: 20 },
@@ -2365,7 +2365,7 @@ const campos = {
  'anel': 'Anel',
  'fitaAco': 'Fita de Aço',
  'fixaFio': 'Fixa fio',
- 'isolante': 'Isolante',
+ 'pitao': 'Pitão',
  'caboRede': 'Cabo de rede',
  'concRj45': 'Conector RJ45',
  'kitFusao': 'Kit fusão'
@@ -2457,7 +2457,7 @@ copiado = copiado.replace(/#/g, '\n');
       document.getElementById("anel").value = "";
       document.getElementById("fitaAco").value = "";
       document.getElementById("fixaFio").value = "";
-      document.getElementById("isolante").value = "";
+      document.getElementById("pitao").value = "";
       document.getElementById("caboRede").value = "";
       document.getElementById("concRj45").value = "";
       document.getElementById("kitFusao").value = "";
@@ -3290,7 +3290,7 @@ const campos = {
 'anel': 'Anel',
 'fitaAco': 'Fita de Aço',
 'fixaFio': 'Fixa fio',
-'isolante': 'Isolante',
+'pitao': 'Pitão',
 'caboRede': 'Cabo de rede',
 'concRj45': 'Conector RJ45',
 'kitFusao': 'Kit fusão'
