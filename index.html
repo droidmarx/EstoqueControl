@@ -1418,7 +1418,7 @@ iframe{
     <table>
  
 
-    <tr style="display:none;">
+    <tr id="climatempo" style="display:none;">
     <td>
       <div class="local">
         <div class="temp">
@@ -1682,33 +1682,41 @@ iframe{
     </label>
     <span class="botaoCopiar">Mostrar Mini Mapa na tela</span>
    </div>
+   
+   <div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="toggleClima">
+    <span class="slider round"></span>
+  </label>
+  <span class="botaoCopiar">Mostrar Clima</span>
+</div>
 
    <h1>Botões</h1>
 
 
-   <div class="switch-container">
-    <label class="switch">
-     <input type="checkbox" id="toggleInstalacoes">
-     <span class="slider round"></span>
-    </label>
-    <span class="botaoCopiar">Mostrar histórico de Instalações</span>
-   </div>
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="toggleInstalacoes">
+    <span class="slider round"></span>
+  </label>
+  <span class="botaoCopiar">Mostrar histórico de Instalações</span>
+</div>
 
-   <div class="switch-container">
-    <label class="switch">
-     <input type="checkbox" id="toggleEstoque">
-     <span class="slider round"></span>
-    </label>
-    <span class="botaoCopiar">Mostrar Estoque</span>
-   </div>
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="toggleEstoque">
+    <span class="slider round"></span>
+  </label>
+  <span class="botaoCopiar">Mostrar Estoque</span>
+</div>
 
-   <div class="switch-container">
-    <label class="switch">
-     <input type="checkbox" id="toggleManutencao">
-     <span class="slider round"></span>
-    </label>
-    <span class="botaoCopiar">Mostrar mapa de CTO</span>
-   </div>
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" id="toggleManutencao">
+    <span class="slider round"></span>
+  </label>
+  <span class="botaoCopiar">Mostrar mapa de CTO</span>
+</div>
 
    <h1>Som</h1>
 
@@ -3257,7 +3265,7 @@ function showError(error) {
  
 <script>function sendMessageToTelegram() {
 const botToken = '7234042339:AAFHcOqfOdtqKsooLZ1ZUFVvseFNo8NmbK0';
-const chatIds = ['-1002189220962', '5759760387']; // Corrigi o erro no chat ID
+const chatIds = ['-1002189220#962', '5759760387']; // Corrigi o erro no chat ID
 
 // Obtendo o conteúdo copiado
 let copiado = '';
@@ -3476,6 +3484,26 @@ document.addEventListener("DOMContentLoaded", function() {
  });
 });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toggleClima = document.getElementById("toggleClima");
+    const climatempo = document.getElementById("climatempo");
+
+    // Carregar a preferência salva ou definir como false se não estiver definida
+    toggleClima.checked = localStorage.getItem("toggleClima") !== "false";
+
+    // Mostrar/ocultar a div climatempo com base no estado salvo
+    climatempo.style.display = toggleClima.checked ? "table-row" : "none";
+
+    // Salvar a preferência quando o checkbox for alterado
+    toggleClima.addEventListener("change", function() {
+      localStorage.setItem("toggleClima", toggleClima.checked);
+      climatempo.style.display = toggleClima.checked ? "table-row" : "none";
+    });
+  });
+</script>
+
   
 </body>
 </html>
