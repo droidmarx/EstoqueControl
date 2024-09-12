@@ -1781,8 +1781,6 @@ iframe{
 
     </div>
 
-
-   
      <p>Total de Instalações: <span id="total-elementos"></span></p>
      
       <p id="quantidade-por-mes"></p>
@@ -3599,6 +3597,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.getElementById('enviar').addEventListener('click', function() {
         enviarbd();
+        sendMessageToTelegram();
+        
     });
 
 });
