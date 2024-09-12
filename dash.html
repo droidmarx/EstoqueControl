@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Instalações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .filters {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .filters label {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        .filters select, .filters input, .filters button {
+            margin-right: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            width: 200px;
+        }
+
+        .filters input[type="date"] {
+            max-width: 150px;
+        }
+
+        .filters button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+
+        .filters button:hover {
+            background: #0056b3;
+        }
+
+        .results {
+            overflow-x: auto; /* Adiciona a barra de rolagem horizontal */
+        }
+
+        .results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results th, .results td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .results th {
+            background-color: #f4f4f4;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        
+        
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters select, .filters input, .filters button {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: fit-content;
+            }
+
+            .results table {
+                font-size: 0.9em;
+            }
+
+            .results th, .results td {
+                padding: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+
+            .results table {
+                font-size: 0.8em;
+            }
+
+            .results th, .results td {
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard de Instalações</h1>
+        </header>
+        <main>
+          <section class="filters">
+    <label for="tecnicoFilter"></label>
+    <select id="tecnicoFilter">
+        <option disabled selected value>Selecione o técnico</option>
+        <option value="">Todos</option>
+    </select>
+
+    <div class="date-filters">
+        <label for="dataInicioFilter">Data Início:</label>
+        <input type="date" id="dataInicioFilter">
+
+        <label for="dataFimFilter">Data Fim:</label>
+        <input type="date" id="dataFimFilter">
+    </div>
+
+    <label for="ctoFilter"></label>
+    <input type="text" id="ctoFilter" placeholder="Digite o CTO">
+
+    <label for="clienteFilter"></label>
+    <input type="text" id="clienteFilter" placeholder="Digite o nome do cliente">
+
+    <label for="nomeRuaFilter"></label>
+    <input type="text" id="nomeRuaFilter" placeholder="Digite o nome da rua">
+
+    <div class="button-group">
+        <button onclick="applyFilters()">Aplicar Filtros</button>
+        <button id="clearFiltersButton" onclick="clearFilters()">Limpar Filtros</button>
+    </div>
+</section>
+            </section>
+            <section class="results">
+                <div class="table-wrapper"> <!-- Contêiner para a tabela -->
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Técnico</th>
+                                <th>Cliente</th>
+                                <th>CTO</th>
+                                <th>Data</th>
+                                <th>Localização</th>
+                                <th>Nome da Rua</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Linhas serão inseridas aqui pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="totalCount" class="total">Total de Itens: 0</div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; <span id="currentYear"></span> Guilherme</p>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Atualizar o ano no rodapé
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').textContent = currentYear;
+
+            const apiUrl = 'https://66d39f5c184dce1713d09736.mockapi.io/Api/v1/BD';
+
+            function fetchData() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        populateTechnicianFilter(data);
+                        displayResults(data);
+                        setupEventListeners(data);
+                    })
+                    .catch(error => console.error('Erro ao carregar dados:', error));
+            }
+
+            function populateTechnicianFilter(data) {
+                const tecnicoSelect = document.getElementById('tecnicoFilter');
+                const tecnicos = [...new Set(data.map(item => item.tecnico))];
+                tecnicos.forEach(tecnico => {
+                    const option = document.createElement('option');
+                    option.value = tecnico;
+                    option.textContent = tecnico;
+                    tecnicoSelect.appendChild(option);
+                });
+            }
+
+            function displayResults(filteredData) {
+                const tableBody = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
+                const totalCountElement = document.getElementById('totalCount');
+                
+                tableBody.innerHTML = '';
+                
+                filteredData.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.id;
+                    row.insertCell().textContent = item.tecnico;
+                    row.insertCell().textContent = item.cliente;
+                    row.insertCell().textContent = item.cto;
+                    row.insertCell().textContent = item.dataHora || 'N/A';
+                    
+                    // Adicionar link para a localização com nome da rua
+                    const locationCell = row.insertCell();
+                    if (item.localizacao) {
+                        const link = document.createElement('a');
+                        link.href = item.localizacao.trim();
+                        link.textContent = item.nomeRua ? item.nomeRua : 'Localização';
+                        link.target = '_blank'; // Abre o link em uma nova aba
+                        locationCell.appendChild(link);
+                    } else {
+                        locationCell.textContent = 'N/A';
+                    }
+
+                    row.insertCell().textContent = item.nomeRua || 'N/A';
+                });
+
+                totalCountElement.textContent = `Total de Itens: ${filteredData.length}`;
+            }
+
+            function applyFilters() {
+                const tecnicoFilter = document.getElementById('tecnicoFilter').value;
+                const dataInicioFilter = document.getElementById('dataInicioFilter').value;
+                const dataFimFilter = document.getElementById('dataFimFilter').value;
+                const ctoFilter = document.getElementById('ctoFilter').value;
+                const clienteFilter = document.getElementById('clienteFilter').value.toLowerCase();
+                const nomeRuaFilter = document.getElementById('nomeRuaFilter').value.toLowerCase();
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const filteredData = data.filter(item => {
+                            const itemDate = item.dataHora ? new Date(item.dataHora.split(',')[0].split('/').reverse().join('-')) : null;
+                            const filterDateInicio = dataInicioFilter ? new Date(dataInicioFilter) : null;
+                            const filterDateFim = dataFimFilter ? new Date(dataFimFilter) : null;
+
+                            return (!tecnicoFilter || item.tecnico === tecnicoFilter) &&
+                                   (!dataInicioFilter || !dataFimFilter || (itemDate && itemDate >= filterDateInicio && itemDate <= filterDateFim)) &&
+                                   (!ctoFilter || item.cto.includes(ctoFilter)) &&
+                                   (!clienteFilter || item.cliente.toLowerCase().includes(clienteFilter)) &&
+                                   (!nomeRuaFilter || (item.nomeRua && item.nomeRua.toLowerCase().includes(nomeRuaFilter)));
+                        });
+
+                        displayResults(filteredData);
+                    })
+                    .catch(error => console.error('Erro ao aplicar filtros:', error));
+            }
+
+            function setupEventListeners(data) {
+                document.getElementById('tecnicoFilter').addEventListener('change', applyFilters);
+                document.getElementById('dataInicioFilter').addEventListener('change', applyFilters);
+                document.getElementById('dataFimFilter').addEventListener('change', applyFilters);
+                document.getElementById('ctoFilter').addEventListener('input', applyFilters);
+                document.getElementById('clienteFilter').addEventListener('input', applyFilters);
+                document.getElementById('nomeRuaFilter').addEventListener('input', applyFilters);
+            }
+            
+            // Inicializa a aplicação
+            fetchData();
+        });
+        function clearFilters() {
+    // Limpa todos os filtros
+    document.getElementById('tecnicoFilter').value = '';
+    document.getElementById('dataInicioFilter').value = '';
+    document.getElementById('dataFimFilter').value = '';
+    document.getElementById('ctoFilter').value = '';
+    document.getElementById('clienteFilter').value = '';
+    document.getElementById('nomeRuaFilter').value = '';
+
+    // Recarrega todos os dados sem filtros
+window.location.reload();
+}
+    </script>
+</body>
+</html>
