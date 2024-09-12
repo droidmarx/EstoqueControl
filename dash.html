@@ -140,6 +140,11 @@
             }
         }
     </style>
+    
+    
+    
+    
+    
 </head>
 <body>
     <div class="container">
@@ -188,6 +193,9 @@
                                 <th>Técnico</th>
                                 <th>Cliente</th>
                                 <th>CTO</th>
+                                <th>Porta</th>
+                                <th>Sinal CTO</th>
+                                <th>Sinal Clinte</th>
                                 <th>Data</th>
                                 <th>Localização</th>
                                 <th>Nome da Rua</th>
@@ -205,6 +213,10 @@
             <p>&copy; <span id="currentYear"></span> Guilherme</p>
         </footer>
     </div>
+    
+    
+    
+    
     <script>document.addEventListener('DOMContentLoaded', function() {
     // Atualizar o ano no rodapé
     const currentYear = new Date().getFullYear();
@@ -251,6 +263,9 @@
             row.insertCell().textContent = item.tecnico;
             row.insertCell().textContent = item.cliente;
             row.insertCell().textContent = item.cto;
+            row.insertCell().textContent = item.porta;
+            row.insertCell().textContent = item.sinalCto;
+            row.insertCell().textContent = item.sinalCliente;
             row.insertCell().textContent = item.dataHora || 'N/A';
             
             // Adicionar link para a localização com nome da rua
