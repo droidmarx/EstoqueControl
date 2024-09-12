@@ -640,7 +640,7 @@ p.abaRegistros  {
  h4.classe-link-mapa{
  width: 30px;
  position: relative;
- bottom: 50px;
+ bottom: 60px;
  left: 120px;
  
 }
@@ -781,15 +781,6 @@ select#registros {
   animation: blink 2s infinite;
 }
 
-
-
-.BtnMap{
-  display: none;
-  margin: 0 auto;
-  width: 90%;
-  background:#67697D;
-  color: white;
-}
 
 
 #weather{
@@ -1435,13 +1426,9 @@ iframe{
     
   
 
-          <div id="mapLink">
-          </div>
-          <div>
-            <button class="BtnMap" onclick="getLocation">Atualizar Localização</button>
-          </div>
+   <div id="mapLink"></div>
 
-      </div>
+   </div>
     
     
 
@@ -1642,7 +1629,7 @@ iframe{
  
      
      
-<button id="enviar" class="sublinhado-ativo2 scale-button" onclick="enviar(); sendMessageToTelegram();">
+<button id="enviar" class="sublinhado-ativo2 scale-button" onclick="enviar(); enviarbd(); sendMessageToTelegram();">
  <img class="logo" src="https://img.icons8.com/?size=512&id=yEmPT1iidhE0&format=png" height="50" width="50">
  <div id="spinner" class="spinner"></div>
 </button>
@@ -1766,6 +1753,17 @@ iframe{
 
 
   <div id="instalacoes" class="instalacoes" style="display: none">
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
    
    <div  id="alerta1" class="alerta "></div>
 
@@ -3503,7 +3501,108 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 </script>
+<script>document.addEventListener("DOMContentLoaded", function() {
+    // Array que irá armazenar os objetos
+    let dadosInstalacao = [];
 
+    function enviarbd() {
+        // Coleta os dados dos inputs
+        const tipoTrabalho = document.getElementById('Trabalho').value;
+        const tecnico = document.getElementById('tecnico').value;
+        const cliente = document.getElementById('cliente').value;
+        const cto = document.getElementById('cto').value;
+        const porta = document.getElementById('porta').value;
+        const sinalCto = document.getElementById('sinalCto').value;
+        const sinalCliente = document.getElementById('sinalCliente').value;
+
+        // Materiais
+        const fibraMetragem = document.getElementById('fibraMetragem').value;
+        const scApc = document.getElementById('scApc').value;
+        const scUpc = document.getElementById('scUpc').value;
+        const esticadores = document.getElementById('esticadores').value;
+        const roldana = document.getElementById('roldana').value;
+        const fecho = document.getElementById('fecho').value;
+        const anel = document.getElementById('anel').value;
+        const fitaAco = document.getElementById('fitaAco').value;
+        const fixaFio = document.getElementById('fixaFio').value;
+        const pitao = document.getElementById('pitao').value;
+        const caboRede = document.getElementById('caboRede').value;
+        const concRj45 = document.getElementById('concRj45').value;
+        const kitFusao = document.getElementById('kitFusao').value;
+
+        // Configurações de Wifi
+        const wifi24GHz = document.getElementById('opcoes24GHz').value;
+        const canal24GHz = document.getElementById('canais24GHz').value;
+        const wifi5GHz = document.getElementById('opcoes5GHz').value;
+        const canal5GHz = document.getElementById('canais5GHz').value;
+
+        // Localização (se disponível)
+        const localizacao = document.getElementById('mapLink').textContent;
+
+        // Criar o objeto com os dados preenchidos
+        const novoRegistro = {
+            dataHora: new Date().toLocaleString(),
+            tipoTrabalho,
+            tecnico,
+            cliente,
+            cto,
+            porta,
+            sinalCto,
+            sinalCliente,
+            materiais: {
+                fibraMetragem,
+                scApc,
+                scUpc,
+                esticadores,
+                roldana,
+                fecho,
+                anel,
+                fitaAco,
+                fixaFio,
+                pitao,
+                caboRede,
+                concRj45,
+                kitFusao
+            },
+            wifi: {
+                wifi24GHz,
+                canal24GHz,
+                wifi5GHz,
+                canal5GHz
+            },
+            nomeRua,
+            localizacao
+        };
+
+        // Adiciona o objeto ao array
+        dadosInstalacao.push(novoRegistro);
+
+        // Salva no local storage (opcional)
+        localStorage.setItem('dadosInstalacao', JSON.stringify(dadosInstalacao));
+
+        // Enviar os dados para o servidor via POST
+        fetch('https://66d39f5c184dce1713d09736.mockapi.io/Api/v1/BD', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(novoRegistro)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Dados enviados com sucesso:", data);
+        })
+        .catch(error => {
+            console.error("Erro ao enviar os dados:", error);
+        });
+    }
+
+document.getElementById('enviar').addEventListener('click', function() {
+        enviarbd();
+    });
+
+});
+</script>
   
 </body>
 </html>
