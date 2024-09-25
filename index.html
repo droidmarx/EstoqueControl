@@ -195,9 +195,17 @@ td {
   border-radius: 4px 0px 4px;
   padding: 5px;
   font-size: small ;
-  color: var(--texto);
+  color: #323442;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.3s ease;
+}
+
+td{
+   text-align: center;
+}
+th{
+   text-align: right;
+   text-transform: uppercase ;
 }
 
 td button {
@@ -250,14 +258,27 @@ table#estoque {
 }
 
 #habilitar input {
-  width: fit-content;
+  width: 60%;
+  border-radius: 4px;
+  height: 30px;
+  border: transparent;
+  outline: none;
+  transition: width 0.7s ease-in-out;
+}
+
+#habilitar input:focus {
+   width: 80%;
+   background: #DDDEE6;
 }
 
 select {
+  height: 30px;
   padding: 2px;
   margin-bottom: 4px;
-  width: 100%;
+  width: 65%;
   text-align: center;
+  border-radius: 4px;
+  outline-color: #4B4D64;
 }
 
 /* Estilos para navegação */
@@ -1129,7 +1150,7 @@ iframe{
          width: 100vw;
          margin-left: -10px;
          bottom: 5px;
-         }
+         
 
          </style>
 
@@ -3601,6 +3622,23 @@ document.getElementById('enviar').addEventListener('click', function() {
         
     });
 
+});
+</script>
+
+<script>
+// troca a cor do th quando o input é selecionado
+const formInputs = document.querySelectorAll('table input, table select');
+
+formInputs.forEach(input => {
+  input.addEventListener('focus', () => {
+    const th = input.closest('tr').querySelector('th');
+    th.style.color = 'white';
+  });
+
+  input.addEventListener('blur', () => {
+    const th = input.closest('tr').querySelector('th');
+    th.style.color = '';
+  });
 });
 </script>
   
