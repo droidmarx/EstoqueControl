@@ -188,17 +188,15 @@
                     <table id="resultsTable">
                         <thead>
                             <tr>
-                                <th>Selecionar</th> <!-- Coluna para o checkbox -->
-                                <th>ID</th>
+                                <th></th>
+                                <th>Data</th>
                                 <th>Técnico</th>
                                 <th>Cliente</th>
                                 <th>CTO</th>
                                 <th>Porta</th>
                                 <th>Sinal CTO</th>
                                 <th>Sinal Clinte</th>
-                                <th>Data</th>
                                 <th>Localização</th>
-                                <th>Nome da Rua</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -259,14 +257,14 @@
             checkbox.type = 'checkbox';
             checkbox.value = item.id;
             checkboxCell.appendChild(checkbox);
-            row.insertCell().textContent = item.id;
+            row.insertCell().textContent = item.dataHora || 'N/A';
+            
             row.insertCell().textContent = item.tecnico;
             row.insertCell().textContent = item.cliente;
             row.insertCell().textContent = item.cto;
             row.insertCell().textContent = item.porta;
             row.insertCell().textContent = item.sinalCto;
             row.insertCell().textContent = item.sinalCliente;
-            row.insertCell().textContent = item.dataHora || 'N/A';
             
             // Adicionar link para a localização com nome da rua
             const locationCell = row.insertCell();
@@ -280,7 +278,7 @@
                 locationCell.textContent = 'N/A';
             }
 
-            row.insertCell().textContent = item.nomeRua || 'N/A';
+           
         });
 
         totalCountElement.textContent = `Total de Itens: ${filteredData.length}`;
