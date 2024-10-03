@@ -30,6 +30,10 @@
             text-align: center;
             border-radius: 8px 8px 0 0;
         }
+        
+        .date-filters{
+           display: flex
+        }
 
         .filters {
             margin-bottom: 20px;
@@ -85,11 +89,13 @@
         .results th, .results td {
             border: 1px solid #ddd;
             padding: 12px;
-            text-align: left;
+            text-align: center;
         }
 
         .results th {
             background-color: #f4f4f4;
+            text-transform: uppercase;
+            wrap: wrap;
         }
 
         .total {
@@ -149,7 +155,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Dashboard de Instalações</h1>
+            <h2>Dashboard de Instalações</h2>
         </header>
         <main>
             <section class="filters">
@@ -196,8 +202,8 @@
                                 <th>Cliente</th>
                                 <th>CTO</th>
                                 <th>Porta</th>
-                                <th>Sinal CTO</th>
-                                <th>Sinal Clinte</th>
+                                <th>Sinal da CTO</th>
+                                <th>Sinal do Clinte</th>
                                 <th>Localização</th>
                             </tr>
                         </thead>
