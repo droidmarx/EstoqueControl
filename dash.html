@@ -31,9 +31,16 @@
             border-radius: 8px 8px 0 0;
         }
         
-        .date-filters{
-           display: flex
-        }
+        .date-filters {
+   display: flex;
+   gap: 10px;
+}
+
+.date-filters div {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
 
         .filters {
             margin-bottom: 20px;
@@ -166,11 +173,17 @@
                 </select>
 
                 <div class="date-filters">
+                   <div>
                     <label for="dataInicioFilter">Data Início:</label><br>
-                    <input type="date" id="dataInicioFilter">
+                    <input type="date" id="dataInicioFilter">   
+                   </div>
+                   
 <br>
-                    <label for="dataFimFilter">Data Fim:</label><br>
-                    <input type="date" id="dataFimFilter">
+                    <div>
+                      <label for="dataFimFilter">Data Fim:</label><br>
+                    <input type="date" id="dataFimFilter">  
+                    </div>
+                   
                 </div>
 
                 <label for="ctoFilter"></label>
