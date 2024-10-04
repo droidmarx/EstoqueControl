@@ -1309,6 +1309,7 @@ iframe{
    
   
     <div id="ultimomes"></div><br>
+    <div id="mapReal"></div>
 
     
     <script>
@@ -1450,7 +1451,9 @@ iframe{
    <div id="mapLink"></div>
 
    </div>
-    
+   </table>
+   <br>
+   <table>
     
 
 
@@ -1521,6 +1524,12 @@ iframe{
         <td><input type="text" placeholder="-00.00" id="sinalCliente"></td>
       </tr>
         <tr>
+           
+           </table>
+           <br>
+           <table>
+           
+           
         <th>Fibra metragem:</th>
         <td><input type="number" placeholder="00" onchange="atualizarQuantidadeRetirada(0, this.value)" id="fibraMetragem"></td>
       </tr>
@@ -1572,6 +1581,10 @@ iframe{
         <th>Kit fusão:</th>
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
+      
+      </table>
+      <br>
+      <table style="width: 100%">
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -1635,7 +1648,6 @@ iframe{
  </td>
 </tr>
 
-<div id="mapReal"></div>
 <p id="resultado"></p>
       
       
@@ -2454,7 +2466,7 @@ copiado += `CTO: ${document.getElementById('cto').value}\n`;
 copiado += `Porta: ${document.getElementById('porta').value}\n`;
 copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
 copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `## 📦 Materiais:\n`;
+copiado += `## 📦 - Materiais:\n`;
 
 const campos = {
  'fibraMetragem': 'Metragem da Fibra',
@@ -2485,7 +2497,7 @@ if (!algumMaterialUtilizado) {
  copiado += "Não foi utilizado materiais!\n";
 }
 
-copiado += `## 🛜 Configurações:\n`;
+copiado += `## 🛜 - Configurações:\n`;
 copiado += `Wifi 2.4GHz:\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
@@ -2501,7 +2513,7 @@ if (copiarLocalizacao) {
  const localizacao = document.getElementById('mapLink').textContent;
  if (localizacao.trim() !== "") {
   // Adiciona o nome da rua ao texto copiado
-  copiado += `#🚩 Localização aproximada:#${nomeRua}\n`;
+  copiado += `#🚩- Localização aproximada:#${nomeRua}\n`;
   copiado += `${localizacao}\n`;
  }
 }
@@ -3282,7 +3294,6 @@ function showError(error) {
  // Gerar UUID para identificar o usuário
  var userId = localStorage.getItem('userId') || uuid.v4();
  localStorage.setItem('userId', userId);
- console.log("User ID:", userId);
 
  document.getElementById('userID').innerText = "User ID: " + userId;
 
@@ -3385,7 +3396,7 @@ copiado += `CTO: ${document.getElementById('cto').value}\n`;
 copiado += `Porta: ${document.getElementById('porta').value}\n`;
 copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
 copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `## 📦 Materiais:\n`;
+copiado += `## 📦 - Materiais:\n`;
 
 const campos = {
 'fibraMetragem': 'Metragem da Fibra',
@@ -3416,7 +3427,7 @@ if (!algumMaterialUtilizado) {
 copiado += "Não foi utilizado materiais!\n";
 }
 
-copiado += `## 🛜 Configurações:\n`;
+copiado += `## 🛜 - Configurações:\n`;
 copiado += `Wifi 2.4GHz:\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
@@ -3433,7 +3444,7 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
   const localizacao = document.getElementById('mapLink').textContent;
   if (localizacao.trim() !== "") {
    // Adiciona o nome da rua ao texto copiado
-   copiado += `#🚩 Localização aproximada:# ${nomeRua}\n`;
+   copiado += `#🚩 - Localização aproximada:# ${nomeRua}\n`;
    copiado += `${localizacao}\n`;
   }
 
