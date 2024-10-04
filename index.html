@@ -315,7 +315,7 @@ nav {
   30% {
     box-shadow: -80px 0 20px 5px rgba(0, 0, 255, 0.8),
                 80px 0 20px 5px rgba(0, 0, 255, 0.8);
-  }
+  }   
   40% {
     box-shadow: -40px 0 20px 5px rgba(0, 0, 255, 1),
                 40px 0 20px 5px rgba(0, 0, 255, 1);
@@ -1775,6 +1775,85 @@ iframe{
 
   <div id="instalacoes" class="instalacoes" style="display: none">
      
+     <!-- Botão para abrir o modal -->
+<h3 href="#" onclick="openModal()">Ver Dashboard</h3>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe id="modalFrame" src="" style="width: 100%; height: 95%;"></iframe>
+  </div>
+</div>
+
+<script>
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+  document.getElementById("modalFrame").src = "/dash.html";
+  document.body.classList.add("modal-open"); // Adicionar efeito de desfoque
+}
+
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+  document.getElementById("modalFrame").src = ""; // Limpar o conteúdo ao fechar
+  document.body.classList.remove("modal-open"); // Remover o desfoque
+}
+
+// Fechar o modal ao clicar fora dele
+window.onclick = function(event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+    closeModal();
+  }
+}   
+</script>
+
+<style>
+/* Estilos do modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Estilos da área de conteúdo do modal */
+.modal-content {
+   margin-top: 10px;
+  background-color: #fff;
+  margin: 10px; /* Definir a margem de 10px */
+  padding: 20px;
+  border: 1px solid #888;
+  width: calc(100% - 20px); /* Diminuir 20px para contar a margem de ambos os lados */
+  height: calc(90% - 10px); /* Altura ocupando a tela inteira menos 20px (10px de cada lado) */
+  position: relative;
+  z-index: 1001;
+  box-sizing: border-box; /* Garantir que padding e border não aumentem a largura total */
+}
+
+/* Botão de fechar */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+</style>
      
      
      
