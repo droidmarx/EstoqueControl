@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <title>Dashboard de Instalações</title>
     <style>
         /* Estilos existentes */
@@ -162,7 +164,8 @@
 <body>
     <div class="container">
         <header>
-            <h2>Dashboard de Instalações</h2>
+           <h4>Gráfico</h4>
+    <canvas id="technicianChart" width="400" height="200"></canvas>
         </header>
         <main>
             <section class="filters">
@@ -234,14 +237,15 @@
     
     
     
-    
-    <script>document.addEventListener('DOMContentLoaded', function() {
-    // Atualizar o ano no rodapé
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    const apiUrl = 'https://66d39f5c184dce1713d09736.mockapi.io/Api/v1/BD';
+    let chartInstance; // Variável para armazenar a instância do gráfico
+
+    // Atualiza o ano no rodapé
     const currentYear = new Date().getFullYear();
     document.getElementById('currentYear').textContent = currentYear;
 
-    const apiUrl = 'https://66d39f5c184dce1713d09736.mockapi.io/Api/v1/BD';
-
+    // Função para buscar os dados da API
     function fetchData() {
         fetch(apiUrl)
             .then(response => response.json())
@@ -249,10 +253,12 @@
                 populateTechnicianFilter(data);
                 displayResults(data);
                 setupEventListeners(data);
+                createTechnicianPieChart(data); // Cria o gráfico de pizza
             })
             .catch(error => console.error('Erro ao carregar dados:', error));
     }
 
+    // Popula o dropdown de técnico
     function populateTechnicianFilter(data) {
         const tecnicoSelect = document.getElementById('tecnicoFilter');
         const tecnicos = [...new Set(data.map(item => item.tecnico))];
@@ -264,12 +270,12 @@
         });
     }
 
+    // Exibe os resultados na tabela
     function displayResults(filteredData) {
         const tableBody = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
         const totalCountElement = document.getElementById('totalCount');
-        
-        tableBody.innerHTML = '';
-        
+        tableBody.innerHTML = ''; // Limpa os resultados anteriores
+
         filteredData.forEach(item => {
             const row = tableBody.insertRow();
             const checkboxCell = row.insertCell();
@@ -278,32 +284,28 @@
             checkbox.value = item.id;
             checkboxCell.appendChild(checkbox);
             row.insertCell().textContent = item.dataHora || 'N/A';
-            
             row.insertCell().textContent = item.tecnico;
             row.insertCell().textContent = item.cliente;
             row.insertCell().textContent = item.cto;
             row.insertCell().textContent = item.porta;
             row.insertCell().textContent = item.sinalCto;
             row.insertCell().textContent = item.sinalCliente;
-            
-            // Adicionar link para a localização com nome da rua
+
             const locationCell = row.insertCell();
             if (item.localizacao) {
                 const link = document.createElement('a');
                 link.href = item.localizacao.trim();
                 link.textContent = item.nomeRua ? item.nomeRua : 'Localização';
-                link.target = '_blank'; // Abre o link em uma nova aba
+                link.target = '_blank';
                 locationCell.appendChild(link);
             } else {
                 locationCell.textContent = 'N/A';
             }
-
-           
         });
 
         totalCountElement.textContent = `Total de Itens: ${filteredData.length}`;
     }
-
+    // Função para aplicar filtros nos dados e atualizar a tabela e o gráfico
     function applyFilters() {
         const tecnicoFilter = document.getElementById('tecnicoFilter').value;
         const dataInicioFilter = document.getElementById('dataInicioFilter').value;
@@ -328,10 +330,12 @@
                 });
 
                 displayResults(filteredData);
+                updateTechnicianPieChart(filteredData); // Atualiza o gráfico de pizza com os dados filtrados
             })
             .catch(error => console.error('Erro ao aplicar filtros:', error));
     }
 
+    // Configura os listeners para os eventos de interação com os filtros
     function setupEventListeners(data) {
         document.getElementById('tecnicoFilter').addEventListener('change', applyFilters);
         document.getElementById('dataInicioFilter').addEventListener('change', applyFilters);
@@ -364,23 +368,93 @@
             }
         });
     }
-    
+    // Cria o gráfico de pizza
+    function createTechnicianPieChart(data) {
+        const installationsByTechnician = {};
+
+        data.forEach(item => {
+            const tecnico = item.tecnico;
+            if (installationsByTechnician[tecnico]) {
+                installationsByTechnician[tecnico]++;
+            } else {
+                installationsByTechnician[tecnico] = 1;
+            }
+        });
+
+        const sortedTechnicians = Object.keys(installationsByTechnician).sort((a, b) => installationsByTechnician[b] - installationsByTechnician[a]);
+        const labels = sortedTechnicians;
+        const dataPoints = sortedTechnicians.map(tecnico => installationsByTechnician[tecnico]);
+
+        const ctx = document.getElementById('technicianChart').getContext('2d');
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Instalações por Técnico',
+                    data: dataPoints,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    datalabels: {
+                        color: '#fff',
+                        formatter: (value) => value, // Exibe a quantidade diretamente
+                        anchor: 'end',
+                        align: 'end',
+                        offset: 10,
+                        font: {
+                            weight: 'bold',
+                            size: 14
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Atualiza o gráfico de pizza com os dados filtrados
+    function updateTechnicianPieChart(filteredData) {
+        const installationsByTechnician = {};
+
+        filteredData.forEach(item => {
+            const tecnico = item.tecnico;
+            if (installationsByTechnician[tecnico]) {
+                installationsByTechnician[tecnico]++;
+            } else {
+                installationsByTechnician[tecnico] = 1;
+            }
+        });
+
+        const sortedTechnicians = Object.keys(installationsByTechnician).sort((a, b) => installationsByTechnician[b] - installationsByTechnician[a]);
+        const labels = sortedTechnicians;
+        const dataPoints = sortedTechnicians.map(tecnico => installationsByTechnician[tecnico]);
+
+        chartInstance.data.labels = labels;
+        chartInstance.data.datasets[0].data = dataPoints;
+        chartInstance.update(); // Atualiza o gráfico com os novos dados
+    }
+
+// Função para limpar os filtros
+    function clearFilters() {
+        document.getElementById('tecnicoFilter').value = '';
+        document.getElementById('dataInicioFilter').value = '';
+        document.getElementById('dataFimFilter').value = '';
+        document.getElementById('ctoFilter').value = '';
+        document.getElementById('clienteFilter').value = '';
+        document.getElementById('nomeRuaFilter').value = '';
+
+        // Recarrega os dados após limpar os filtros
+        fetchData();
+    }
+
     // Inicializa a aplicação
     fetchData();
-});
+});</script>
 
-function clearFilters() {
-    // Limpa todos os filtros
-    document.getElementById('tecnicoFilter').value = '';
-    document.getElementById('dataInicioFilter').value = '';
-    document.getElementById('dataFimFilter').value = '';
-    document.getElementById('ctoFilter').value = '';
-    document.getElementById('clienteFilter').value = '';
-    document.getElementById('nomeRuaFilter').value = '';
 
-    // Recarrega todos os dados sem filtros
-    window.location.reload();
-}
-</script>
 </body>
 </html>
