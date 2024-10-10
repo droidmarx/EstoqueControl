@@ -1153,8 +1153,8 @@ iframe{
          }
          
          .qr img{
-            width: 350px;
-            height: 350px;
+            width: 250px;
+            height: 250px;
             border: 8px solid black;
             border-radius: 8px;
          }
@@ -1546,7 +1546,7 @@ iframe{
         <td><input type="number" placeholder="00" id="scApc" onchange="atualizarQuantidadeRetirada(1, this.value)"></td>
       </tr>
       <tr>
-        <th>Conector-UPC:</th>
+        <th>Anilha-Num:</th>
         <td><input type="number" placeholder="00" id="scUpc" onchange="atualizarQuantidadeRetirada(2, this.value)"></td>
       </tr>
       <tr>
@@ -1862,7 +1862,7 @@ window.onclick = function(event) {
   margin: 10px; /* Definir a margem de 10px */
   padding: 20px;
   border: 1px solid #888;
-  width: calc(100% - 20px); /* Diminuir 20px para contar a margem de ambos os lados */
+  width: calc(100% - 5px); /* Diminuir 20px para contar a margem de ambos os lados */
   height: calc(90% - 10px); /* Altura ocupando a tela inteira menos 20px (10px de cada lado) */
   position: relative;
   z-index: 1001;
@@ -2287,8 +2287,8 @@ function contarRegistros() {
 // Variáveis para armazenar os produtos e retiradas, utilizando o armazenamento local (localStorage)
 let produtos = JSON.parse(localStorage.getItem("produtos")) || [
   { nome: "DROP", quantidade: 1000 },
-  { nome: "SC-APC", quantidade: 20 },
-  { nome: "SC-UPC", quantidade: 20 },
+  { nome: "Conrctor-APC", quantidade: 20 },
+  { nome: "Anilha-Num", quantidade: 20 },
   { nome: "Esticadores", quantidade: 100 },
   { nome: "Roldana", quantidade: 100 },
   { nome: "Fecho", quantidade: 50 },
@@ -2301,6 +2301,8 @@ let produtos = JSON.parse(localStorage.getItem("produtos")) || [
   { nome: "Conc RJ45", quantidade: 20 },
   { nome: "Kit-Fusao", quantidade: 10 },
 ];
+
+
 
 
 
@@ -2493,7 +2495,7 @@ copiado += `## 📦 - Materiais:\n`;
 const campos = {
  'fibraMetragem': 'Metragem da Fibra',
  'scApc': 'Conector APC',
- 'scUpc': 'Conector UPC',
+ 'scUpc': 'Anilha Num.',
  'esticadores': 'Esticadores',
  'roldana': 'Roldana',
  'fecho': 'Fecho',
@@ -3423,7 +3425,7 @@ copiado += `## 📦 - Materiais:\n`;
 const campos = {
 'fibraMetragem': 'Metragem da Fibra',
 'scApc': 'Conector APC',
-'scUpc': 'Conector UPC',
+'scUpc': 'Anilha Num.',
 'esticadores': 'Esticadores',
 'roldana': 'Roldana',
 'fecho': 'Fecho',
@@ -3753,6 +3755,8 @@ formInputs.forEach(input => {
   });
 });
 </script>
+
+
   
 </body>
 </html>
