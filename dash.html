@@ -165,8 +165,7 @@
     <div class="container">
         <header>
            <h4>Gráfico</h4>
-           <canvas id="technicianChart"></canvas>
-<button id="changeChartTypeButton">Alterar Modo do Gráfico</button>
+    
     <canvas id="technicianChart" width="400" height="200"></canvas>
         </header>
         <main>
@@ -470,55 +469,6 @@ scales: {
     // Inicializa a aplicação
     fetchData();
 });
-
-document.getElementById('changeChartTypeButton').addEventListener('click', function() {
-    // Verifique se chartInstance já foi inicializado
-    if (chartInstance) {
-        // Alterna entre os tipos 'bar' e 'pie'
-        const newType = chartInstance.config.type === 'bar' ? 'pie' : 'bar';
-
-        // Destrói o gráfico atual
-        chartInstance.destroy();
-
-        // Recria o gráfico com o novo tipo
-        chartInstance = new Chart(ctx, {
-            type: newType, // Tipo de gráfico alterado
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Instalações por Técnico',
-                    data: dataPoints,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-});
-
 
 
 </script>
