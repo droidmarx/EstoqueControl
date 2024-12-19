@@ -1590,9 +1590,14 @@ iframe{
         <td><input type="number" placeholder="00" id="kitFusao" onchange="atualizarQuantidadeRetirada(12, this.value)"></td>
       </tr>
       
+      <tr>
+         
+      </tr>
+      
       </table>
       <br>
-      <table style="width: 100%">
+      <table style="width:95%">
+         
       
       <tr>
   <th>Wifi 2.4GHz:</th>
@@ -1647,13 +1652,22 @@ iframe{
   </td>
 </tr>
 
-<tr style="display:none">
+
+
+<tr style="display:">
  <th id="senhaWifi">Wifi:
  <td>
   <input id="ssid" type="text" placeholder="SSID"></input>
-  <br>
+  <br><br>
   <input id="senha" type="text" placeholder="Senha"></input>
  </td>
+</tr>
+
+<tr>
+   <th>Localização Exata:</th>
+   <td>
+    
+ <textarea id="comentarios2" placeholder="📍 Cole o link do ponto no mapa" rows="2" cols="20"></textarea></td>
 </tr>
 
 <p id="resultado"></p>
@@ -1661,23 +1675,15 @@ iframe{
       
     </table>
     
+   
 
+       
+   
+   
    
     <br>
      <textarea id="comentarios1" placeholder="Comentários..." rows="10" cols="35"></textarea>
-     
-          <div class="qr">
-        <h3>Avalie no google</h3>
-        <img src="/audio/QR.png" alt="/audio/QR.png">
-        <br>
-        <br>
-        <br>
-        <h3>App IndaiaFibra<br>Residencial</h3>
-        <img src="/audio/app.png" alt="/audio/app.png">
-        <br>
-        <br>
-        <br>
-        <br>
+ 
      </div>
  
  <input type="text" id="clipboardInput" style="position: absolute; left: -9999px;">
@@ -2546,6 +2552,12 @@ const comentarios = document.getElementById('comentarios1').value;
 if (comentarios.trim() !== "") {
  copiado += "##Comentários:\n";
  copiado += `${comentarios}\n`;
+}
+
+const precisa = document.getElementById('comentarios2').value;
+if (comentarios.trim() !== "") {
+copiado += "##📍Localizaçao exata:\n";
+copiado += `${precisa}\n`;
 }
 
 
@@ -3478,6 +3490,14 @@ copiado += "##Comentários:\n";
 copiado += `${comentarios}\n`;
 }
 
+
+const precisa = document.getElementById('comentarios2').value;
+if (comentarios.trim() !== "") {
+copiado += "##📍Localizacao exata:\n";
+copiado += `${precisa}\n`;
+}
+
+
 copiado = copiado.replace(/#/g, '\n');
 
 // Enviar a mensagem para cada chat ID
@@ -3618,21 +3638,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const toggleClima = document.getElementById("toggleClima");
-    const climatempo = document.getElementById("climatempo");
+  const toggleClima = document.getElementById("toggleClima");
+  const climatempo = document.getElementById("climatempo");
 
-    // Carregar a preferência salva ou definir como false se não estiver definida
-    toggleClima.checked = localStorage.getItem("toggleClima") !== "false";
+  // Definir o estado inicial como desabilitado, caso não haja valor salvo
+  const savedState = localStorage.getItem("toggleClima");
+  toggleClima.checked = savedState === "true"; // Checar apenas se o valor salvo for "true"
 
-    // Mostrar/ocultar a div climatempo com base no estado salvo
+  // Mostrar/ocultar a div climatempo com base no estado salvo ou no padrão inicial
+  climatempo.style.display = toggleClima.checked ? "table-row" : "none";
+
+  // Salvar a preferência quando o checkbox for alterado
+  toggleClima.addEventListener("change", function() {
+    localStorage.setItem("toggleClima", toggleClima.checked);
     climatempo.style.display = toggleClima.checked ? "table-row" : "none";
-
-    // Salvar a preferência quando o checkbox for alterado
-    toggleClima.addEventListener("change", function() {
-      localStorage.setItem("toggleClima", toggleClima.checked);
-      climatempo.style.display = toggleClima.checked ? "table-row" : "none";
-    });
   });
+});
 </script>
 <script>document.addEventListener("DOMContentLoaded", function() {
     // Array que irá armazenar os objetos
