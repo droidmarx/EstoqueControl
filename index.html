@@ -3727,6 +3727,33 @@ document.getElementById('enviar').addEventListener('click', function() {
 });
 </script>
 
+
+<script>
+function limparLocalStorageSeLotado() {
+    try {
+        // Tenta salvar um item temporário
+        localStorage.setItem('temp', 'temp');
+        
+        // Se funcionar, o localStorage não está lotado, então removemos o item temporário
+        localStorage.removeItem('temp');
+    } catch (e) {
+        // Caso ocorra um erro, significa que o localStorage está cheio, então limpamos os itens antigos
+        alert("LocalStorage cheio, limpando os itens mais antigos...");
+
+        // Obtemos todas as chaves armazenadas
+        let keys = Object.keys(localStorage);
+        
+        // Limpa os itens mais antigos (removendo o primeiro item)
+        while (localStorage.length > 0) {
+            let oldestKey = keys[0];
+            localStorage.removeItem(oldestKey);
+            keys.shift(); // Remove a primeira chave da lista
+        }
+    }
+}
+
+</script>
+
 <script>
 // troca a cor do th quando o input é selecionado
 const formInputs = document.querySelectorAll('table input, table select');
