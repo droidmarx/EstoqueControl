@@ -30,10 +30,10 @@
 
 
 :root { 
-   --principal: #626870; 
+   --principal: #1E7CFA; 
    --secundaria: #425671;
-   --tabela: #9197a0;
-   --texto: #0E0E11;
+   --tabela: #9DBAE566;
+   --texto: #D3D3DE;
  }
 
 
@@ -46,6 +46,15 @@ body {
   text-align: center;
   background: var(--principal);
   transition: 1s all;
+  background: linear-gradient(220deg, var(--principal), #777A7B, #40ABA7);
+    background-size: 300% 300%;
+    animation: moverGradiente 5s infinite linear alternate;
+}
+
+/* Animação do gradiente */
+@keyframes moverGradiente {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 
@@ -1155,7 +1164,7 @@ iframe{
 
 
 
-            <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes();openModal()" class="logo" src="https://img.icons8.com/?size=2x&id=Kwa2wLSodvjf&format=png" height="90" width="90"></a>
+            <a onclick="ativarSublinhado(this);mostrarInstalacoes"><img onclick="mostrarInstalacoes();" class="logo" src="https://img.icons8.com/?size=2x&id=Kwa2wLSodvjf&format=png" height="90" width="90"></a>
 
             <a onclick="ativarSublinhado(this);mostrarEstoque"><img onclick="mostrarEstoque()" class="logo" src="https://img.icons8.com/?size=512&id=ATNcH32az6si&format=png" height="90" width="90"></a>
 
@@ -1782,16 +1791,7 @@ iframe{
 
   <div id="instalacoes" class="instalacoes" style="display: none">
      
-     <!-- Botão para abrir o modal -->
-<!--<h3 href="#" onclick="openModal()">Ver Dashboard</h3>-->
 
-<!-- Modal -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <iframe id="modalFrame" src="" style="width: 100%; height: 95%;"></iframe>
-  </div>
-</div>
 
 
 
@@ -1807,75 +1807,6 @@ if ("serviceWorker" in navigator) {
 
 
 
-<script>
-function openModal() {
-  document.getElementById("myModal").style.display = "block";
-  document.getElementById("modalFrame").src = "/dash.html";
-  document.body.classList.add("modal-open"); // Adicionar efeito de desfoque
-}
-
-function closeModal() {
-  document.getElementById("myModal").style.display = "none";
-  document.getElementById("modalFrame").src = ""; // Limpar o conteúdo ao fechar
-  document.body.classList.remove("modal-open"); // Remover o desfoque
-}
-
-// Fechar o modal ao clicar fora dele
-window.onclick = function(event) {
-  var modal = document.getElementById("myModal");
-  if (event.target == modal) {
-    closeModal();
-  }
-}   
-</script>
-
-<style>
-/* Estilos do modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  /*background-color: rgba(0, 0, 0, 0.7);*/
-}
-
-/* Estilos da área de conteúdo do modal */
-.modal-content {
-   display: none;
-  top: 100px;
-  background-color: #fff;
-  margin: 2px; /* Definir a margem de 10px */
-  padding: 20px;
-  border: 1px solid #888;
-  width: calc(100% - 5px); /* Diminuir 20px para contar a margem de ambos os lados */
-  height: calc(90% - 10px); /* Altura ocupando a tela inteira menos 20px (10px de cada lado) */
-  position: relative;
-  z-index: 1001;
-  box-sizing: border-box; /* Garantir que padding e border não aumentem a largura total */
-}
-
-/* Botão de fechar */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-}
-
-body.modal-open {
-  overflow: hidden;
-}
-</style>
      
      
      
