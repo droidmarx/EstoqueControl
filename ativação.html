@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativação de Serviço</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+            color: #0088cc;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #005f8a;
+        }
+    </style>
+</head>
+<body>
+    <h2>🔧 Ativação de Serviço</h2>
+    <div class="container">
+        <label>👨🏽‍🔧 Técnico:</label>
+        <input type="text" id="tecnico" placeholder="@GuiMarx"><label>👤 Cliente:</label>
+    <input type="text" id="cliente" placeholder="Nome do Cliente">
+    
+    <label>📡 RX POWER:</label>
+    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm">
+    
+    <label>🔹 CTO:</label>
+    <input type="text" id="cto" placeholder="Exemplo: 41B">
+    
+    <label>🔹 Porta:</label>
+    <input type="text" id="porta" placeholder="Exemplo: 02">
+    
+    <label>📶 Plano:</label>
+    <input type="text" id="plano" placeholder="Exemplo: 300 MEGA">
+    
+    <label>📡 Channel 2.4GHz:</label>
+    <input type="text" id="ch24" placeholder="Exemplo: 06">
+    
+    <label>📡 Frequência 2.4GHz:</label>
+    <input type="text" id="freq24" placeholder="Exemplo: 20MHz">
+    
+    <label>📡 Channel 5GHz:</label>
+    <input type="text" id="ch5" placeholder="Exemplo: 44">
+    
+    <label>📡 Frequência 5GHz:</label>
+    <input type="text" id="freq5" placeholder="Exemplo: 80MHz">
+    
+    <label>🔌 ONU/ONT:</label>
+    <input type="text" id="onu" placeholder="Modelo e Serial">
+    
+    <label>📶 Roteador:</label>
+    <input type="text" id="roteador" placeholder="Modelo do Roteador">
+    
+    <label>📝 Observações:</label>
+    <textarea id="obs" placeholder="Digite aqui..."></textarea>
+    
+    <button onclick="copiarEabrirTelegram()">📋 Copiar e Abrir Telegram</button>
+</div>
+
+<script>
+    function copiarEabrirTelegram() {
+        let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
+            `👨🏽‍🔧 **Técnico:** ${document.getElementById('tecnico').value}\n` +
+            `👤 **Cliente:** ${document.getElementById('cliente').value}\n\n` +
+            `📡 **Sinal de Fibra:**\n` +
+            `🔹 **RX POWER:** ${document.getElementById('rx_power').value}\n` +
+            `🔹 **CTO:** ${document.getElementById('cto').value} | **Porta:** ${document.getElementById('porta').value}\n\n` +
+            `📶 **Plano Ativado:** ${document.getElementById('plano').value}\n\n` +
+            `📡 **Configuração Wi-Fi:**\n` +
+            `- **2.4GHz:** Canal ${document.getElementById('ch24').value} | Frequência ${document.getElementById('freq24').value}\n` +
+            `- **5GHz:** Canal ${document.getElementById('ch5').value} | Frequência ${document.getElementById('freq5').value}\n\n` +
+            `🔌 **Equipamentos:**\n` +
+            `- 🖥 **ONU/ONT:** ${document.getElementById('onu').value}\n` +
+            `- 📶 **Roteador:** ${document.getElementById('roteador').value}\n\n` +
+            `📌 **Observações:** ${document.getElementById('obs').value}\n\n` +
+            `✅ **Realizar testes via cabo Ethernet!**🚀\n\n` +
+            `🎯 **Pode testar!** 🚀`;
+        
+        navigator.clipboard.writeText(mensagem).then(() => {
+            alert("Mensagem copiada para a área de transferência!");
+            window.open("https://t.me/c/1989058391/38071", "_blank");
+        }).catch(err => console.error("Erro ao copiar", err));
+    }
+</script>
+
+</body>
+</html>
