@@ -2388,28 +2388,16 @@ function atualizarTabelaEstoque() {
 // Verifica se o toggle está ativado
 const incluirQuantidadePorMes = document.getElementById('toggleCopy').checked;
 
-// Estrutura da 1ª tabela (copiar)
-if (incluirQuantidadePorMes) {
- const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
- if (quantidadePorMesElement) {
-  const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-  if (paragraphs.length > 0) {
-   const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-   if (lastParagraph.trim() !== "") {
-    copiado += `##Instalações no mês de ${lastParagraph}\n`;
-   }
-  }
- }
-}
 
-  copiado += `O técnico: ${document.getElementById('tecnico').value}\n`;
-  copiado += `Deseja fazer uma ${document.getElementById('Trabalho').value}\n`;
-  copiado += `##Cliente: ${document.getElementById('cliente').value}\n`;
-copiado += `CTO: ${document.getElementById('cto').value}\n`;
-copiado += `Porta: ${document.getElementById('porta').value}\n`;
-copiado += `Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
-copiado += `Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
-copiado += `## 📦 - Materiais:\n`;
+
+  copiado += ` 👷 Técnico: ${document.getElementById('tecnico').value}\n#`;
+  copiado += `  ${document.getElementById('Trabalho').value}\n`;
+  copiado += `## 👤 Cliente: ${document.getElementById('cliente').value}\n`;
+copiado += ` 🌐 CTO: ${document.getElementById('cto').value}\n`;
+copiado += ` 🔌 Porta: ${document.getElementById('porta').value}\n`;
+copiado += ` 📡 Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
+copiado += ` 📶  Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n`;
+copiado += `## 📦 Materiais:\n`;
 
 const campos = {
  'fibraMetragem': 'Metragem da Fibra',
@@ -2440,7 +2428,8 @@ if (!algumMaterialUtilizado) {
  copiado += "Não foi utilizado materiais!\n";
 }
 
-copiado += `## 🛜 - Configurações:\n`;
+/*
+copiado += `## 🛜 Configurações:\n`;
 copiado += `Wifi 2.4GHz:\n`;
 copiado += ` ${document.getElementById('opcoes24GHz').value} |`;
 copiado += ` ${document.getElementById('canais24GHz').value}\n`;
@@ -2448,6 +2437,7 @@ copiado += ` ${document.getElementById('canais24GHz').value}\n`;
 copiado += `# Wifi 5GHz:\n`;
 copiado += ` ${document.getElementById('opcoes5GHz').value} |`;
 copiado += ` ${document.getElementById('canais5GHz').value}\n`;
+*/
 
   // Verifica se o toggle está ativado
 const copiarLocalizacao = document.getElementById('toggleCopys').checked;
@@ -2456,8 +2446,6 @@ if (copiarLocalizacao) {
  const localizacao = document.getElementById('mapLink').textContent;
  if (localizacao.trim() !== "") {
   // Adiciona o nome da rua ao texto copiado
-  copiado += `#🚩- Localização aproximada:#${nomeRua}\n`;
-  copiado += `${localizacao}\n`;
  }
 }
 
@@ -2465,6 +2453,20 @@ const comentarios = document.getElementById('comentarios1').value;
 if (comentarios.trim() !== "") {
  copiado += "##Comentários:\n";
  copiado += `${comentarios}\n`;
+}
+
+// Estrutura da 1ª tabela (copiar)
+if (incluirQuantidadePorMes) {
+ const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+ if (quantidadePorMesElement) {
+  const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+  if (paragraphs.length > 0) {
+   const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+   if (lastParagraph.trim() !== "") {
+    copiado += `##Instalações no mês de ${lastParagraph}\n##`;
+   }
+  }
+ }
 }
 
 
