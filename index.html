@@ -3412,8 +3412,20 @@ function showError(error) {
       }
     }
     
-    enviarMensagemTelegram(copiado);
-  }
+    // Envia para o Telegram
+  enviarMensagemTelegram(copiado);
+
+  // Copia para a área de transferência
+  navigator.clipboard.writeText(copiado).then(() => {
+    setTimeout(function() {
+      window.open('https://t.me/c/1989058391/38071', '_blank');
+    }, 2500);
+  }).catch(err => {
+    console.error('Erro ao copiar texto: ', err);
+  });
+}
+    
+  
 </script>
 
 <script>
