@@ -3302,53 +3302,68 @@ function showError(error) {
  function generateCopiedText() {
   let copiado = '';
 
-  // Seu código existente para gerar o texto copiado
-
-  copiado += `## Wifi:\n`;
-  copiado += ` ${document.getElementById('ssid').value}\n`;
-  copiado += ` ${document.getElementById('senha').value}\n`;
-
-
-  // Seu código existente continua
-
   return copiado;
  }
 </script>
  
 <script>
-  const botToken = '7234042339:AAE3a2UVNOZy_xxiZ0nIv0PSYS8-UUix4TM';
-  const adminChatId = '5759760387';
-  
-  async function enviarMensagemTelegram(texto) {
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    const data = {
-      chat_id: adminChatId,
-      text: texto,
-      parse_mode: 'HTML'
-    };
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-  }
-  
-  function copiarConteudo() {
-    let copiado = '';
+  async function sendMessageToTelegram() {
+    const botToken = '7234042339:AAE3a2UVNOZy_xxiZ0nIv0PSYS8-UUix4TM';
+    const adminChatId = '5759760387';
+    const apiUrl = 'https://67ef52aec11d5ff4bf7c4f30.mockapi.io/tecnicos';
+    const usersApiUrl = 'https://67ef52aec11d5ff4bf7c4f30.mockapi.io/users';
     
+    async function enviarMensagemTelegram(texto) {
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      
+      // Enviar para o admin
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: adminChatId,
+          text: texto,
+          parse_mode: 'HTML'
+        })
+      });
+      
+      // Enviar para todos os usuários cadastrados
+      const response = await fetch(usersApiUrl);
+      const users = await response.json();
+      for (const user of users) {
+        if (user.chatId) {
+          await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: user.chatId,
+              text: texto,
+              parse_mode: 'HTML'
+            })
+          });
+        }
+      }
+    }
     
-    copiado += `  ${document.getElementById('Trabalho').value}\n\n`;
-
+    async function salvarInstalacaoBanco(dados) {
+      const response = await fetch(apiUrl);
+      const tecnicos = await response.json();
+      const existente = tecnicos.find(t => t.id === dados.id);
+      
+      const options = {
+        method: existente ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      };
+      
+      const url = existente ? `${apiUrl}/${existente.id}` : apiUrl;
+      await fetch(url, options);
+    }
     
-    copiado += `👷 Técnico: ${document.getElementById('tecnico').value}\n\n`;
-    
-    copiado += ` 👤 Cliente: ${document.getElementById('cliente').value}\n`;
-    copiado += ` 🌐 CTO: ${document.getElementById('cto').value}\n`;
-    copiado += ` 🔌 Porta: ${document.getElementById('porta').value}\n`;
-    copiado += ` 📡 Sinal da CTO: ${document.getElementById('sinalCto').value}\n`;
-    copiado += ` 📶 Sinal do Cliente: ${document.getElementById('sinalCliente').value}\n\n`;
-    
-    copiado += ` 📦 Materiais:\n`;
+    function getValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.value : '';
+    }
     
     const campos = {
       'fibraMetragem': 'Metragem da Fibra',
@@ -3366,69 +3381,61 @@ function showError(error) {
       'kitFusao': 'Kit fusão'
     };
     
+    let copiado = '';
+    
+    copiado += `👷 Técnico: ${getValue('tecnico')}\n\n`;
+    copiado += `  🌐 CTO: ${getValue('cto')}\n`;
+    copiado += `  🔌 Porta: ${getValue('porta')}\n`;
+    copiado += `  📡 Sinal da CTO: ${getValue('sinalCto')}\n`;
+    copiado += `  📶 Sinal do Cliente: ${getValue('sinalCliente')}\n\n`;
+    
+    copiado += `  📦 Materiais:\n`;
+    
     let algumMaterialUtilizado = false;
-    Object.keys(campos).forEach((campo) => {
-      const valorCampo = document.getElementById(campo).value;
-      if (valorCampo.trim() !== "") {
-        copiado += `${campos[campo]}: ${valorCampo}\n`;
+    for (const campo in campos) {
+      const valor = getValue(campo).trim();
+      if (valor !== "") {
+        copiado += `  - ${campos[campo]}: ${valor}\n`;
         algumMaterialUtilizado = true;
       }
-    });
+    }
     
     if (!algumMaterialUtilizado) {
-      copiado += `Não foi utilizado materiais!\n`;
+      copiado += `  Não foi utilizado materiais!\n`;
     }
     
-    copiado += `\n`;
+    copiado += `\nInstalações no mês `;
     
-    // Verifica se o toggle da localização está ativado
-    const copiarLocalizacao = document.getElementById('toggleCopys').checked;
-    
-    if (copiarLocalizacao) {
-      const localizacao = document.getElementById('mapLink').textContent.trim();
-      const nomeRua = document.getElementById('nomeRua')?.value || ''; // Adiciona segurança
-      if (localizacao !== "") {
-        copiado += ` 🚩 Localização aproximada: ${nomeRua}\n`;
-        copiado += ` ${localizacao}\n\n`;
-      }
-    }
-    
-    // Comentários
-    const comentarios = document.getElementById('comentarios1').value;
-    if (comentarios.trim() !== "") {
-      copiado += ` 🗒️ Comentários:\n`;
-      copiado += ` ${comentarios}\n\n`;
-    }
-    
-    // Instalações no mês
-    const incluirQuantidadePorMes = document.getElementById('toggleCopy').checked;
-    if (incluirQuantidadePorMes) {
-      const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
-      if (quantidadePorMesElement) {
-        const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
-        if (paragraphs.length > 0) {
-          const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
-          if (lastParagraph.trim() !== "") {
-            copiado += `Instalações no mês de ${lastParagraph}\n`;
-          }
+    const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
+    if (quantidadePorMesElement) {
+      const paragraphs = quantidadePorMesElement.getElementsByTagName('p');
+      if (paragraphs.length > 0) {
+        const lastParagraph = paragraphs[paragraphs.length - 1].textContent;
+        if (lastParagraph.trim() !== "") {
+          copiado += `${lastParagraph}\n`;
         }
       }
     }
     
-    // Envia para o Telegram
-  enviarMensagemTelegram(copiado);
-
-  // Copia para a área de transferência
-  navigator.clipboard.writeText(copiado).then(() => {
-    setTimeout(function() {
-      window.open('https://t.me/c/1989058391/38071', '_blank');
-    }, 2500);
-  }).catch(err => {
-    console.error('Erro ao copiar texto: ', err);
-  });
-}
+   /* 
+   copiado += `\n🛜 Configurações:\n`;
+    copiado += `Wifi 2.4GHz: ${getValue('opcoes24GHz')} | ${getValue('canais24GHz')}\n`;
+    copiado += `Wifi 5GHz: ${getValue('opcoes5GHz')} | ${getValue('canais5GHz')}\n`;
+    */
     
-  
+    const mapLink = document.getElementById('mapLink');
+    if (mapLink && mapLink.textContent.trim() !== "") {
+      const nomeRua = getValue('nomeRua');
+      copiado += `\n🚩 Localização aproximada: ${nomeRua}\n${mapLink.textContent}\n`;
+    }
+    
+    const comentarios = getValue('comentarios1').trim();
+    if (comentarios !== "") {
+      copiado += `\n💬 Comentários:\n${comentarios}\n`;
+    }
+    
+    await enviarMensagemTelegram(copiado);
+  }
 </script>
 
 <script>
