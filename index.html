@@ -2443,10 +2443,17 @@ copiado += ` ${document.getElementById('canais5GHz').value}\n`;
 const copiarLocalizacao = document.getElementById('toggleCopys').checked;
 
 if (copiarLocalizacao) {
- const localizacao = document.getElementById('mapLink').textContent;
- if (localizacao.trim() !== "") {
-  // Adiciona o nome da rua ao texto copiado
- }
+
+
+    const mapLink = document.getElementById('mapLink');
+    if (mapLink && mapLink.textContent.trim() !== "") {
+function getValue(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  return el.value !== undefined ? el.value : el.textContent.trim();
+}
+      copiado += `\n🚩 Localização aproximada: \n${nomeRua}\n${mapLink.textContent}\n`;
+    }
 }
 
 const comentarios = document.getElementById('comentarios1').value;
@@ -3404,7 +3411,7 @@ function showError(error) {
       copiado += `  Não foi utilizado materiais!\n`;
     }
     
-    copiado += `\nInstalações no mês `;
+    copiado += `\nInstalações no mês de `;
     
     const quantidadePorMesElement = document.getElementById('quantidade-por-mes');
     if (quantidadePorMesElement) {
@@ -3425,8 +3432,12 @@ function showError(error) {
     
     const mapLink = document.getElementById('mapLink');
     if (mapLink && mapLink.textContent.trim() !== "") {
-      const nomeRua = getValue('nomeRua');
-      copiado += `\n🚩 Localização aproximada: ${nomeRua}\n${mapLink.textContent}\n`;
+function getValue(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  return el.value !== undefined ? el.value : el.textContent.trim();
+}
+      copiado += `\n🚩 Localização aproximada: \n${nomeRua}\n${mapLink.textContent}\n`;
     }
     
     const comentarios = getValue('comentarios1').trim();
