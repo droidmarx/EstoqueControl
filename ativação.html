@@ -94,6 +94,55 @@
     ::placeholder {
       color: #999;
     }
+    
+ .wifi-group {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .wifi-group h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #333;
+  }
+
+.wifi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.wifi-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.wifi-col {
+  display: flex;
+  flex-direction: column;
+}
+
+  .wifi-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+  }
+
+  .wifi-select {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    font-size: 14px;
+  }
+    
   </style>
 </head>
 <body>
@@ -102,7 +151,7 @@
 
     <label>👨🏽‍🔧 Técnico:</label>
     <select id="tecnico">
-      <option value="">Selecione</option>
+      <option disabled selected>Selecione</option>
       <option>André</option>
       <option>Elvis</option>
       <option>Guilherme</option>
@@ -121,27 +170,92 @@
     <input type="text" id="cto" placeholder="Exemplo: 41B"/>
 
     <label>🔹 Porta:</label>
-    <input type="text" id="porta" placeholder="Exemplo: 02"/>
+   <select id="porta">
+  <option disabled selected>Selecione</option>
+  <option>01</option>
+  <option>02</option>
+  <option>03</option>
+  <option>04</option>
+  <option>05</option>
+  <option>06</option>
+  <option>07</option>
+  <option>08</option>
+  <option>09</option>
+  <option>10</option>
+  <option>11</option>
+  <option>12</option>
+  <option>13</option>
+  <option>14</option>
+  <option>15</option>
+  <option>16</option>
+</select>
 
-    <label>📶 Plano:</label>
-    <input type="text" id="plano" placeholder="Exemplo: 300 MEGA"/>
+    <label>💳 Plano:</label>
+      <select id="plano">
+        <option selected>Outro</option>
+        <option>300 MEGA - R$ 99,90</option>
+        <option>GIGA PLAY - R$ 119,90</option>
+        <option>GIGA PLUS - R$ 139,90</option>
+        <option>600 MEGA BLPJ - R$ 129,90</option>
+      </select>
+      <br><br>
 
-    <label>📡 Channel 2.4GHz:</label>
-    <input type="text" id="ch24" placeholder="Exemplo: 06"/>
+   <div class="wifi-group">
+  <h3>📶 Rede 2.4GHz</h3>
+  <div class="wifi-row">
+    <div class="wifi-col">
+      <label class="wifi-label">Frequência:</label>
+      <select id="freq24" class="wifi-select">
+        <option disabled selected>Selecione</option>
+        <option>20MHz</option>
+        <option>40MHz</option>
+      </select>
+    </div>
+    <div class="wifi-col">
+      <label class="wifi-label">Canal:</label>
+      <select id="ch24" class="wifi-select">
+        <option disabled selected>Selecione</option>
+        <option>1</option>
+        <option>6</option>
+        <option>11</option>
+      </select>
+    </div>
+  </div>
+</div>
 
-    <label>📡 Frequência 2.4GHz:</label>
-    <input type="text" id="freq24" placeholder="Exemplo: 20MHz"/>
-
-    <label>📡 Channel 5GHz:</label>
-    <input type="text" id="ch5" placeholder="Exemplo: 44"/>
-
-    <label>📡 Frequência 5GHz:</label>
-    <input type="text" id="freq5" placeholder="Exemplo: 80MHz"/>
+<div class="wifi-group">
+  <h3>📶 Rede 5GHz</h3>
+  <div class="wifi-row">
+    <div class="wifi-col">
+      <label class="wifi-label">Frequência:</label>
+      <select id="freq5" class="wifi-select">
+        <option disabled selected>Selecione</option>
+        <option>40MHz</option>
+        <option>80MHz</option>
+        <option>120MHz</option>
+      </select>
+    </div>
+    <div class="wifi-col">
+      <label class="wifi-label">Canal:</label>
+      <select id="ch5" class="wifi-select">
+        <option disabled selected>Selecione</option>
+        <option>36</option>
+        <option>40</option>
+        <option>44</option>
+        <option>48</option>
+        <option>149</option>
+        <option>153</option>
+        <option>157</option>
+        <option>161</option>
+      </select>
+    </div>
+  </div>
+</div>
 
     <label>🔌 ONU/ONT:</label>
     <input type="text" id="onu" placeholder="Modelo e Serial"/>
 
-    <label>📶 Roteador:</label>
+    <label>🖥️ Roteador:</label>
     <input type="text" id="roteador" placeholder="Modelo do Roteador"/>
 
     <label>📺 Box TV / Roku:</label>
