@@ -1,119 +1,202 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ativação de Serviço</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h2 {
-            text-align: center;
-            color: #0088cc;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            font-weight: bold;
-        }
-        input, textarea {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #0088cc;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #005f8a;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ativação de Serviço</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      padding: 20px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: #0088cc;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      animation: slideUp 0.7s ease-in-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+      color: #333;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #0088cc;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 136, 204, 0.3);
+    }
+
+    button {
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #005f8a;
+      transform: scale(1.02);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    ::placeholder {
+      color: #999;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
     <h2>🔧 Ativação de Serviço</h2>
-    <div class="container">
-        <label>👨🏽‍🔧 Técnico:</label>
-        <input type="text" id="tecnico" placeholder="@GuiMarx"><label>👤 Cliente:</label>
-    <input type="text" id="cliente" placeholder="Nome do Cliente">
-    
+
+    <label>👨🏽‍🔧 Técnico:</label>
+    <select id="tecnico">
+      <option value="">Selecione</option>
+      <option>André</option>
+      <option>Elvis</option>
+      <option>Guilherme</option>
+      <option>Janderson</option>
+      <option>Robson</option>
+      <option>Sérgio</option>
+    </select>
+
+    <label>👤 Cliente:</label>
+    <input type="text" id="cliente" placeholder="Nome do Cliente"/>
+
     <label>📡 RX POWER:</label>
-    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm">
-    
+    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm"/>
+
     <label>🔹 CTO:</label>
-    <input type="text" id="cto" placeholder="Exemplo: 41B">
-    
+    <input type="text" id="cto" placeholder="Exemplo: 41B"/>
+
     <label>🔹 Porta:</label>
-    <input type="text" id="porta" placeholder="Exemplo: 02">
-    
+    <input type="text" id="porta" placeholder="Exemplo: 02"/>
+
     <label>📶 Plano:</label>
-    <input type="text" id="plano" placeholder="Exemplo: 300 MEGA">
-    
+    <input type="text" id="plano" placeholder="Exemplo: 300 MEGA"/>
+
     <label>📡 Channel 2.4GHz:</label>
-    <input type="text" id="ch24" placeholder="Exemplo: 06">
-    
+    <input type="text" id="ch24" placeholder="Exemplo: 06"/>
+
     <label>📡 Frequência 2.4GHz:</label>
-    <input type="text" id="freq24" placeholder="Exemplo: 20MHz">
-    
+    <input type="text" id="freq24" placeholder="Exemplo: 20MHz"/>
+
     <label>📡 Channel 5GHz:</label>
-    <input type="text" id="ch5" placeholder="Exemplo: 44">
-    
+    <input type="text" id="ch5" placeholder="Exemplo: 44"/>
+
     <label>📡 Frequência 5GHz:</label>
-    <input type="text" id="freq5" placeholder="Exemplo: 80MHz">
-    
+    <input type="text" id="freq5" placeholder="Exemplo: 80MHz"/>
+
     <label>🔌 ONU/ONT:</label>
-    <input type="text" id="onu" placeholder="Modelo e Serial">
-    
+    <input type="text" id="onu" placeholder="Modelo e Serial"/>
+
     <label>📶 Roteador:</label>
-    <input type="text" id="roteador" placeholder="Modelo do Roteador">
-    
+    <input type="text" id="roteador" placeholder="Modelo do Roteador"/>
+
+    <label>📺 Box TV / Roku:</label>
+    <input type="text" id="boxtv" placeholder="Modelo do Box ou Roku"/>
+
+    <label>🔑 Credenciais:</label>
+    <input type="text" id="login" placeholder="Login"/>
+    <input type="text" id="pppoe" placeholder="PPPoE"/>
+
     <label>📝 Observações:</label>
-    <textarea id="obs" placeholder="Digite aqui..."></textarea>
-    
+    <textarea id="obs" rows="4" placeholder="Digite aqui..."></textarea>
+
     <button onclick="copiarEabrirTelegram()">📋 Copiar e Abrir Telegram</button>
-</div>
+  </div>
 
-<script>
+  <script>
     function copiarEabrirTelegram() {
-        let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
-            `👨🏽‍🔧 **Técnico:** ${document.getElementById('tecnico').value}\n` +
-            `👤 **Cliente:** ${document.getElementById('cliente').value}\n\n` +
-            `📡 **Sinal de Fibra:**\n` +
-            `🔹 **RX POWER:** ${document.getElementById('rx_power').value}\n` +
-            `🔹 **CTO:** ${document.getElementById('cto').value} | **Porta:** ${document.getElementById('porta').value}\n\n` +
-            `📶 **Plano Ativado:** ${document.getElementById('plano').value}\n\n` +
-            `📡 **Configuração Wi-Fi:**\n` +
-            `- **2.4GHz:** Canal ${document.getElementById('ch24').value} | Frequência ${document.getElementById('freq24').value}\n` +
-            `- **5GHz:** Canal ${document.getElementById('ch5').value} | Frequência ${document.getElementById('freq5').value}\n\n` +
-            `🔌 **Equipamentos:**\n` +
-            `- 🖥 **ONU/ONT:** ${document.getElementById('onu').value}\n` +
-            `- 📶 **Roteador:** ${document.getElementById('roteador').value}\n\n` +
-            `📌 **Observações:** ${document.getElementById('obs').value}\n\n` +
-            `✅ **Realizar testes via cabo Ethernet!**🚀\n\n` +
-            `🎯 **Pode testar!** 🚀`;
-        
-        navigator.clipboard.writeText(mensagem).then(() => {
-            alert("Mensagem copiada para a área de transferência!");
-            window.open("https://t.me/c/1989058391/38071", "_blank");
-        }).catch(err => console.error("Erro ao copiar", err));
-    }
-</script>
+  const getVal = id => document.getElementById(id).value.trim();
+  let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
+    `👨🏽‍🔧 **Técnico:** ${getVal('tecnico')}\n` +
+    `👤 **Cliente:** ${getVal('cliente')}\n\n` +
+    `📡 **Sinal de Fibra:**\n` +
+    `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
+    `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
+    `📶 **Plano Ativado:** ${getVal('plano')}\n\n` +
+    `📡 **Configuração Wi-Fi:**\n` +
+    `- **2.4GHz:** Canal ${getVal('ch24')} | Frequência ${getVal('freq24')}\n` +
+    `- **5GHz:** Canal ${getVal('ch5')} | Frequência ${getVal('freq5')}\n\n` +
+    `🔌 **Equipamentos:**\n` +
+    `- 🖥 **ONU/ONT:** ${getVal('onu')}\n` +
+    `- 📶 **Roteador:** ${getVal('roteador')}\n`;
 
+  if (getVal('boxtv')) {
+    mensagem += `- 📺 **Box TV / Roku:** ${getVal('boxtv')}\n`;
+  }
+
+  if (getVal('login') || getVal('pppoe')) {
+    mensagem += `\n🔑 **Credenciais:**\n`;
+    if (getVal('login')) mensagem += `- 🔓 **Login:** ${getVal('login')}\n`;
+    if (getVal('pppoe')) mensagem += `- 🌐 **PPPoE:** ${getVal('pppoe')}\n`;
+  }
+
+  mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` +
+    `✅ **Realizar testes via cabo Ethernet!** 🚀\n\n` +
+    `🎯 **Pode testar!** 🚀`;
+
+  navigator.clipboard.writeText(mensagem).then(() => {
+    alert("Mensagem copiada para a área de transferência!");
+    window.open("https://t.me/c/1989058391/38071", "_blank");
+
+    // Limpa todos os campos do formulário
+    const campos = document.querySelectorAll("input, textarea, select");
+    campos.forEach(campo => campo.value = "");
+  }).catch(err => console.error("Erro ao copiar", err));
+}
+  </script>
 </body>
 </html>
