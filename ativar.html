@@ -163,32 +163,41 @@
     <label>👤 Cliente:</label>
     <input type="text" id="cliente" placeholder="Nome do Cliente"/>
 
-    <label>📡 RX POWER:</label>
-    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm"/>
-
+<div class="wifi-group"
+<div class="wifi-row">
+  <div class="wifi-col">
     <label>🔹 CTO:</label>
     <input type="text" id="cto" placeholder="Exemplo: 41B"/>
-
+  </div>
+  <div class="wifi-col">
     <label>🔹 Porta:</label>
-   <select id="porta">
-  <option disabled selected>Selecione</option>
-  <option>01</option>
-  <option>02</option>
-  <option>03</option>
-  <option>04</option>
-  <option>05</option>
-  <option>06</option>
-  <option>07</option>
-  <option>08</option>
-  <option>09</option>
-  <option>10</option>
-  <option>11</option>
-  <option>12</option>
-  <option>13</option>
-  <option>14</option>
-  <option>15</option>
-  <option>16</option>
-</select>
+    <select id="porta">
+      <option disabled selected>Selecione</option>
+      <option>01</option>
+      <option>02</option>
+      <option>03</option>
+      <option>04</option>
+      <option>05</option>
+      <option>06</option>
+      <option>07</option>
+      <option>08</option>
+      <option>09</option>
+      <option>10</option>
+      <option>11</option>
+      <option>12</option>
+      <option>13</option>
+      <option>14</option>
+      <option>15</option>
+      <option>16</option>
+    </select>
+  </div>
+</div>
+    <label>📡 RX POWER:</label>
+    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm"/>
+</div>
+
+
+
 
     <label>💳 Plano:</label>
       <select id="plano">
@@ -271,46 +280,49 @@
     <button onclick="copiarEabrirTelegram()">📋 Copiar e Abrir Telegram</button>
   </div>
 
-  <script>
-    function copiarEabrirTelegram() {
-  const getVal = id => document.getElementById(id).value.trim();
-  let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
-    `👨🏽‍🔧 **Técnico:** ${getVal('tecnico')}\n` +
-    `👤 **Cliente:** ${getVal('cliente')}\n\n` +
-    `📡 **Sinal de Fibra:**\n` +
-    `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
-    `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
-    `📶 **Plano Ativado:** ${getVal('plano')}\n\n` +
-    `📡 **Configuração Wi-Fi:**\n` +
-    `- **2.4GHz:** Canal ${getVal('ch24')} | Frequência ${getVal('freq24')}\n` +
-    `- **5GHz:** Canal ${getVal('ch5')} | Frequência ${getVal('freq5')}\n\n` +
-    `🔌 **Equipamentos:**\n` +
-    `- 🖥 **ONU/ONT:** ${getVal('onu')}\n` +
-    `- 📶 **Roteador:** ${getVal('roteador')}\n`;
+<script>
+  function copiarEabrirTelegram() {
+    const getVal = id => document.getElementById(id).value.trim();
+    let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
+      `👨🏽‍🔧 **Técnico:** ${getVal('tecnico')}\n` +
+      `👤 **Cliente:**\n ${getVal('cliente')}\n\n` +
+      `📡 **Sinal de Fibra:**\n` +
+      `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
+      `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
+      `📶 **Plano Ativado:** ${getVal('plano')}\n\n` +
+      `📡 **Configuração Wi-Fi:**\n` +
+      `- **2.4GHz:** Ch ${getVal('ch24')} | ${getVal('freq24')}\n` +
+      `- **5GHz:** Ch ${getVal('ch5')} | ${getVal('freq5')}\n\n` +
+      `🔌 **Equipamentos:**\n` +
+      `- 🖥 **ONU/ONT:** ${getVal('onu')}\n`;
 
-  if (getVal('boxtv')) {
-    mensagem += `- 📺 **Box TV / Roku:** ${getVal('boxtv')}\n`;
+    if (getVal('roteador')) {
+      mensagem += `- 📶 **Roteador:** ${getVal('roteador')}\n`;
+    }
+
+    if (getVal('boxtv')) {
+      mensagem += `- 📺 **Box TV / Roku:** ${getVal('boxtv')}\n`;
+    }
+
+    if (getVal('login') || getVal('pppoe')) {
+      mensagem += `\n🔑 **Credenciais:**\n`;
+      if (getVal('login')) mensagem += `- 🔓 **Login:** ${getVal('login')}\n`;
+      if (getVal('pppoe')) mensagem += `- 🌐 **PPPoE:** ${getVal('pppoe')}\n`;
+    }
+
+    mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` +
+      `✅ **Realizar testes via cabo Ethernet!** 🚀\n\n` +
+      `🎯 **Pode testar!** 🚀`;
+
+    navigator.clipboard.writeText(mensagem).then(() => {
+      alert("Mensagem copiada para a área de transferência!");
+      window.open("https://t.me/c/1989058391/38071", "_blank");
+
+      // Limpa todos os campos do formulário
+      const campos = document.querySelectorAll("input, textarea, select");
+      campos.forEach(campo => campo.value = "");
+    }).catch(err => console.error("Erro ao copiar", err));
   }
-
-  if (getVal('login') || getVal('pppoe')) {
-    mensagem += `\n🔑 **Credenciais:**\n`;
-    if (getVal('login')) mensagem += `- 🔓 **Login:** ${getVal('login')}\n`;
-    if (getVal('pppoe')) mensagem += `- 🌐 **PPPoE:** ${getVal('pppoe')}\n`;
-  }
-
-  mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` +
-    `✅ **Realizar testes via cabo Ethernet!** 🚀\n\n` +
-    `🎯 **Pode testar!** 🚀`;
-
-  navigator.clipboard.writeText(mensagem).then(() => {
-    alert("Mensagem copiada para a área de transferência!");
-    window.open("https://t.me/c/1989058391/38071", "_blank");
-
-    // Limpa todos os campos do formulário
-    const campos = document.querySelectorAll("input, textarea, select");
-    campos.forEach(campo => campo.value = "");
-  }).catch(err => console.error("Erro ao copiar", err));
-}
-  </script>
+</script>
 </body>
 </html>
