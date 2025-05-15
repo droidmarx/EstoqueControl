@@ -284,12 +284,12 @@
   function copiarEabrirTelegram() {
     const getVal = id => document.getElementById(id).value.trim();
     let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
-      `👨🏽‍🔧 **Técnico:** ${getVal('tecnico')}\n` +
-      `👤 **Cliente:**\n ${getVal('cliente')}\n\n` +
+      `👨🏽‍🔧 **Técnio:** ${getVal('tecnico')}\n` +
+      `👤 **Cliente:** ${getVal('cliente')}\n\n` +
       `📡 **Sinal de Fibra:**\n` +
       `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
       `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
-      `📶 **Plano Ativado:** ${getVal('plano')}\n\n` +
+      `📶 **Plano Ativado:**\n ${getVal('plano')}\n\n` +
       `📡 **Configuração Wi-Fi:**\n` +
       `- **2.4GHz:** Ch ${getVal('ch24')} | ${getVal('freq24')}\n` +
       `- **5GHz:** Ch ${getVal('ch5')} | ${getVal('freq5')}\n\n` +
