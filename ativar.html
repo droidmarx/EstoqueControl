@@ -147,7 +147,7 @@
 </head>
 <body>
   <div class="container">
-    <h2>🔧 Ativação de Serviço</h2>
+    <h2>Ativação de Serviço</h2><br
 
     <label>👨🏽‍🔧 Técnico:</label>
     <select id="tecnico">
@@ -192,8 +192,19 @@
     </select>
   </div>
 </div>
+
+  
+<div class="wifi-row">
+  <div class="wifi-col">
+    <label>⚙️ RANGE:</label>
+    <input type="text" id="range" placeholder="Ex: 19/20 dBm"/>
+  </div>
+  <div class="wifi-col">
     <label>📡 RX POWER:</label>
-    <input type="text" id="rx_power" placeholder="Exemplo: -19.06 dBm"/>
+    <input type="text" id="rx_power" placeholder="Ex: -19.06 dBm"/>
+  </div>
+</div>
+
 </div>
 
 
@@ -283,10 +294,11 @@
 <script>
   function copiarEabrirTelegram() {
     const getVal = id => document.getElementById(id).value.trim();
-    let mensagem = `🔧 **ATIVAÇÃO CONCLUÍDA!** ✅\n\n` +
-      `👨🏽‍🔧 **Técnio:** ${getVal('tecnico')}\n` +
+    let mensagem = `✅ **ATIVAÇÃO CONCLUÍDA!** \n\n` +
+      `👨🏽‍🔧 **Técnico:** ${getVal('tecnico')}\n` +
       `👤 **Cliente:** ${getVal('cliente')}\n\n` +
       `📡 **Sinal de Fibra:**\n` +
+      `🔹 **RANGE:** ${getVal('range')}\n` +
       `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
       `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
       `📶 **Plano Ativado:**\n ${getVal('plano')}\n\n` +
@@ -311,8 +323,8 @@
     }
 
     mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` +
-      `✅ **Realizar testes via cabo Ethernet!** 🚀\n\n` +
-      `🎯 **Pode testar!** 🚀`;
+      `⚠️ **Realizar testes via cabo Ethernet!** \n\n` +
+      `⚙️ **Pode testar!** `;
 
     navigator.clipboard.writeText(mensagem).then(() => {
       alert("Mensagem copiada para a área de transferência!");
