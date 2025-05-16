@@ -301,12 +301,12 @@
       `🔹 **RANGE:** ${getVal('range')}\n` +
       `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
       `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
-      `📶 **Plano Ativado:**\n ${getVal('plano')}\n\n` +
+      `💳 **Plano Ativado:**\n ${getVal('plano')}\n\n` +
       `📡 **Configuração Wi-Fi:**\n` +
-      `- **2.4GHz:** Ch ${getVal('ch24')} | ${getVal('freq24')}\n` +
-      `- **5GHz:** Ch ${getVal('ch5')} | ${getVal('freq5')}\n\n` +
+      `🔹 **2.4GHz:** Ch ${getVal('ch24')} | ${getVal('freq24')}\n` +
+      `🔹 **5.8GHz:** Ch ${getVal('ch5')} | ${getVal('freq5')}\n\n` +
       `🔌 **Equipamentos:**\n` +
-      `- 🖥 **ONU/ONT:** ${getVal('onu')}\n`;
+      `🔹 **ONU/ONT:** ${getVal('onu')}\n`;
 
     if (getVal('roteador')) {
       mensagem += `- 📶 **Roteador:** ${getVal('roteador')}\n`;
@@ -322,9 +322,9 @@
       if (getVal('pppoe')) mensagem += `- 🌐 **PPPoE:** ${getVal('pppoe')}\n`;
     }
 
-    mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` +
-      `⚠️ **Realizar testes via cabo Ethernet!** \n\n` +
-      `⚙️ **Pode testar!** `;
+ if (getVal('obs')){
+    mensagem += `\n📌 **Observações:** ${getVal('obs')}\n\n` }
+    mensagem +=  `\n\n ⚙️ **Pode testar !** `;
 
     navigator.clipboard.writeText(mensagem).then(() => {
       alert("Mensagem copiada para a área de transferência!");
