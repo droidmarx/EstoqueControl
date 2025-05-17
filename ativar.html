@@ -162,6 +162,16 @@
 
     <label>👤 Cliente:</label>
     <input type="text" id="cliente" placeholder="Nome do Cliente"/>
+    
+        <label>💳 Plano:</label>
+    <select id="plano">
+      <option selected>Outro</option>
+      <option>300 MEGA - R$ 99,90</option>
+      <option>GIGA PLAY - R$ 119,90</option>
+      <option>GIGA PLUS - R$ 139,90</option>
+      <option>600 MEGA BLPJ - R$ 129,90</option>
+    </select>
+    <br><br>
 
 <div class="wifi-group">
 <div class="wifi-row">
@@ -210,15 +220,7 @@
 
 
 
-    <label>💳 Plano:</label>
-      <select id="plano">
-        <option selected>Outro</option>
-        <option>300 MEGA - R$ 99,90</option>
-        <option>GIGA PLAY - R$ 119,90</option>
-        <option>GIGA PLUS - R$ 139,90</option>
-        <option>600 MEGA BLPJ - R$ 129,90</option>
-      </select>
-      <br><br>
+
 
    <div class="wifi-group">
   <h3>📶 Rede 2.4GHz</h3>
@@ -244,7 +246,7 @@
 </div>
 
 <div class="wifi-group">
-  <h3>📶 Rede 5GHz</h3>
+  <h3>📶 Rede 5.8GHz</h3>
   <div class="wifi-row">
     <div class="wifi-col">
       <label class="wifi-label">Frequência:</label>
@@ -300,7 +302,8 @@
       `📡 **Sinal de Fibra:**\n` +
       `🔹 **RANGE:** ${getVal('range')}\n` +
       `🔹 **RX POWER:** ${getVal('rx_power')}\n` +
-      `🔹 **CTO:** ${getVal('cto')} | **Porta:** ${getVal('porta')}\n\n` +
+      `🔹 **CTO:** ${getVal('cto')} \n`+
+      `🔹 **PORTA:** ${getVal('porta')}\n\n` +
       `💳 **Plano Ativado:**\n ${getVal('plano')}\n\n` +
       `📡 **Configuração Wi-Fi:**\n` +
       `🔹 **2.4GHz:** Ch ${getVal('ch24')} | ${getVal('freq24')}\n` +
