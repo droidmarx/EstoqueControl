@@ -509,4 +509,483 @@
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
       clearTimeout(timeoutId);
-      const { latitude: lat, longitude: lng } = pos.c
+      const { latitude: lat, longitude: lng } = pos.coords;
+      const customIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        shadowSize: [41, 41]
+      });
+      updateMarker(lat, lng, mapInstalacao, 'markerInstalacao', customIcon);
+      const endereco = await obterEndereco(lat, lng);
+      document.getElementById('endereco').value = endereco;
+    } catch {
+      clearTimeout(timeoutId);
+      alert('Não foi possível obter sua localização. Tente novamente.');
+    } finally {
+      loading.style.display = 'none';
+      document.getElementById('usarLocalizacao').disabled = false;
+    }
+  }
+
+  async function obterEndereco(lat, lng) {
+    try {
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Erro na API de endereço');
+      const data = await response.json();
+      return `${data.address?.road || 'Rua desconhecida'}, ${data.address?.house_number || 's/n'}`;
+    } catch {
+      return 'Endereço não disponível';
+    }
+  }
+
+  async function buscarEndereco(endereco) {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(endereco)}&format=jsonv2`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Erro na API de busca');
+      const data = await response.json();
+      if (data.length === 0) {
+        alert('Endereço não encontrado.');
+        return;
+      }
+      const { lat, lon: lng } = data[0];
+      const customIcon = L.icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        shadowSize: [41, 41]
+      });
+      updateMarker(lat, lng, mapInstalacao, 'markerInstalacao', customIcon);
+    } catch {
+      alert('Erro ao buscar endereço.');
+    }
+  }
+
+  function toggleNav() {
+    const nav = document.querySelector('nav');
+    const isMinimized = nav.classList.toggle('nav-minimized');
+    sessionStorage.setItem('navMinimized', isMinimized);
+  }
+
+  function adicionarMaterial() {
+    const nome = document.getElementById('nomeMaterial').value.trim();
+    const qtd = parseInt(document.getElementById('qtdMaterial').value);
+    if (!nome) {
+      alert('Por favor, informe o nome do material.');
+      return;
+    }
+    if (isNaN(qtd) || qtd < 1) {
+      alert('Por favor, informe uma quantidade válida.');
+      return;
+    }
+
+    try {
+      const materiais = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+      materiais[nome] = qtd;
+      localStorage.setItem('materiaisDisponiveis', JSON.stringify(materiais));
+      atualizarListaMateriais();
+      atualizarMateriaisSelecionaveis();
+      document.getElementById('nomeMaterial').value = '';
+      document.getElementById('qtdMaterial').value = '';
+    } catch (e) {
+      alert('Erro ao salvar material.');
+      console.error(e);
+    }
+  }
+
+  function atualizarListaMateriais() {
+    const container = document.getElementById('listaMateriais');
+    try {
+      const materiais = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+      container.innerHTML = Object.entries(materiais).map(([nome, qtd]) => `
+        <div class="flex justify-between items-center bg-gray-700 p-3 border border-gray-600 rounded-lg" data-material="${nome}">
+          <span class="material-name" data-original="${nome}">${nome}</span>
+          <span class="material-qtd" data-original="${qtd}">${qtd}</span>
+          <div>
+            <i class="fas fa-edit ml-2 cursor-pointer edit-btn" onclick="editMaterial('${nome}')"></i>
+            <button class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-primary-color ml-2" onclick="removerMaterial('${nome}')">Remover</button>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      container.innerHTML = '<p class="text-red-600">Erro ao carregar materiais.</p>';
+      console.error(e);
+    }
+  }
+
+  function removerMaterial(nome) {
+    try {
+      const materiais = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+      delete materiais[nome];
+      localStorage.setItem('materiaisDisponiveis', JSON.stringify(materiais));
+      atualizarListaMateriais();
+      atualizarMateriaisSelecionaveis();
+    } catch (e) {
+      alert('Erro ao remover material.');
+      console.error(e);
+    }
+  }
+
+  function editMaterial(nome) {
+    const container = document.getElementById('listaMateriais');
+    const materialItem = container.querySelector(`[data-material="${nome}"]`);
+    if (!materialItem) {
+      console.error(`Material ${nome} não encontrado.`);
+      return;
+    }
+
+    const nomeSpan = materialItem.querySelector('.material-name');
+    const qtdSpan = materialItem.querySelector('.material-qtd');
+
+    const originalNome = nomeSpan.dataset.original;
+    const originalQtd = qtdSpan.dataset.original;
+
+    nomeSpan.innerHTML = `<input type="text" class="edit-input w-24 p-1 bg-gray-600 border border-gray-500 rounded-lg text-gray-200" value="${originalNome}">`;
+    qtdSpan.innerHTML = `<input type="number" min="0" class="edit-input w-16 p-1 bg-gray-600 border border-gray-500 rounded-lg text-gray-200" value="${originalQtd}">`;
+
+    const nomeInput = nomeSpan.querySelector('input');
+    const qtdInput = qtdSpan.querySelector('input');
+
+    nomeInput.focus();
+
+    nomeInput.addEventListener('blur', () => {
+      const newNome = nomeInput.value.trim();
+      if (!newNome) {
+        alert('O nome do material não pode estar vazio.');
+        nomeInput.value = originalNome;
+        return;
+      }
+      try {
+        const materiais = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+        const currentQtd = materiais[originalNome] || 0;
+        delete materiais[originalNome];
+        materiais[newNome] = currentQtd;
+        localStorage.setItem('materiaisDisponiveis', JSON.stringify(materiais));
+        nomeSpan.dataset.original = newNome;
+        nomeSpan.textContent = newNome;
+        materialItem.dataset.material = newNome;
+        atualizarMateriaisSelecionaveis();
+      } catch (e) {
+        alert('Erro ao salvar edição do nome.');
+        console.error(e);
+        nomeSpan.textContent = originalNome;
+      }
+    });
+
+    qtdInput.addEventListener('blur', () => {
+      const newQtd = parseInt(qtdInput.value) || 0;
+      if (newQtd < 0) {
+        alert('A quantidade não pode ser negativa.');
+        qtdInput.value = originalQtd;
+        return;
+      }
+      try {
+        const materiais = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+        materiais[originalNome] = newQtd;
+        localStorage.setItem('materiaisDisponiveis', JSON.stringify(materiais));
+        qtdSpan.dataset.original = newQtd;
+        qtdSpan.textContent = newQtd;
+        atualizarMateriaisSelecionaveis();
+      } catch (e) {
+        alert('Erro ao salvar edição da quantidade.');
+        console.error(e);
+        qtdSpan.textContent = originalQtd;
+      }
+    });
+  }
+
+  function atualizarMateriaisSelecionaveis() {
+    const container = document.getElementById('materiaisSelecionaveis');
+    try {
+      const disponiveis = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+      const usados = JSON.parse(localStorage.getItem('materiaisSelecionados') || '{}');
+      container.innerHTML = Object.entries(disponiveis).map(([nome, total]) => {
+        const atual = usados[nome] || 0;
+        return `
+          <div class="flex justify-between items-center bg-gray-700 p-3 border border-gray-600 rounded-lg">
+            <span><strong>${nome}</strong> (${total} disponíveis)</span>
+            <input type="number" min="0" max="${total}" value="${atual}" class="w-16 p-2 bg-gray-600 border border-gray-500 rounded-lg text-gray-200 focus:ring-2 focus:ring-secondary-color" onchange="atualizarUsoMaterial('${nome}', this.value)">
+          </div>
+        `;
+      }).join('');
+    } catch (e) {
+      container.innerHTML = '<p class="text-red-600">Erro ao carregar materiais selecionáveis.</p>';
+      console.error(e);
+    }
+  }
+
+  function atualizarUsoMaterial(nome, valor) {
+    try {
+      const usados = JSON.parse(localStorage.getItem('materiaisSelecionados') || '{}');
+      const disponiveis = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+      const qtd = Math.min(Math.max(0, parseInt(valor) || 0), disponiveis[nome] || 0);
+      usados[nome] = qtd;
+      localStorage.setItem('materiaisSelecionados', JSON.stringify(usados));
+    } catch (e) {
+      alert('Erro ao atualizar uso de material.');
+      console.error(e);
+    }
+  }
+
+  function atualizarContadorInstalacoes() {
+    try {
+      const historico = JSON.parse(localStorage.getItem('historicoInstalacoes') || '[]');
+      const now = new Date();
+      const mesAtual = now.getMonth();
+      const anoAtual = now.getFullYear();
+      const instalacoesMes = historico.filter(item => {
+        const data = new Date(item.timestamp);
+        return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
+      }).length;
+      document.getElementById('contadorInstalacoes').textContent = `${instalacoesMes} instalações este mês`;
+    } catch (e) {
+      document.getElementById('contadorInstalacoes').textContent = 'Erro ao carregar contador';
+      console.error(e);
+    }
+  }
+
+  function salvarHistorico(instalacao) {
+    try {
+      const historico = JSON.parse(localStorage.getItem('historicoInstalacoes') || '[]');
+      historico.push({ ...instalacao, timestamp: new Date().toISOString() });
+      localStorage.setItem('historicoInstalacoes', JSON.stringify(historico));
+      atualizarContadorInstalacoes();
+      carregarHistorico();
+    } catch (e) {
+      alert('Erro ao salvar histórico.');
+      console.error(e);
+    }
+  }
+
+  function carregarHistorico() {
+    const container = document.getElementById('historicoInstalacoes');
+    try {
+      const historico = JSON.parse(localStorage.getItem('historicoInstalacoes') || '[]');
+      const searchTerm = document.getElementById('searchHistorico').value.toLowerCase();
+      const filteredHistorico = searchTerm
+        ? historico.filter(item => 
+            Object.values(item).some(value => 
+              value.toString().toLowerCase().includes(searchTerm)
+            )
+          )
+        : historico;
+
+      container.innerHTML = filteredHistorico.length
+        ? filteredHistorico.map(item => `
+          <div class="historico-item" data-details='${JSON.stringify(item)}'>
+            <p class="text-lg font-semibold">${item.cliente}</p>
+          </div>
+        `).join('')
+        : '<p class="text-gray-400">Nenhuma instalação registrada.</p>';
+
+      // Adicionar evento de clique para expandir
+      document.querySelectorAll('.historico-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const details = JSON.parse(item.dataset.details);
+          if (item.classList.contains('expanded')) {
+            item.innerHTML = `<p class="text-lg font-semibold">${details.cliente}</p>`;
+            item.classList.remove('expanded');
+          } else {
+            item.innerHTML = `
+              <p><strong>Cliente:</strong> ${details.cliente}</p>
+              <p><strong>CTO:</strong> ${details.cto} | <strong>Porta:</strong> ${details.porta}</p>
+              <p><strong>Sinal CTO:</strong> ${details.sinalCTO} dBm | <strong>Sinal Cliente:</strong> ${details.sinalCliente} dBm</p>
+              <p><strong>Data:</strong> ${new Date(details.timestamp).toLocaleString()}</p>
+              <p><strong>Endereço:</strong> ${details.endereco}</p>
+              <p><strong>Mapa:</strong> <a href="${details.linkMapa}" target="_blank" rel="noopener noreferrer" class="text-secondary-color hover:underline">Abrir no Google Maps</a></p>
+            `;
+            item.classList.add('expanded');
+          }
+        });
+      });
+    } catch (e) {
+      container.innerHTML = '<p class="text-red-600">Erro ao carregar histórico.</p>';
+      console.error(e);
+    }
+  }
+
+  function validateForm(formData) {
+    const errors = [];
+    if (!formData.get('tipoTrabalho')) errors.push({ field: 'tipoTrabalho', message: 'Por favor selecione o tipo de trabalho.' });
+    if (!formData.get('tecnico')) errors.push({ field: 'tecnico', message: 'Por favor selecione o técnico.' });
+    if (!formData.get('cliente').trim()) errors.push({ field: 'cliente', message: 'Por favor informe o cliente.' });
+    if (!formData.get('cto').trim()) errors.push({ field: 'cto', message: 'Por favor informe o CTO.' });
+    if (!formData.get('porta')) errors.push({ field: 'porta', message: 'Por favor selecione a porta.' });
+    const sinalCTO = parseInt(formData.get('sinalCTO'));
+    if (sinalCTO < -30 || sinalCTO > -10) errors.push({ field: 'sinalCTO', message: 'Por favor ajuste o sinal da CTO entre -30 e -10 dBm.' });
+    const sinalCliente = parseInt(formData.get('sinalCliente'));
+    if (sinalCliente < -30 || sinalCliente > -10) errors.push({ field: 'sinalCliente', message: 'Por favor ajuste o sinal do cliente entre -30 e -10 dBm.' });
+
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+    errors.forEach(({ field, message }) => {
+      const errorEl = document.querySelector(`#${field} + p.error-message`) || document.querySelector(`[name="${field}"] + p.error-message`);
+      if (errorEl) errorEl.style.display = 'block';
+    });
+
+    return errors.length === 0;
+  }
+
+  document.getElementById('formInstalacao').addEventListener('submit', async e => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    if (!validateForm(formData)) return;
+
+    const instalacao = {
+      tipo: formData.get('tipoTrabalho'),
+      tecnico: formData.get('tecnico'),
+      cliente: formData.get('cliente').trim(),
+      cto: formData.get('cto').trim(),
+      porta: formData.get('porta'),
+      sinalCTO: formData.get('sinalCTO'),
+      sinalCliente: formData.get('sinalCliente'),
+      endereco: formData.get('endereco').trim() || 'Endereço não definido',
+      lat: sessionStorage.getItem('lat') || '-23.21345',
+      lng: sessionStorage.getItem('lng') || '-47.29821'
+    };
+
+    const linkMapa = `https://maps.google.com/?q=${instalacao.lat},${instalacao.lng}`;
+    try {
+      const materiaisSelecionados = JSON.parse(localStorage.getItem('materiaisSelecionados') || '{}');
+      const materiaisDisponiveis = JSON.parse(localStorage.getItem('materiaisDisponiveis') || '{}');
+
+      // Validar e atualizar estoque de materiais
+      let estoqueAtualizado = { ...materiaisDisponiveis };
+      let erroEstoque = false;
+      for (const [nome, qtdUsada] of Object.entries(materiaisSelecionados)) {
+        const qtdDisponivel = materiaisDisponiveis[nome] || 0;
+        if (qtdUsada > qtdDisponivel) {
+          alert(`Quantidade insuficiente de ${nome}. Disponível: ${qtdDisponivel}, Usada: ${qtdUsada}.`);
+          erroEstoque = true;
+          break;
+        }
+        estoqueAtualizado[nome] = qtdDisponivel - qtdUsada;
+      }
+
+      if (erroEstoque) return;
+
+      // Atualizar o estoque no localStorage
+      localStorage.setItem('materiaisDisponiveis', JSON.stringify(estoqueAtualizado));
+      localStorage.removeItem('materiaisSelecionados');
+      atualizarListaMateriais();
+      atualizarMateriaisSelecionaveis();
+
+      const materiaisTexto = Object.entries(materiaisSelecionados)
+        .filter(([_, qtd]) => qtd > 0)
+        .map(([nome, qtd]) => `• ${nome}: ${qtd}`)
+        .join('\n') || 'Nenhum material registrado.';
+
+      const msg = `📡 **Registro de Instalação - IndaiaFibra**\n\n` +
+                  `🔧 **Tipo de Trabalho:** ${instalacao.tipo}\n` +
+                  `👨‍🔧 **Técnico:** ${instalacao.tecnico}\n` +
+                  `🙍 **Cliente:** ${instalacao.cliente}\n` +
+                  `🧰 **CTO:** ${instalacao.cto}\n` +
+                  `🔌 **Porta:** ${instalacao.porta}\n` +
+                  `📶 **Sinal CTO:** ${instalacao.sinalCTO} dBm\n` +
+                  `📶 **Sinal Cliente:** ${instalacao.sinalCliente} dBm\n` +
+                  `📍 **Endereço:** ${instalacao.endereco} ${linkMapa}\n\n` +
+                  `📦 *Materiais Utilizados:*\n${materiaisTexto}`;
+
+      await navigator.clipboard.writeText(msg);
+      alert('Mensagem copiada! Agora cole no grupo do Telegram.');
+      window.open('https://t.me/c/1989058391/38071', '_blank');
+
+      salvarHistorico({ ...instalacao, linkMapa });
+      carregarHistorico();
+      form.reset();
+      document.getElementById('valorSinalCTO').textContent = '-20 dBm';
+      document.getElementById('valorSinalCliente').textContent = '-20 dBm';
+      document.getElementById('sinalCTO').value = '-20';
+      document.getElementById('sinalCliente').value = '-20';
+    } catch (err) {
+      alert('Erro ao processar a instalação.');
+      console.error(err);
+      // Rollback em caso de erro
+      localStorage.setItem('materiaisDisponiveis', JSON.stringify(materiaisDisponiveis));
+      localStorage.setItem('materiaisSelecionados', JSON.stringify(materiaisSelecionados));
+      atualizarListaMateriais();
+      atualizarMateriaisSelecionaveis();
+    }
+  });
+
+  document.getElementById('sinalCTO').addEventListener('input', () => {
+    document.getElementById('valorSinalCTO').textContent = `${document.getElementById('sinalCTO').value} dBm`;
+  });
+
+  document.getElementById('sinalCliente').addEventListener('input', () => {
+    document.getElementById('valorSinalCliente').textContent = `${document.getElementById('sinalCliente').value} dBm`;
+  });
+
+  document.getElementById('usarLocalizacao').addEventListener('click', usarLocalizacao);
+
+  document.getElementById('endereco').addEventListener('input', (e) => {
+    clearTimeout(enderecoTimeout);
+    enderecoTimeout = setTimeout(() => {
+      const endereco = e.target.value.trim();
+      if (endereco) buscarEndereco(endereco);
+    }, 1000);
+  });
+
+  document.getElementById('adicionarMaterial').addEventListener('click', adicionarMaterial);
+
+  document.getElementById('limparHistorico').addEventListener('click', () => {
+    if (confirm('Tem certeza que deseja limpar o histórico?')) {
+      localStorage.removeItem('historicoInstalacoes');
+      carregarHistorico();
+      atualizarContadorInstalacoes();
+    }
+  });
+
+  document.getElementById('openGoogleMaps').addEventListener('click', () => {
+    window.open('https://goo.gl/maps/88VJ2ZpSiy4F2Qas7', '_blank');
+  });
+
+  document.getElementById('openGoogleEarth').addEventListener('click', () => {
+    window.open('geo:-23.21345,-47.29821', '_blank');
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.querySelector('span').style.display = 'none';
+      });
+      document.getElementById(btn.dataset.tab).classList.remove('hidden');
+      btn.classList.add('active');
+      btn.querySelector('span').style.display = 'flex';
+      toggleNav();
+      if (btn.dataset.tab === 'instalacao') setTimeout(() => mapInstalacao.invalidateSize(), 100);
+    });
+  });
+
+  // Busca em tempo real no histórico
+  document.getElementById('searchHistorico').addEventListener('input', (e) => {
+    carregarHistorico();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      initMaps();
+      atualizarListaMateriais();
+      atualizarMateriaisSelecionaveis();
+      carregarHistorico();
+      atualizarContadorInstalacoes();
+      const navMinimized = sessionStorage.getItem('navMinimized') === 'true';
+      if (navMinimized) document.querySelector('nav').classList.add('nav-minimized');
+      document.querySelector('.tab-btn[data-tab="instalacao"]').click();
+    } catch (e) {
+      alert('Erro ao inicializar a aplicação.');
+      console.error(e);
+    }
+  });
+</script>
+</body>
+</html>
