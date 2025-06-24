@@ -11,12 +11,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #1E3A8A;
-      --secondary-color: #06B6D4;
-      --background-color: linear-gradient(to bottom, #1F2937, #111827);
-      --text-color: #F9FAFB;
-      --error-color: #DC2626;
-    }
+  --primary-color: #1E3A8A;
+  --secondary-color: #06B6D4;
+  --background-color: linear-gradient(to bottom, #1F2937, #111827);
+  --text-color: #F9FAFB;
+  --error-color: #DC2626;
+  --nav-background-color: #1F2937;
+  --section-background-color: #1F2937;
+  --input-bg: #374151;
+  --input-border: #4B5563;
+  --input-text: #F9FAFB;
+  --muted-text: #9CA3AF;
+}
 
     body {
       font-family: 'Inter', sans-serif;
@@ -293,6 +299,7 @@
               <label for="porta" class="block font-semibold text-gray-200">Porta *</label>
               <select id="porta" name="porta" required class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-200 focus:ring-2 focus:ring-secondary-color">
                 <option value="">Selecione</option>
+                 <option value="1">Porta 1</option>
                 <option value="2">Porta 2</option>
                 <option value="3">Porta 3</option>
                 <option value="4">Porta 4</option>
@@ -313,21 +320,21 @@
             </div>
           </div>
           <div>
-            <label for="sinalCTO" class="block font-semibold text-gray-200">Sinal da CTO (-30 a -10 dBm) *</label>
-            <input id="sinalCTO" name="sinalCTO" type="range" min="-30" max="-10" step="1" value="-20" class="w-full">
-            <p id="valorSinalCTO" class="text-sm text-gray-400 mt-1">-20 dBm</p>
-            <p class="error-message mt-1">Por favor ajuste o sinal da CTO entre -30 e -10 dBm.</p>
-          </div>
-          <div>
-            <label for="sinalCliente" class="block font-semibold text-gray-200">Sinal do Cliente (-30 a -10 dBm) *</label>
-            <input id="sinalCliente" name="sinalCliente" type="range" min="-30" max="-10" step="1" value="-20" class="w-full">
-            <p id="valorSinalCliente" class="text-sm text-gray-400 mt-1">-20 dBm</p>
-            <p class="error-message mt-1">Por favor ajuste o sinal do cliente entre -30 e -10 dBm.</p>
-          </div>
+  <label for="sinalCTO" class="block font-semibold text-gray-200">Sinal da CTO (-30,00 a -10,00 dBm) *</label>
+  <input id="sinalCTO" name="sinalCTO" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="w-full">
+  <p id="valorSinalCTO" class="text-sm text-gray-400 mt-1">-20,00 dBm</p>
+  <p class="error-message mt-1">Por favor ajuste o sinal da CTO entre -30,00 e -10,00 dBm.</p>
+</div>
+<div>
+  <label for="sinalCliente" class="block font-semibold text-gray-200">Sinal do Cliente (-30,00 a -10,00 dBm) *</label>
+  <input id="sinalCliente" name="sinalCliente" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="w-full">
+  <p id="valorSinalCliente" class="text-sm text-gray-400 mt-1">-20,00 dBm</p>
+  <p class="error-message mt-1">Por favor ajuste o sinal do cliente entre -30,00 e -10,00 dBm.</p>
+</div>
           <div>
             <label class="block font-semibold text-gray-200">Localização *</label>
             <div id="mapInstalacao" class="mt-2"></div>
-            <button type="button" id="usarLocalizacao" class="bg-secondary-color text-white px-4 py-2 rounded-lg hover:bg-primary-color flex items-center">
+            <button type="button" id="usarLocalizacao" class="bg-secondary-color text-white px-7 py-3 rounded-lg hover:bg-primary-color flex items-center">
               <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
             </button>
             <input id="endereco" name="endereco" type="text" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg mt-3 text-gray-200 focus:ring-2 focus:ring-secondary-color" placeholder="Digite ou selecione no mapa">
@@ -426,21 +433,79 @@
   let enderecoTimeout;
 
   // Função para trocar o tema
-  function toggleTheme() {
-    const root = document.documentElement;
-    const currentTheme = sessionStorage.getItem('theme') || 'default';
-    if (currentTheme === 'default') {
-      root.style.setProperty('--primary-color', '#FF6B6B');
-      root.style.setProperty('--secondary-color', '#4ECDC4');
-      sessionStorage.setItem('theme', 'alternate');
-    } else {
-      root.style.setProperty('--primary-color', '#1E3A8A');
-      root.style.setProperty('--secondary-color', '#06B6D4');
-      sessionStorage.setItem('theme', 'default');
-    }
-    // Atualiza o gradiente do logo-text
-    document.querySelector('.logo-text').style.backgroundImage = `linear-gradient(to right, ${root.style.getPropertyValue('--primary-color')}, ${root.style.getPropertyValue('--secondary-color')})`;
+function toggleTheme() {
+  const root = document.documentElement;
+  const currentTheme = sessionStorage.getItem('theme') || 'default';
+  
+  if (currentTheme === 'default') {
+    // Tema claro e vibrante
+    root.style.setProperty('--primary-color', '#7C3AED'); // Roxo
+    root.style.setProperty('--secondary-color', '#38BDF8'); // Azul claro
+    root.style.setProperty('--background-color', 'linear-gradient(to bottom, #FFFFFF, #F3E8FF)');
+    root.style.setProperty('--text-color', '#1F2937');
+    root.style.setProperty('--nav-background-color', '#FFFFFF');
+    root.style.setProperty('--section-background-color', '#EDE9FE');
+    root.style.setProperty('--input-bg', '#F3F4F6'); // cinza claro
+    root.style.setProperty('--input-border', '#D1D5DB'); // borda clara
+    root.style.setProperty('--input-text', '#1F2937');
+    root.style.setProperty('--muted-text', '#6B7280'); // para textos auxiliares
+    sessionStorage.setItem('theme', 'alternate');
+  } else {
+    // Tema escuro padrão
+    root.style.setProperty('--primary-color', '#1E3A8A');
+    root.style.setProperty('--secondary-color', '#06B6D4');
+    root.style.setProperty('--background-color', 'linear-gradient(to bottom, #1F2937, #111827)');
+    root.style.setProperty('--text-color', '#F9FAFB');
+    root.style.setProperty('--nav-background-color', '#1F2937');
+    root.style.setProperty('--section-background-color', '#1F2937');
+    root.style.setProperty('--input-bg', '#374151'); // gray-700
+    root.style.setProperty('--input-border', '#4B5563'); // gray-600
+    root.style.setProperty('--input-text', '#F9FAFB');
+    root.style.setProperty('--muted-text', '#9CA3AF');
+    sessionStorage.setItem('theme', 'default');
   }
+  
+  // Atualiza fundo e texto do body
+  document.body.style.background = root.style.getPropertyValue('--background-color');
+  document.body.style.color = root.style.getPropertyValue('--text-color');
+  
+  // Atualiza logo gradient
+  const logo = document.querySelector('.logo-text');
+  if (logo) {
+    logo.style.backgroundImage = `linear-gradient(to right, ${root.style.getPropertyValue('--primary-color')}, ${root.style.getPropertyValue('--secondary-color')})`;
+  }
+  
+  // Atualiza nav, footer, header
+  document.querySelector('nav').style.backgroundColor = root.style.getPropertyValue('--nav-background-color');
+  document.querySelector('footer').style.backgroundColor = root.style.getPropertyValue('--primary-color');
+  document.querySelector('header').style.backgroundColor = root.style.getPropertyValue('--primary-color');
+  
+  // Atualiza seções
+  document.querySelectorAll('.bg-gray-800').forEach(el => {
+    el.style.backgroundColor = root.style.getPropertyValue('--section-background-color');
+  });
+  
+  // Atualiza inputs, selects, etc.
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.style.backgroundColor = root.style.getPropertyValue('--input-bg');
+    el.style.borderColor = root.style.getPropertyValue('--input-border');
+    el.style.color = root.style.getPropertyValue('--input-text');
+  });
+  
+  // Atualiza textos auxiliares
+  document.querySelectorAll('.text-gray-200, .text-gray-400').forEach(el => {
+    el.style.color = root.style.getPropertyValue('--text-color');
+  });
+  
+  document.querySelectorAll('.text-sm.text-gray-400').forEach(el => {
+    el.style.color = root.style.getPropertyValue('--muted-text');
+  });
+  
+  // Botões com hover
+  document.querySelectorAll('button').forEach(btn => {
+    btn.style.transition = 'background-color 0.3s ease';
+  });
+}
 
   // Aplica o tema salvo ao carregar
   document.addEventListener('DOMContentLoaded', () => {
@@ -891,7 +956,7 @@
                   `📶 **Sinal CTO:** ${instalacao.sinalCTO} dBm\n` +
                   `📶 **Sinal Cliente:** ${instalacao.sinalCliente} dBm\n` +
                   `📍 **Endereço:** ${instalacao.endereco} ${linkMapa}\n\n` +
-                  `📦 *Materiais Utilizados:*\n${materiaisTexto}`;
+                  `📦* *Materiais Utilizados:**\n${materiaisTexto}`;
 
       await navigator.clipboard.writeText(msg);
       alert('Mensagem copiada! Agora cole no grupo do Telegram.');
