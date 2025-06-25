@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndaiaFibra</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1E40AF;
+      --primary-light: #3B82F6;
+      --secondary-color: #06B6D4;
+      --secondary-light: #22D3EE;
+      --accent-color: #8B5CF6;
+      --background-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+      --surface-color: rgba(30, 41, 59, 0.8);
+      --surface-hover: rgba(51, 65, 85, 0.9);
+      --text-primary: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #94A3B8;
+      --border-color: rgba(148, 163, 184, 0.2);
+      --border-hover: rgba(148, 163, 184, 0.4);
+      --success-color: #10B981;
+      --warning-color: #F59E0B;
+      --error-color: #EF4444;
+      --glass-bg: rgba(30, 41, 59, 0.6);
+      --glass-border: rgba(148, 163, 184, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(30, 64, 175, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Glass morphism effect */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background: var(--surface-color);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    /* Enhanced button styles */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 14px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+      box-shadow: 0 4px 16px rgba(30, 64, 175, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+      color: white;
+      box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-ghost {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success-color), #34D399);
+      color: white;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, var(--warning-color), #FBBF24);
+      color: white;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-warning:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--error-color), #F87171);
+      color: white;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Enhanced form inputs */
+    .form-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 56px;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: var(--surface-color);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Enhanced range slider */
+    .range-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: var(--glass-bg);
+      border-radius: 4px;
+      outline: none;
+      backdrop-filter: blur(16px);
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(6, 182, 212, 0.6);
+    }
+
+    .range-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    }
+
+    /* Enhanced navigation */
+    .nav-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 0 16px 16px;
+    }
+
+    .nav-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 8px;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 8px;
+      border-radius: 16px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 64px;
+      min-height: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-item i {
+      font-size: 20px;
+      margin-bottom: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item span {
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s ease;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(30, 64, 175, 0.4);
+    }
+
+    .nav-item.active span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-item.active i {
+      transform: scale(1.1);
+    }
+
+    .nav-item:hover:not(.active) {
+      background: var(--surface-color);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    /* Enhanced header */
+    .header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+    }
+
+    .logo-text {
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    /* Enhanced map container */
+    .map-container {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      height: 280px;
+      position: relative;
+    }
+
+    /* Loading animation */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-spinner {
+      width: 64px;
+      height: 64px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--secondary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Enhanced animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .slide-in {
+      transform: translateX(-100%);
+      animation: slideIn 0.5s ease forwards;
+    }
+
+    @keyframes slideIn {
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    /* Enhanced error states */
+    .error-message {
+      color: var(--error-color);
+      font-size: 14px;
+      margin-top: 8px;
+      display: none;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    /* Enhanced material selection */
+    .material-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .material-item:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .material-item.selected {
+      border-color: var(--primary-light);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    /* Enhanced history items */
+    .history-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .history-item:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .history-item.expanded {
+      background: var(--surface-color);
+      padding: 20px;
+    }
+
+    /* Filter buttons */
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+
+    .filter-btn:hover:not(.active) {
+      background: var(--surface-color);
+      color: var(--text-primary);
+    }
+
+    /* Edit mode styles - IMPROVED FOR MOBILE */
+    .edit-mode {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: var(--warning-color);
+    }
+
+    .edit-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .edit-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 14px;
+      min-height: 44px;
+    }
+
+    .edit-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .edit-buttons .btn {
+      padding: 8px 16px;
+      min-height: 40px;
+      font-size: 12px;
+      flex: 0 0 auto;
+    }
+
+    /* Responsive design for edit mode */
+    @media (max-width: 480px) {
+      .edit-controls {
+        gap: 16px;
+      }
+      
+      .edit-input {
+        padding: 14px 16px;
+        font-size: 16px; /* Prevent zoom on iOS */
+        min-height: 48px;
+      }
+      
+      .edit-buttons {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .edit-buttons .btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 48px;
+        font-size: 14px;
+      }
+    }
+
+    /* Material quantity input styles */
+    .material-quantity-input {
+      width: 80px;
+      padding: 8px 12px;
+      min-height: auto;
+      font-size: 14px;
+    }
+
+    .material-quantity-input.editing {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--primary-light);
+    }
+
+    /* History item details */
+    .history-details {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .history-details.show {
+      display: block;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .history-actions .btn {
+      padding: 6px 12px;
+      min-height: auto;
+      font-size: 12px;
+    }
+
+    /* Chevron rotation */
+    .chevron-rotate {
+      transition: transform 0.3s ease;
+    }
+
+    .chevron-rotate.rotated {
+      transform: rotate(180deg);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 16px;
+      }
+      
+      .logo-text {
+        font-size: 18px;
+      }
+      
+      .btn {
+        padding: 14px 20px;
+        font-size: 16px;
+      }
+      
+      .form-input {
+        padding: 18px 16px;
+        font-size: 16px;
+      }
+      
+      .map-container {
+        height: 240px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-item {
+        min-width: 56px;
+        min-height: 56px;
+        padding: 8px 4px;
+      }
+      
+      .nav-item i {
+        font-size: 18px;
+      }
+      
+      .nav-item span {
+        font-size: 10px;
+      }
+    }
+
+    /* Enhanced focus states for accessibility */
+    .btn:focus,
+    .form-input:focus,
+    .nav-item:focus {
+      outline: 2px solid var(--primary-light);
+      outline-offset: 2px;
+    }
+
+    /* Enhanced touch targets */
+    @media (hover: none) and (pointer: coarse) {
+      .btn,
+      .nav-item,
+      .material-item,
+      .history-item {
+        min-height: 48px;
+      }
+    }
+
+    /* Content spacing */
+    .content-container {
+      padding: 20px 16px 120px;
+      max-width: 768px;
+      margin: 0 auto;
+    }
+
+    .section-spacing {
+      margin-bottom: 32px;
+    }
+
+    .field-spacing {
+      margin-bottom: 24px;
+    }
+
+    /* Enhanced labels */
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .form-label.required::after {
+      content: ' *';
+      color: var(--error-color);
+    }
+
+    /* Enhanced grid layouts */
+    .form-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Status indicator */
+    .status-indicator {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Enhanced search */
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      padding-left: 48px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    /* Toast notifications */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      padding: 16px 20px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, var(--success-color), #34D399);
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, var(--error-color), #F87171);
+    }
+
+    .toast.warning {
+      background: linear-gradient(135deg, var(--warning-color), #FBBF24);
+    }
+
+    /* Search suggestions */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .search-suggestions.show {
+      display: block;
+    }
+
+    .suggestion-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+      transition: background 0.2s ease;
+    }
+
+    .suggestion-item:hover {
+      background: var(--surface-hover);
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <header class="header">
+    <div class="flex justify-between items-center">
+      <div class="logo">
+        <img src="https://img.icons8.com/?size=2x&id=Sd1fJXRt5uTd&format=png" alt="Logo IndaiaFibra" id="logoIndaiaFibra">
+        <h1 class="logo-text">IndaiaFibra</h1>
+      </div>
+      <div class="status-indicator">
+        <span id="contadorInstalacoes">0 instalações este mês</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content-container">
+    <!-- Instalação Section -->
+    <section id="instalacao" class="tab-content fade-in">
+      <div class="glass-card section-spacing">
+        <form id="formInstalacao" class="p-6">
+          <h2 class="text-xl font-semibold mb-6 text-center">Nova Instalação</h2>
+          
+          <div class="form-grid form-grid-2 field-spacing">
+            <div>
+              <label for="tipoTrabalho" class="form-label required">Tipo de trabalho</label>
+              <select id="tipoTrabalho" name="tipoTrabalho" required class="form-input">
+                <option value="">Selecione</option>
+                <option value="Instalação">Instalação</option>
+                <option value="Mudança de Endereço">Mudança de Endereço</option>
+              </select>
+              <p class="error-message">Por favor selecione o tipo de trabalho.</p>
+            </div>
+            <div>
+              <label for="tecnico" class="form-label required">Técnico</label>
+              <select id="tecnico" name="tecnico" required class="form-input">
+                <option value="">Selecione</option>
+                <option value="André">André</option>
+                <option value="Elvis">Elvis</option>
+                <option value="Guilherme">Guilherme</option>
+                <option value="Janderson">Janderson</option>
+                <option value="Robson">Robson</option>
+                <option value="Sérgio">Sérgio</option>
+              </select>
+              <p class="error-message">Por favor selecione o técnico.</p>
+            </div>
+          </div>
+
+          <div class="field-spacing">
+            <label for="cliente" class="form-label required">Cliente</label>
+            <input id="cliente" name="cliente" type="text" required class="form-input" placeholder="Nome do cliente">
+            <p class="error-message">Por favor informe o cliente.</p>
+          </div>
+
+          <div class="form-grid form-grid-2 field-spacing">
+            <div>
+              <label for="cto" class="form-label required">CTO</label>
+              <input id="cto" name="cto" type="text" required class="form-input" placeholder="Identificador CTO">
+              <p class="error-message">Por favor informe o CTO.</p>
+            </div>
+            <div>
+              <label for="porta" class="form-label required">Porta</label>
+              <select id="porta" name="porta" required class="form-input">
+                <option value="">Selecione</option>
+                <option value="1">Porta 1</option>
+                <option value="2">Porta 2</option>
+                <option value="3">Porta 3</option>
+                <option value="4">Porta 4</option>
+                <option value="5">Porta 5</option>
+                <option value="6">Porta 6</option>
+                <option value="7">Porta 7</option>
+                <option value="8">Porta 8</option>
+                <option value="9">Porta 9</option>
+                <option value="10">Porta 10</option>
+                <option value="11">Porta 11</option>
+                <option value="12">Porta 12</option>
+                <option value="13">Porta 13</option>
+                <option value="14">Porta 14</option>
+                <option value="15">Porta 15</option>
+                <option value="16">Porta 16</option>
+              </select>
+              <p class="error-message">Por favor selecione a porta.</p>
+            </div>
+          </div>
+
+          <div class="field-spacing">
+            <label for="sinalCTO" class="form-label">Sinal da CTO</label>
+            <input id="sinalCTO" name="sinalCTO" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
+            <p id="valorSinalCTO" class="text-sm text-center mt-2" style="color: var(--text-secondary)">-20,00 dBm</p>
+          </div>
+
+          <div class="field-spacing">
+            <label for="sinalCliente" class="form-label">Sinal do Cliente</label>
+            <input id="sinalCliente" name="sinalCliente" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
+            <p id="valorSinalCliente" class="text-sm text-center mt-2" style="color: var(--text-secondary)">-20,00 dBm</p>
+          </div>
+
+          <div class="field-spacing">
+            <label class="form-label required">Localização</label>
+            <div id="mapInstalacao" class="map-container"></div>
+            <button type="button" id="usarLocalizacao" class="btn btn-secondary w-full mt-4">
+              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
+            </button>
+            <div class="mt-3">
+              <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
+              <div id="enderecoSuggestions" class="search-suggestions"></div>
+            </div>
+          </div>
+
+          <div class="field-spacing">
+            <label class="form-label">Materiais para esta instalação</label>
+            <div id="materiaisSelecionaveis" class="space-y-3 mt-3"></div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-full">
+            <i class="fab fa-telegram-plane mr-2"></i>
+            Enviar para Telegram
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Manutenção Section -->
+    <section id="manutencao" class="tab-content hidden">
+      <div class="glass-card section-spacing">
+        <form id="formManutencao" class="p-6">
+          <h2 class="text-xl font-semibold mb-6 text-center">Nova Manutenção</h2>
+          
+          <div class="form-grid form-grid-2 field-spacing">
+            <div>
+              <label for="tecnicoManutencao" class="form-label required">Nome do Técnico</label>
+              <select id="tecnicoManutencao" name="tecnicoManutencao" required class="form-input">
+                <option value="">Selecione</option>
+                <option value="André">André</option>
+                <option value="Elvis">Elvis</option>
+                <option value="Guilherme">Guilherme</option>
+                <option value="Janderson">Janderson</option>
+                <option value="Robson">Robson</option>
+                <option value="Sérgio">Sérgio</option>
+              </select>
+              <p class="error-message">Por favor selecione o técnico.</p>
+            </div>
+            <div>
+              <label for="clienteManutencao" class="form-label required">Nome do Cliente</label>
+              <input id="clienteManutencao" name="clienteManutencao" type="text" required class="form-input" placeholder="Nome do cliente">
+              <p class="error-message">Por favor informe o cliente.</p>
+            </div>
+          </div>
+
+          <div class="field-spacing">
+            <label for="problemaDescricao" class="form-label required">Descrição do Problema</label>
+            <textarea id="problemaDescricao" name="problemaDescricao" required class="form-input" rows="3" placeholder="Descreva o problema encontrado..."></textarea>
+            <p class="error-message">Por favor descreva o problema.</p>
+          </div>
+
+          <div class="field-spacing">
+            <label for="solucaoAplicada" class="form-label required">Solução Aplicada</label>
+            <textarea id="solucaoAplicada" name="solucaoAplicada" required class="form-input" rows="3" placeholder="Descreva a solução aplicada..."></textarea>
+            <p class="error-message">Por favor descreva a solução aplicada.</p>
+          </div>
+
+          <div class="field-spacing">
+            <label class="form-label required">Localização</label>
+            <div id="mapManutencao" class="map-container"></div>
+            <button type="button" id="usarLocalizacaoManutencao" class="btn btn-secondary w-full mt-4">
+              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
+            </button>
+            <div class="mt-3">
+              <input id="enderecoManutencao" name="enderecoManutencao" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
+              <div id="enderecoManutencaoSuggestions" class="search-suggestions"></div>
+            </div>
+          </div>
+
+          <div class="field-spacing">
+            <label class="form-label">Materiais Utilizados</label>
+            <div id="materiaisManutencao" class="space-y-3 mt-3"></div>
+          </div>
+
+          <button type="submit" class="btn btn-success w-full">
+            <i class="fab fa-telegram-plane mr-2"></i>
+            Enviar para Telegram
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Materiais Section -->
+    <section id="materiais" class="tab-content hidden">
+      <div class="glass-card section-spacing">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-6 text-center">Gerenciar Materiais</h2>
+          
+          <div class="form-grid form-grid-2 field-spacing">
+            <div>
+              <label for="nomeMaterial" class="form-label">Nome do Material</label>
+              <input id="nomeMaterial" type="text" class="form-input" placeholder="Ex: Cabo Óptico">
+            </div>
+            <div>
+              <label for="qtdMaterial" class="form-label">Quantidade padrão</label>
+              <input id="qtdMaterial" type="number" min="1" class="form-input" placeholder="Ex: 10">
+            </div>
+          </div>
+          
+          <button id="adicionarMaterial" class="btn btn-secondary mb-6">
+            <i class="fas fa-plus mr-2"></i>
+            Adicionar Material
+          </button>
+          
+          <div id="listaMateriais" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Histórico Section -->
+    <section id="historico" class="tab-content hidden">
+      <div class="glass-card section-spacing">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-6 text-center">Histórico</h2>
+          
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="todos">Todos</button>
+            <button class="filter-btn" data-filter="instalacao">Instalações</button>
+            <button class="filter-btn" data-filter="manutencao">Manutenções</button>
+          </div>
+          
+          <div class="search-container">
+            <input type="text" id="searchHistorico" placeholder="Pesquisar..." class="form-input search-input">
+            <i class="fas fa-search search-icon"></i>
+          </div>
+          
+          <div id="historicoInstalacoes" class="space-y-3 mb-6"></div>
+          
+          <button id="limparHistorico" class="btn btn-danger w-full">
+            <i class="fas fa-trash mr-2"></i>
+            Limpar Histórico
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mapa Section -->
+    <section id="mapa" class="tab-content hidden">
+      <div class="glass-card section-spacing">
+        <div class="p-6">
+          <h2 class="text-xl font-semibold mb-6 text-center">Mapa CTOs</h2>
+          
+          <div class="space-y-4">
+            <button id="openGoogleMaps" class="btn btn-secondary w-full">
+              <i class="fas fa-map-pin mr-2"></i>
+              Abrir Google Maps
+            </button>
+            
+            <div id="mapaCTOs" class="map-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Enhanced Navigation -->
+  <div class="nav-container">
+    <nav class="nav-glass">
+      <div class="flex justify-around">
+        <a href="#instalacao" class="nav-item active" data-tab="instalacao">
+          <i class="fas fa-tools"></i>
+          <span>Instalação</span>
+        </a>
+        <a href="#manutencao" class="nav-item" data-tab="manutencao">
+          <i class="fas fa-wrench"></i>
+          <span>Manutenção</span>
+        </a>
+        <a href="#materiais" class="nav-item" data-tab="materiais">
+          <i class="fas fa-boxes"></i>
+          <span>Materiais</span>
+        </a>
+        <a href="#historico" class="nav-item" data-tab="historico">
+          <i class="fas fa-history"></i>
+          <span>Histórico</span>
+        </a>
+        <a href="#mapa" class="nav-item" data-tab="mapa">
+          <i class="fas fa-map"></i>
+          <span>Mapa</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 600,
+      easing: 'ease-out-cubic',
+      once: true
+    });
+
+    // Global variables
+    let map, marker;
+    let mapManutencao, markerManutencao;
+    let mapaCTOs;
+    let materiais = JSON.parse(localStorage.getItem('materiais')) || [];
+    let historico = JSON.parse(localStorage.getItem('historico')) || [];
+    let contadorMensal = parseInt(localStorage.getItem('contadorMensal')) || 0;
+    let currentFilter = 'todos';
+
+    // Telegram group link
+    const TELEGRAM_GROUP_LINK = 'https://t.me/c/1989058391/38071';
+
+    // Maximum history records to prevent localStorage overflow
+    const MAX_HISTORY_RECORDS = 100;
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeNavigation();
+      initializeMap();
+      initializeMapManutencao();
+      initializeMapaCTOs();
+      initializeRangeSliders();
+      initializeFormHandlers();
+      initializeMateriais();
+      initializeHistorico();
+      initializeAddressSearch();
+      updateContador();
+      
+      // Hide loading
+      setTimeout(() => {
+        document.getElementById('loading').classList.remove('show');
+      }, 500);
+    });
+
+    // Navigation system
+    function initializeNavigation() {
+      const navItems = document.querySelectorAll('.nav-item');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetTab = item.getAttribute('data-tab');
+          
+          // Update active nav item
+          navItems.forEach(nav => nav.classList.remove('active'));
+          item.classList.add('active');
+          
+          // Update active tab content
+          tabContents.forEach(content => {
+            content.classList.add('hidden');
+            content.classList.remove('fade-in');
+          });
+          
+          const targetContent = document.getElementById(targetTab);
+          if (targetContent) {
+            targetContent.classList.remove('hidden');
+            setTimeout(() => {
+              targetContent.classList.add('fade-in');
+            }, 50);
+          }
+        });
+      });
+    }
+
+    // Address search functionality
+    function initializeAddressSearch() {
+      const enderecoInput = document.getElementById('endereco');
+      const enderecoSuggestions = document.getElementById('enderecoSuggestions');
+      const enderecoManutencaoInput = document.getElementById('enderecoManutencao');
+      const enderecoManutencaoSuggestions = document.getElementById('enderecoManutencaoSuggestions');
+
+      setupAddressSearch(enderecoInput, enderecoSuggestions, map, (newMarker) => {
+        marker = newMarker;
+      });
+
+      setupAddressSearch(enderecoManutencaoInput, enderecoManutencaoSuggestions, mapManutencao, (newMarker) => {
+        markerManutencao = newMarker;
+      });
+    }
+
+    function setupAddressSearch(input, suggestionsContainer, mapInstance, setMarker) {
+      let searchTimeout;
+
+      input.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query.length < 3) {
+          suggestionsContainer.classList.remove('show');
+          return;
+        }
+
+        searchTimeout = setTimeout(() => {
+          searchAddress(query, suggestionsContainer, mapInstance, setMarker, input);
+        }, 500);
+      });
+
+      // Hide suggestions when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+          suggestionsContainer.classList.remove('show');
+        }
+      });
+    }
+
+    function searchAddress(query, suggestionsContainer, mapInstance, setMarker, inputElement) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=br`;
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          suggestionsContainer.innerHTML = '';
+          
+          if (data.length === 0) {
+            suggestionsContainer.classList.remove('show');
+            return;
+          }
+
+          data.forEach(result => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.textContent = result.display_name;
+            
+            item.addEventListener('click', function() {
+              const lat = parseFloat(result.lat);
+              const lng = parseFloat(result.lon);
+              
+              // Update map
+              mapInstance.setView([lat, lng], 16);
+              
+              // Remove existing marker
+              if (inputElement.id === 'endereco' && marker) {
+                mapInstance.removeLayer(marker);
+              } else if (inputElement.id === 'enderecoManutencao' && markerManutencao) {
+                mapInstance.removeLayer(markerManutencao);
+              }
+              
+              // Add new marker
+              const newMarker = L.marker([lat, lng]).addTo(mapInstance);
+              setMarker(newMarker);
+              
+              // Extract street name and number
+              const addressParts = result.display_name.split(',');
+              const streetWithNumber = addressParts[0].trim();
+              inputElement.value = streetWithNumber;
+              
+              // Hide suggestions
+              suggestionsContainer.classList.remove('show');
+            });
+            
+            suggestionsContainer.appendChild(item);
+          });
+          
+          suggestionsContainer.classList.add('show');
+        })
+        .catch(error => {
+          console.error('Erro na busca de endereço:', error);
+          suggestionsContainer.classList.remove('show');
+        });
+    }
+
+    // Map initialization for installation
+    function initializeMap() {
+      map = L.map('mapInstalacao').setView([-23.5505, -46.6333], 13);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      map.on('click', function(e) {
+        if (marker) {
+          map.removeLayer(marker);
+        }
+        
+        marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+        
+        // Reverse geocoding - get full address with number
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+          .then(response => response.json())
+          .then(data => {
+            const address = data.address;
+            let fullAddress = '';
+            
+            // Build full address with number
+            if (address.road || address.street || address.pedestrian) {
+              const streetName = address.road || address.street || address.pedestrian;
+              const houseNumber = address.house_number || '';
+              fullAddress = houseNumber ? `${streetName}, ${houseNumber}` : streetName;
+            } else {
+              fullAddress = `${e.latlng.lat}, ${e.latlng.lng}`;
+            }
+            
+            document.getElementById('endereco').value = fullAddress;
+          })
+          .catch(() => {
+            document.getElementById('endereco').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+          });
+      });
+
+      // Use current location button
+      document.getElementById('usarLocalizacao').addEventListener('click', function() {
+        getCurrentLocation(map, marker, 'endereco', (newMarker) => {
+          marker = newMarker;
+        });
+      });
+    }
+
+    // Map initialization for maintenance
+    function initializeMapManutencao() {
+      mapManutencao = L.map('mapManutencao').setView([-23.5505, -46.6333], 13);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(mapManutencao);
+
+      mapManutencao.on('click', function(e) {
+        if (markerManutencao) {
+          mapManutencao.removeLayer(markerManutencao);
+        }
+        
+        markerManutencao = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mapManutencao);
+        
+        // Reverse geocoding - get full address with number
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+          .then(response => response.json())
+          .then(data => {
+            const address = data.address;
+            let fullAddress = '';
+            
+            // Build full address with number
+            if (address.road || address.street || address.pedestrian) {
+              const streetName = address.road || address.street || address.pedestrian;
+              const houseNumber = address.house_number || '';
+              fullAddress = houseNumber ? `${streetName}, ${houseNumber}` : streetName;
+            } else {
+              fullAddress = `${e.latlng.lat}, ${e.latlng.lng}`;
+            }
+            
+            document.getElementById('enderecoManutencao').value = fullAddress;
+          })
+          .catch(() => {
+            document.getElementById('enderecoManutencao').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+          });
+      });
+
+      // Use current location button
+      document.getElementById('usarLocalizacaoManutencao').addEventListener('click', function() {
+        getCurrentLocation(mapManutencao, markerManutencao, 'enderecoManutencao', (newMarker) => {
+          markerManutencao = newMarker;
+        });
+      });
+    }
+
+    // Generic function to get current location
+    function getCurrentLocation(mapInstance, currentMarker, streetInputId, setMarker) {
+      if (navigator.geolocation) {
+        showLoading();
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            mapInstance.setView([lat, lng], 16);
+            
+            if (currentMarker) {
+              mapInstance.removeLayer(currentMarker);
+            }
+            
+            const newMarker = L.marker([lat, lng]).addTo(mapInstance);
+            setMarker(newMarker);
+            
+            // Reverse geocoding - get full address with number
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+              .then(response => response.json())
+              .then(data => {
+                const address = data.address;
+                let fullAddress = '';
+                
+                // Build full address with number
+                if (address.road || address.street || address.pedestrian) {
+                  const streetName = address.road || address.street || address.pedestrian;
+                  const houseNumber = address.house_number || '';
+                  fullAddress = houseNumber ? `${streetName}, ${houseNumber}` : streetName;
+                } else {
+                  fullAddress = `${lat}, ${lng}`;
+                }
+                
+                document.getElementById(streetInputId).value = fullAddress;
+              })
+              .catch(() => {
+                document.getElementById(streetInputId).value = `${lat}, ${lng}`;
+              })
+              .finally(() => {
+                hideLoading();
+              });
+          },
+          function(error) {
+            hideLoading();
+            showToast('Erro ao obter localização: ' + error.message, 'error');
+          }
+        );
+      } else {
+        showToast('Geolocalização não é suportada neste navegador.', 'error');
+      }
+    }
+
+    // CTOs Map initialization
+    function initializeMapaCTOs() {
+      mapaCTOs = L.map('mapaCTOs').setView([-23.5505, -46.6333], 13);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(mapaCTOs);
+
+      // Add sample CTOs
+      const ctos = [
+        { name: 'CTO-001', lat: -23.5505, lng: -46.6333 },
+        { name: 'CTO-002', lat: -23.5515, lng: -46.6343 },
+        { name: 'CTO-003', lat: -23.5495, lng: -46.6323 }
+      ];
+
+      ctos.forEach(cto => {
+        L.marker([cto.lat, cto.lng])
+          .addTo(mapaCTOs)
+          .bindPopup(`<strong>${cto.name}</strong><br>Clique para mais detalhes`);
+      });
+
+      document.getElementById('openGoogleMaps').addEventListener('click', function() {
+        window.open('https://goo.gl/maps/88VJ2ZpSiy4F2Qas7', '_blank');
+      });
+    }
+
+    // Range sliders
+    function initializeRangeSliders() {
+      const sinalCTO = document.getElementById('sinalCTO');
+      const sinalCliente = document.getElementById('sinalCliente');
+      const valorSinalCTO = document.getElementById('valorSinalCTO');
+      const valorSinalCliente = document.getElementById('valorSinalCliente');
+
+      sinalCTO.addEventListener('input', function() {
+        valorSinalCTO.textContent = parseFloat(this.value).toFixed(2) + ' dBm';
+      });
+
+      sinalCliente.addEventListener('input', function() {
+        valorSinalCliente.textContent = parseFloat(this.value).toFixed(2) + ' dBm';
+      });
+    }
+
+    // Form handlers
+    function initializeFormHandlers() {
+      // Installation form
+      const formInstalacao = document.getElementById('formInstalacao');
+      formInstalacao.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (validateForm('formInstalacao')) {
+          const formData = new FormData(formInstalacao);
+          const endereco = formData.get('endereco');
+          
+          const instalacao = {
+            id: Date.now(),
+            tipo: 'instalacao',
+            data: new Date().toLocaleString('pt-BR'),
+            tipoTrabalho: formData.get('tipoTrabalho'),
+            tecnico: formData.get('tecnico'),
+            cliente: formData.get('cliente'),
+            cto: formData.get('cto'),
+            porta: formData.get('porta'),
+            sinalCTO: formData.get('sinalCTO'),
+            sinalCliente: formData.get('sinalCliente'),
+            endereco: endereco,
+            materiais: getMaterialsSelecionados('materiaisSelecionaveis'),
+            latitude: marker ? marker.getLatLng().lat : null,
+            longitude: marker ? marker.getLatLng().lng : null
+          };
+          
+          processSubmission(instalacao, formInstalacao, 'instalacao');
+        }
+      });
+
+      // Maintenance form
+      const formManutencao = document.getElementById('formManutencao');
+      formManutencao.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (validateForm('formManutencao')) {
+          const formData = new FormData(formManutencao);
+          const endereco = formData.get('enderecoManutencao');
+          
+          const manutencao = {
+            id: Date.now(),
+            tipo: 'manutencao',
+            data: new Date().toLocaleString('pt-BR'),
+            tecnico: formData.get('tecnicoManutencao'),
+            cliente: formData.get('clienteManutencao'),
+            problema: formData.get('problemaDescricao'),
+            solucao: formData.get('solucaoAplicada'),
+            endereco: endereco,
+            materiais: getMaterialsSelecionados('materiaisManutencao'),
+            latitude: markerManutencao ? markerManutencao.getLatLng().lat : null,
+            longitude: markerManutencao ? markerManutencao.getLatLng().lng : null
+          };
+          
+          processSubmission(manutencao, formManutencao, 'manutencao');
+        }
+      });
+    }
+
+    // Process form submission
+    function processSubmission(data, form, type) {
+      // Discount materials from stock
+      if (data.materiais && data.materiais.length > 0) {
+        data.materiais.forEach(materialUsado => {
+          const materialIndex = materiais.findIndex(m => m.nome === materialUsado.nome);
+          if (materialIndex !== -1) {
+            materiais[materialIndex].quantidade = Math.max(0, materiais[materialIndex].quantidade - materialUsado.quantidade);
+          }
+        });
+        localStorage.setItem('materiais', JSON.stringify(materiais));
+        renderMateriais();
+        renderMateriaisSelecionaveis();
+        renderMateriaisManutencao();
+      }
+      
+      // Save to history with overflow management
+      addToHistoryWithOverflow(data);
+      
+      // Update counter only for installations
+      if (type === 'instalacao') {
+        contadorMensal++;
+        localStorage.setItem('contadorMensal', contadorMensal);
+        updateContador();
+      }
+      
+      // Copy to clipboard
+      copyToClipboard(data);
+      
+      // Open Telegram
+      openTelegram();
+      
+      // Show success message
+      showToast(`${type === 'instalacao' ? 'Instalação' : 'Manutenção'} copiada e Telegram aberto!`, 'success');
+      
+      // Reset form
+      form.reset();
+      if (type === 'instalacao') {
+        resetRangeSliders();
+        clearMap();
+      } else {
+        clearMapManutencao();
+      }
+      
+      // Update history display
+      renderHistorico();
+    }
+
+    // Add to history with overflow management
+    function addToHistoryWithOverflow(newRecord) {
+      // Add new record to the beginning
+      historico.unshift(newRecord);
+      
+      // If we exceed the maximum, remove oldest records
+      if (historico.length > MAX_HISTORY_RECORDS) {
+        historico = historico.slice(0, MAX_HISTORY_RECORDS);
+        showToast(`Histórico limitado a ${MAX_HISTORY_RECORDS} registros. Registros mais antigos foram removidos.`, 'warning');
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('historico', JSON.stringify(historico));
+    }
+
+    // Copy data to clipboard with Google Maps link
+    function copyToClipboard(data) {
+      let text = '';
+      const googleMapsLink = data.latitude && data.longitude ? 
+        `https://www.google.com/maps?q=${data.latitude},${data.longitude}` : '';
+      
+      if (data.tipo === 'instalacao') {
+        text = `🔧 NOVA ${data.tipoTrabalho.toUpperCase()}\n\n` +
+               `📅 Data: ${data.data}\n` +
+               `👤 Técnico: ${data.tecnico}\n` +
+               `🏠 Cliente: ${data.cliente}\n` +
+               `📡 CTO: ${data.cto}\n` +
+               `🔌 Porta: ${data.porta}\n` +
+               `📊 Sinal CTO: ${data.sinalCTO} dBm\n` +
+               `📊 Sinal Cliente: ${data.sinalCliente} dBm\n` +
+               `📍 Endereço: ${data.endereco}\n`;
+        
+        if (googleMapsLink) {
+          text += `🗺️ Localização: ${googleMapsLink}\n`;
+        }
+        
+        if (data.materiais && data.materiais.length > 0) {
+          text += `\n📦 Materiais:\n`;
+          data.materiais.forEach(material => {
+            text += `• ${material.nome} (${material.quantidade})\n`;
+          });
+        }
+      } else {
+        text = `🔧 NOVA MANUTENÇÃO\n\n` +
+               `📅 Data: ${data.data}\n` +
+               `👤 Técnico: ${data.tecnico}\n` +
+               `🏠 Cliente: ${data.cliente}\n` +
+               `❗ Problema: ${data.problema}\n` +
+               `✅ Solução: ${data.solucao}\n` +
+               `📍 Endereço: ${data.endereco}\n`;
+        
+        if (googleMapsLink) {
+          text += `🗺️ Localização: ${googleMapsLink}\n`;
+        }
+        
+        if (data.materiais && data.materiais.length > 0) {
+          text += `\n📦 Materiais Utilizados:\n`;
+          data.materiais.forEach(material => {
+            text += `• ${material.nome} (${material.quantidade})\n`;
+          });
+        }
+      }
+      
+      navigator.clipboard.writeText(text).then(() => {
+        console.log('Dados copiados para área de transferência');
+      }).catch(err => {
+        console.error('Erro ao copiar para área de transferência:', err);
+      });
+    }
+
+    // Open Telegram
+    function openTelegram() {
+      window.open(TELEGRAM_GROUP_LINK, '_blank');
+    }
+
+    // Form validation
+    function validateForm(formId) {
+      const form = document.getElementById(formId);
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+      
+      requiredFields.forEach(field => {
+        const errorMsg = field.parentNode.querySelector('.error-message');
+        
+        if (!field.value.trim()) {
+          if (errorMsg) errorMsg.style.display = 'block';
+          field.style.borderColor = 'var(--error-color)';
+          isValid = false;
+        } else {
+          if (errorMsg) errorMsg.style.display = 'none';
+          field.style.borderColor = 'var(--border-color)';
+        }
+      });
+      
+      return isValid;
+    }
+
+    // Materials management
+    function initializeMateriais() {
+      renderMateriais();
+      renderMateriaisSelecionaveis();
+      renderMateriaisManutencao();
+      
+      document.getElementById('adicionarMaterial').addEventListener('click', function() {
+        const nome = document.getElementById('nomeMaterial').value.trim();
+        const qtd = parseInt(document.getElementById('qtdMaterial').value);
+        
+        if (nome && qtd > 0) {
+          const material = {
+            id: Date.now(),
+            nome: nome,
+            quantidade: qtd
+          };
+          
+          materiais.push(material);
+          localStorage.setItem('materiais', JSON.stringify(materiais));
+          
+          document.getElementById('nomeMaterial').value = '';
+          document.getElementById('qtdMaterial').value = '';
+          
+          renderMateriais();
+          renderMateriaisSelecionaveis();
+          renderMateriaisManutencao();
+          
+          showToast('Material adicionado com sucesso!', 'success');
+        } else {
+          showToast('Por favor, preencha todos os campos corretamente.', 'error');
+        }
+      });
+    }
+
+    function renderMateriais() {
+      const container = document.getElementById('listaMateriais');
+      container.innerHTML = '';
+      
+      materiais.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'material-item';
+        div.innerHTML = `
+          <div class="flex justify-between items-center">
+            <div class="flex-1">
+              <div class="material-display">
+                <strong>${material.nome}</strong>
+                <p class="text-sm" style="color: var(--text-secondary)">Quantidade em estoque: ${material.quantidade}</p>
+              </div>
+              <div class="material-edit hidden">
+                <div class="edit-controls">
+                  <div class="edit-input-group">
+                    <input type="text" class="edit-input" value="${material.nome}" placeholder="Nome do material">
+                    <input type="number" class="edit-input" value="${material.quantidade}" min="0" placeholder="Quantidade">
+                  </div>
+                  <div class="edit-buttons">
+                    <button onclick="saveMaterial(${material.id})" class="btn btn-success">
+                      <i class="fas fa-save"></i> Salvar
+                    </button>
+                    <button onclick="cancelEditMaterial(${material.id})" class="btn btn-ghost">
+                      <i class="fas fa-times"></i> Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="editMaterial(${material.id})" class="btn btn-warning edit-btn-material" style="padding: 8px 12px; min-height: auto;">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button onclick="removerMaterial(${material.id})" class="btn btn-danger" style="padding: 8px 12px; min-height: auto;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function editMaterial(id) {
+      const materialItem = document.querySelector(`[onclick="editMaterial(${id})"]`).closest('.material-item');
+      const displayDiv = materialItem.querySelector('.material-display');
+      const editDiv = materialItem.querySelector('.material-edit');
+      
+      displayDiv.classList.add('hidden');
+      editDiv.classList.remove('hidden');
+      materialItem.classList.add('edit-mode');
+    }
+
+    function cancelEditMaterial(id) {
+      const materialItem = document.querySelector(`[onclick="cancelEditMaterial(${id})"]`).closest('.material-item');
+      const displayDiv = materialItem.querySelector('.material-display');
+      const editDiv = materialItem.querySelector('.material-edit');
+      
+      displayDiv.classList.remove('hidden');
+      editDiv.classList.add('hidden');
+      materialItem.classList.remove('edit-mode');
+    }
+
+    function saveMaterial(id) {
+      const materialItem = document.querySelector(`[onclick="saveMaterial(${id})"]`).closest('.material-item');
+      const inputs = materialItem.querySelectorAll('.edit-input');
+      const nome = inputs[0].value.trim();
+      const quantidade = parseInt(inputs[1].value);
+      
+      if (nome && quantidade >= 0) {
+        const materialIndex = materiais.findIndex(m => m.id === id);
+        if (materialIndex !== -1) {
+          materiais[materialIndex].nome = nome;
+          materiais[materialIndex].quantidade = quantidade;
+          localStorage.setItem('materiais', JSON.stringify(materiais));
+          
+          renderMateriais();
+          renderMateriaisSelecionaveis();
+          renderMateriaisManutencao();
+          
+          showToast('Material atualizado com sucesso!', 'success');
+        }
+      } else {
+        showToast('Por favor, preencha todos os campos corretamente.', 'error');
+      }
+    }
+
+    function renderMateriaisSelecionaveis() {
+      const container = document.getElementById('materiaisSelecionaveis');
+      container.innerHTML = '';
+      
+      materiais.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'material-item';
+        div.innerHTML = `
+          <label class="flex items-center cursor-pointer">
+            <input type="checkbox" name="material_${material.id}" value="${material.id}" class="mr-3">
+            <div class="flex-1">
+              <strong>${material.nome}</strong>
+              <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
+              <div class="flex items-center mt-2">
+                <span class="mr-2">Qtd:</span>
+                <input type="number" name="qtd_${material.id}" value="${material.quantidade}" min="1" max="${material.quantidade}" 
+                       class="form-input material-quantity-input" data-original="${material.quantidade}">
+              </div>
+            </div>
+          </label>
+        `;
+        container.appendChild(div);
+      });
+
+      // Add focus and blur events to quantity inputs
+      container.querySelectorAll('.material-quantity-input').forEach(input => {
+        input.addEventListener('focus', function() {
+          this.classList.add('editing');
+          this.value = '';
+        });
+
+        input.addEventListener('blur', function() {
+          this.classList.remove('editing');
+          if (!this.value || this.value === '') {
+            this.value = this.getAttribute('data-original');
+          }
+        });
+      });
+    }
+
+    function renderMateriaisManutencao() {
+      const container = document.getElementById('materiaisManutencao');
+      container.innerHTML = '';
+      
+      materiais.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'material-item';
+        div.innerHTML = `
+          <label class="flex items-center cursor-pointer">
+            <input type="checkbox" name="material_manutencao_${material.id}" value="${material.id}" class="mr-3">
+            <div class="flex-1">
+              <strong>${material.nome}</strong>
+              <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
+              <div class="flex items-center mt-2">
+                <span class="mr-2">Qtd:</span>
+                <input type="number" name="qtd_manutencao_${material.id}" value="${material.quantidade}" min="1" max="${material.quantidade}" 
+                       class="form-input material-quantity-input" data-original="${material.quantidade}">
+              </div>
+            </div>
+          </label>
+        `;
+        container.appendChild(div);
+      });
+
+      // Add focus and blur events to quantity inputs
+      container.querySelectorAll('.material-quantity-input').forEach(input => {
+        input.addEventListener('focus', function() {
+          this.classList.add('editing');
+          this.value = '';
+        });
+
+        input.addEventListener('blur', function() {
+          this.classList.remove('editing');
+          if (!this.value || this.value === '') {
+            this.value = this.getAttribute('data-original');
+          }
+        });
+      });
+    }
+
+    function removerMaterial(id) {
+      if (confirm('Tem certeza que deseja remover este material?')) {
+        materiais = materiais.filter(m => m.id !== id);
+        localStorage.setItem('materiais', JSON.stringify(materiais));
+        renderMateriais();
+        renderMateriaisSelecionaveis();
+        renderMateriaisManutencao();
+        showToast('Material removido com sucesso!', 'success');
+      }
+    }
+
+    function getMaterialsSelecionados(containerId) {
+      const selecionados = [];
+      const prefix = containerId === 'materiaisManutencao' ? 'material_manutencao_' : 'material_';
+      const qtdPrefix = containerId === 'materiaisManutencao' ? 'qtd_manutencao_' : 'qtd_';
+      const checkboxes = document.querySelectorAll(`input[name^="${prefix}"]:checked`);
+      
+      checkboxes.forEach(checkbox => {
+        const materialId = parseInt(checkbox.value);
+        const qtdInput = document.querySelector(`input[name="${qtdPrefix}${materialId}"]`);
+        const material = materiais.find(m => m.id === materialId);
+        
+        if (material && qtdInput) {
+          selecionados.push({
+            nome: material.nome,
+            quantidade: parseInt(qtdInput.value)
+          });
+        }
+      });
+      
+      return selecionados;
+    }
+
+    // History management
+    function initializeHistorico() {
+      renderHistorico();
+      
+      // Filter buttons
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentFilter = this.getAttribute('data-filter');
+          renderHistorico();
+        });
+      });
+      
+      document.getElementById('searchHistorico').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        filterHistorico(searchTerm);
+      });
+      
+      document.getElementById('limparHistorico').addEventListener('click', function() {
+        if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+          historico = [];
+          localStorage.setItem('historico', JSON.stringify(historico));
+          renderHistorico();
+          showToast('Histórico limpo com sucesso!', 'success');
+        }
+      });
+    }
+
+    function renderHistorico() {
+      const container = document.getElementById('historicoInstalacoes');
+      container.innerHTML = '';
+      
+      let filteredHistorico = historico;
+      
+      if (currentFilter !== 'todos') {
+        filteredHistorico = historico.filter(item => item.tipo === currentFilter);
+      }
+      
+      if (filteredHistorico.length === 0) {
+        container.innerHTML = '<p class="text-center" style="color: var(--text-muted)">Nenhum registro encontrado.</p>';
+        return;
+      }
+      
+      filteredHistorico.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.setAttribute('data-type', item.tipo);
+        div.setAttribute('data-id', item.id);
+        
+        const isInstalacao = item.tipo === 'instalacao';
+        const icon = isInstalacao ? 'fas fa-tools' : 'fas fa-wrench';
+        const typeLabel = isInstalacao ? (item.tipoTrabalho || 'Instalação') : 'Manutenção';
+        
+        div.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <i class="${icon}" style="color: var(--secondary-color)"></i>
+                <span class="text-xs px-2 py-1 rounded" style="background: var(--glass-bg); color: var(--text-secondary)">${typeLabel}</span>
+              </div>
+              <h3 class="font-semibold">${item.cliente}</h3>
+              <p class="text-sm" style="color: var(--text-secondary)">${item.data} - ${item.tecnico}</p>
+              ${isInstalacao ? 
+                `<p class="text-sm" style="color: var(--text-muted)">CTO: ${item.cto} - Porta: ${item.porta}</p>` :
+                `<p class="text-sm" style="color: var(--text-muted)">Problema: ${item.problema.substring(0, 50)}...</p>`
+              }
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="deleteHistoryItem(${item.id})" class="btn btn-danger" style="padding: 6px 8px; min-height: auto;">
+                <i class="fas fa-trash"></i>
+              </button>
+              <i class="fas fa-chevron-down chevron-rotate transition-transform duration-300"></i>
+            </div>
+          </div>
+          <div class="history-details">
+            ${isInstalacao ? renderInstalacaoDetails(item) : renderManutencaoDetails(item)}
+          </div>
+        `;
+        
+        div.addEventListener('click', function(e) {
+          // Don't toggle if clicking on delete button
+          if (e.target.closest('.btn-danger')) return;
+          
+          const details = div.querySelector('.history-details');
+          const chevron = div.querySelector('.chevron-rotate');
+          
+          if (details.classList.contains('show')) {
+            details.classList.remove('show');
+            chevron.classList.remove('rotated');
+            div.classList.remove('expanded');
+          } else {
+            details.classList.add('show');
+            chevron.classList.add('rotated');
+            div.classList.add('expanded');
+          }
+        });
+        
+        container.appendChild(div);
+      });
+    }
+
+    function renderInstalacaoDetails(item) {
+      const mapLink = item.latitude && item.longitude ? 
+        `https://www.google.com/maps?q=${item.latitude},${item.longitude}` : '#';
+      
+      return `
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div><strong>Tipo:</strong> ${item.tipoTrabalho}</div>
+          <div><strong>CTO:</strong> ${item.cto}</div>
+          <div><strong>Porta:</strong> ${item.porta}</div>
+          <div><strong>Sinal CTO:</strong> ${item.sinalCTO} dBm</div>
+          <div><strong>Sinal Cliente:</strong> ${item.sinalCliente} dBm</div>
+          <div class="col-span-2"><strong>Endereço:</strong> ${item.endereco}</div>
+          ${item.materiais && item.materiais.length > 0 ? `
+            <div class="col-span-2">
+              <strong>Materiais:</strong>
+              <ul class="mt-1">
+                ${item.materiais.map(m => `<li>• ${m.nome} (${m.quantidade})</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+        <div class="history-actions">
+          ${item.latitude && item.longitude ? 
+            `<a href="${mapLink}" target="_blank" class="btn btn-secondary">
+              <i class="fas fa-map-marker-alt mr-1"></i> Ver no Mapa
+            </a>` : ''
+          }
+        </div>
+      `;
+    }
+
+    function renderManutencaoDetails(item) {
+      const mapLink = item.latitude && item.longitude ? 
+        `https://www.google.com/maps?q=${item.latitude},${item.longitude}` : '#';
+      
+      return `
+        <div class="grid grid-cols-1 gap-4 text-sm">
+          <div><strong>Problema:</strong> ${item.problema}</div>
+          <div><strong>Solução:</strong> ${item.solucao}</div>
+          <div><strong>Endereço:</strong> ${item.endereco}</div>
+          ${item.materiais && item.materiais.length > 0 ? `
+            <div>
+              <strong>Materiais Utilizados:</strong>
+              <ul class="mt-1">
+                ${item.materiais.map(m => `<li>• ${m.nome} (${m.quantidade})</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+        <div class="history-actions">
+          ${item.latitude && item.longitude ? 
+            `<a href="${mapLink}" target="_blank" class="btn btn-secondary">
+              <i class="fas fa-map-marker-alt mr-1"></i> Ver no Mapa
+            </a>` : ''
+          }
+        </div>
+      `;
+    }
+
+    function deleteHistoryItem(id) {
+      if (confirm('Tem certeza que deseja excluir este registro?')) {
+        historico = historico.filter(item => item.id !== id);
+        localStorage.setItem('historico', JSON.stringify(historico));
+        renderHistorico();
+        showToast('Registro excluído com sucesso!', 'success');
+      }
+    }
+
+    function filterHistorico(searchTerm) {
+      const items = document.querySelectorAll('.history-item');
+      
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Utility functions
+    function updateContador() {
+      const instalacoes = historico.filter(item => item.tipo === 'instalacao').length;
+      document.getElementById('contadorInstalacoes').textContent = `${instalacoes} instalações este mês`;
+    }
+
+    function showLoading() {
+      document.getElementById('loading').classList.add('show');
+    }
+
+    function hideLoading() {
+      document.getElementById('loading').classList.remove('show');
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="flex items-center">
+          <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'} mr-2"></i>
+          ${message}
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    function resetRangeSliders() {
+      document.getElementById('sinalCTO').value = '-20.00';
+      document.getElementById('sinalCliente').value = '-20.00';
+      document.getElementById('valorSinalCTO').textContent = '-20,00 dBm';
+      document.getElementById('valorSinalCliente').textContent = '-20,00 dBm';
+    }
+
+    function clearMap() {
+      if (marker) {
+        map.removeLayer(marker);
+        marker = null;
+      }
+      document.getElementById('endereco').value = '';
+    }
+
+    function clearMapManutencao() {
+      if (markerManutencao) {
+        mapManutencao.removeLayer(markerManutencao);
+        markerManutencao = null;
+      }
+      document.getElementById('enderecoManutencao').value = '';
+    }
+
+    // Logo click handler
+    document.getElementById('logoIndaiaFibra').addEventListener('click', function() {
+      // Navigate to installation tab
+      document.querySelector('.nav-item[data-tab="instalacao"]').click();
+    });
+
+    // Add touch feedback for mobile
+    if ('ontouchstart' in window) {
+      document.addEventListener('touchstart', function() {}, { passive: true });
+    }
+  </script>
+</body>
+</html>
+
