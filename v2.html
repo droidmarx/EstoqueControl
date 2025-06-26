@@ -374,34 +374,35 @@
       position: relative;
     }
 
-    /* Loading animation */
-    .loading-overlay {
-      position: fixed;
+    /* Map loading animation - ONLY INSIDE MAP */
+    .map-loading-overlay {
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(8px);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 1000;
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
+      border-radius: 16px;
     }
 
-    .loading-overlay.show {
+    .map-loading-overlay.show {
       opacity: 1;
       visibility: visible;
     }
 
-    .loading-spinner {
-      width: 64px;
-      height: 64px;
-      border: 4px solid var(--border-color);
-      border-top: 4px solid var(--secondary-color);
+    .map-loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border-color);
+      border-top: 3px solid var(--secondary-color);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -451,26 +452,96 @@
       75% { transform: translateX(5px); }
     }
 
-    /* Enhanced material selection */
+    /* OPTIMIZED Material selection - COMPACT DESIGN WITHOUT CHECKBOXES */
     .material-item {
       background: var(--glass-bg);
       backdrop-filter: blur(16px);
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 8px;
+      padding: 12px 16px;
       transition: all 0.3s ease;
       cursor: pointer;
+      margin-bottom: 8px;
     }
 
     .material-item:hover {
       background: var(--surface-hover);
       border-color: var(--border-hover);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .material-item.selected {
       border-color: var(--primary-light);
       background: rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Hidden checkbox */
+    .material-checkbox {
+      display: none;
+    }
+
+    /* Compact material layout */
+    .material-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .material-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .material-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .material-stock {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .material-quantity-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .material-quantity-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .material-quantity-input {
+      width: 60px;
+      padding: 6px 8px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 14px;
+      text-align: center;
+      min-height: auto;
+      transition: all 0.3s ease;
+    }
+
+    .material-quantity-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      background: var(--surface-color);
+    }
+
+    .material-quantity-input.editing {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--primary-light);
     }
 
     /* Enhanced history items */
@@ -594,19 +665,6 @@
       }
     }
 
-    /* Material quantity input styles */
-    .material-quantity-input {
-      width: 80px;
-      padding: 8px 12px;
-      min-height: auto;
-      font-size: 14px;
-    }
-
-    .material-quantity-input.editing {
-      background: rgba(59, 130, 246, 0.1);
-      border-color: var(--primary-light);
-    }
-
     /* History item details */
     .history-details {
       display: none;
@@ -678,6 +736,16 @@
       
       .nav-item span {
         font-size: 10px;
+      }
+      
+      .material-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      
+      .material-quantity-container {
+        justify-content: space-between;
       }
     }
 
@@ -801,7 +869,7 @@
       background: linear-gradient(135deg, var(--warning-color), #FBBF24);
     }
 
-    /* IMPROVED Search suggestions - POSITIONED ABOVE MAP */
+    /* Search suggestions - POSITIONED ABOVE MAP */
     .address-search-container {
       position: relative;
       margin-bottom: 16px;
@@ -881,13 +949,11 @@
       pointer-events: auto;
       transition: opacity 0.3s ease;
     }
+    
+
   </style>
 </head>
 <body>
-  <div id="loading" class="loading-overlay">
-    <div class="loading-spinner"></div>
-  </div>
-
   <header class="header">
     <div class="flex justify-between items-center">
       <div class="logo">
@@ -990,8 +1056,12 @@
               <div id="enderecoSuggestions" class="search-suggestions"></div>
             </div>
             
-            <!-- Map container -->
-            <div id="mapInstalacao" class="map-container"></div>
+            <!-- Map container with loading overlay -->
+            <div id="mapInstalacao" class="map-container">
+              <div id="mapInstalacaoLoading" class="map-loading-overlay">
+                <div class="map-loading-spinner"></div>
+              </div>
+            </div>
             
             <button type="button" id="usarLocalizacao" class="btn btn-secondary w-full mt-4">
               <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
@@ -1000,7 +1070,7 @@
 
           <div class="field-spacing">
             <label class="form-label">Materiais para esta instalação</label>
-            <div id="materiaisSelecionaveis" class="space-y-3 mt-3"></div>
+            <div id="materiaisSelecionaveis" class="mt-3"></div>
           </div>
 
           <button type="submit" class="btn btn-success w-full">
@@ -1059,8 +1129,12 @@
               <div id="enderecoManutencaoSuggestions" class="search-suggestions"></div>
             </div>
             
-            <!-- Map container -->
-            <div id="mapManutencao" class="map-container"></div>
+            <!-- Map container with loading overlay -->
+            <div id="mapManutencao" class="map-container">
+              <div id="mapManutencaoLoading" class="map-loading-overlay">
+                <div class="map-loading-spinner"></div>
+              </div>
+            </div>
             
             <button type="button" id="usarLocalizacaoManutencao" class="btn btn-secondary w-full mt-4">
               <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
@@ -1069,7 +1143,7 @@
 
           <div class="field-spacing">
             <label class="form-label">Materiais Utilizados</label>
-            <div id="materiaisManutencao" class="space-y-3 mt-3"></div>
+            <div id="materiaisManutencao" class="mt-3"></div>
           </div>
 
           <button type="submit" class="btn btn-success w-full">
@@ -1219,11 +1293,6 @@
       initializeHistorico();
       initializeAddressSearch();
       updateContador();
-      
-      // Hide loading
-      setTimeout(() => {
-        document.getElementById('loading').classList.remove('show');
-      }, 500);
     });
 
     // Navigation system
@@ -1257,7 +1326,7 @@
       });
     }
 
-    // IMPROVED Address search functionality
+    // Address search functionality
     function initializeAddressSearch() {
       const enderecoInput = document.getElementById('endereco');
       const enderecoSuggestions = document.getElementById('enderecoSuggestions');
@@ -1380,9 +1449,24 @@
       setMarker(newMarker);
     }
 
+    // UNIFIED location loading - updates both maps
+    function showMapLoading() {
+      const loadingInstalacao = document.getElementById('mapInstalacaoLoading');
+      const loadingManutencao = document.getElementById('mapManutencaoLoading');
+      if (loadingInstalacao) loadingInstalacao.classList.add('show');
+      if (loadingManutencao) loadingManutencao.classList.add('show');
+    }
+
+    function hideMapLoading() {
+      const loadingInstalacao = document.getElementById('mapInstalacaoLoading');
+      const loadingManutencao = document.getElementById('mapManutencaoLoading');
+      if (loadingInstalacao) loadingInstalacao.classList.remove('show');
+      if (loadingManutencao) loadingManutencao.classList.remove('show');
+    }
+
     // Map initialization for installation
     function initializeMap() {
-      map = L.map('mapInstalacao').setView([-23.117878, -47.255539], 13);
+      map = L.map('mapInstalacao').setView([-23.5505, -46.6333], 13);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -1418,17 +1502,15 @@
           });
       });
 
-      // Use current location button
+      // UNIFIED location button - updates both maps
       document.getElementById('usarLocalizacao').addEventListener('click', function() {
-        getCurrentLocation(map, marker, 'endereco', (newMarker) => {
-          marker = newMarker;
-        });
+        getUnifiedCurrentLocation();
       });
     }
 
     // Map initialization for maintenance
     function initializeMapManutencao() {
-      mapManutencao = L.map('mapManutencao').setView([-23.117878, -47.255539], 13);
+      mapManutencao = L.map('mapManutencao').setView([-23.5505, -46.6333], 13);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -1464,31 +1546,36 @@
           });
       });
 
-      // Use current location button
+      // UNIFIED location button - updates both maps
       document.getElementById('usarLocalizacaoManutencao').addEventListener('click', function() {
-        getCurrentLocation(mapManutencao, markerManutencao, 'enderecoManutencao', (newMarker) => {
-          markerManutencao = newMarker;
-        });
+        getUnifiedCurrentLocation();
       });
     }
 
-    // Generic function to get current location
-    function getCurrentLocation(mapInstance, currentMarker, streetInputId, setMarker) {
+    // UNIFIED function to get current location and update both maps
+    function getUnifiedCurrentLocation() {
       if (navigator.geolocation) {
-        showLoading();
+        showMapLoading();
         navigator.geolocation.getCurrentPosition(
           function(position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             
-            mapInstance.setView([lat, lng], 16);
+            // Update both maps
+            map.setView([lat, lng], 16);
+            mapManutencao.setView([lat, lng], 16);
             
-            if (currentMarker) {
-              mapInstance.removeLayer(currentMarker);
+            // Remove existing markers
+            if (marker) {
+              map.removeLayer(marker);
+            }
+            if (markerManutencao) {
+              mapManutencao.removeLayer(markerManutencao);
             }
             
-            const newMarker = L.marker([lat, lng]).addTo(mapInstance);
-            setMarker(newMarker);
+            // Add markers to both maps
+            marker = L.marker([lat, lng]).addTo(map);
+            markerManutencao = L.marker([lat, lng]).addTo(mapManutencao);
             
             // Reverse geocoding - get full address with number
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
@@ -1506,17 +1593,21 @@
                   fullAddress = `${lat}, ${lng}`;
                 }
                 
-                document.getElementById(streetInputId).value = fullAddress;
+                // Update both address inputs
+                document.getElementById('endereco').value = fullAddress;
+                document.getElementById('enderecoManutencao').value = fullAddress;
               })
               .catch(() => {
-                document.getElementById(streetInputId).value = `${lat}, ${lng}`;
+                const coords = `${lat}, ${lng}`;
+                document.getElementById('endereco').value = coords;
+                document.getElementById('enderecoManutencao').value = coords;
               })
               .finally(() => {
-                hideLoading();
+                hideMapLoading();
               });
           },
           function(error) {
-            hideLoading();
+            hideMapLoading();
             showToast('Erro ao obter localização: ' + error.message, 'error');
           }
         );
@@ -1716,7 +1807,7 @@
 
     text += `\n📍 Endereço:\n${data.endereco}`;
     if (googleMapsLink) {
-      text += ` ${googleMapsLink}`;
+      text += `\n ${googleMapsLink}`;
     }
 
   } else {
@@ -1895,141 +1986,132 @@
       }
     }
 
-function renderMateriaisSelecionaveis() {
-  const container = document.getElementById('materiaisSelecionaveis');
-  container.innerHTML = '';
-  
-  materiais.forEach(material => {
-    const div = document.createElement('div');
-    div.className = 'material-item';
-    div.innerHTML = `
-      <label class="flex items-center cursor-pointer">
-        <input type="checkbox" name="material_${material.id}" value="${material.id}" class="mr-3">
-        <div class="flex-1">
-          <strong>${material.nome}</strong>
-          <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
-          <div class="flex items-center mt-2">
-            <span class="mr-2">Qtd:</span>
-            <input type="number" name="qtd_${material.id}" value="0" min="0" max="${material.quantidade}" 
-                   class="form-input material-quantity-input" data-material-id="${material.id}">
+    // OPTIMIZED Materials selection - COMPACT DESIGN WITHOUT VISIBLE CHECKBOXES
+    function renderMateriaisSelecionaveis() {
+      const container = document.getElementById('materiaisSelecionaveis');
+      container.innerHTML = '';
+      
+      materiais.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'material-item';
+        div.innerHTML = `
+          <input type="checkbox" name="material_${material.id}" value="${material.id}" class="material-checkbox">
+          <div class="material-content">
+            <div class="material-info">
+              <div class="material-name">${material.nome}</div>
+              <div class="material-stock">Disponível: ${material.quantidade}</div>
+            </div>
+            <div class="material-quantity-container">
+              <span class="material-quantity-label">Qtd:</span>
+              <input type="number" name="qtd_${material.id}" value=" " min="0" max="${material.quantidade}" 
+                     class="material-quantity-input" data-material-id="${material.id}">
+            </div>
           </div>
-        </div>
-      </label>
-    `;
-    container.appendChild(div);
-  });
-  
-  container.querySelectorAll('.material-quantity-input').forEach(input => {
-    const defaultValue = input.value;
-    
-    input.addEventListener('focus', function() {
-      this.value = '';
-    });
-    
-    input.addEventListener('blur', function() {
-      if (this.value.trim() === '') {
-        this.value = defaultValue;
-      }
-    });
-    
-    input.addEventListener('input', function() {
-      const materialId = this.getAttribute('data-material-id');
-      const checkbox = document.querySelector(`input[name="material_${materialId}"]`);
-      const quantity = parseInt(this.value) || 0;
-      
-      checkbox.checked = quantity > 0;
-      
-      const materialItem = this.closest('.material-item');
-      materialItem.classList.toggle('selected', quantity > 0);
-    });
-  });
-}
+        `;
+        container.appendChild(div);
+      });
 
-function renderMateriaisManutencao() {
-  const container = document.getElementById('materiaisManutencao');
-  container.innerHTML = '';
-  
-  materiais.forEach(material => {
-    const div = document.createElement('div');
-    div.className = 'material-item';
-    div.innerHTML = `
-      <label class="flex items-center cursor-pointer">
-        <input type="checkbox" name="material_manutencao_${material.id}" value="${material.id}" class="mr-3">
-        <div class="flex-1">
-          <strong>${material.nome}</strong>
-          <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
-          <div class="flex items-center mt-2">
-            <span class="mr-2">Qtd:</span>
-            <input type="number" name="qtd_manutencao_${material.id}" value="0" min="0" max="${material.quantidade}" 
-                   class="form-input material-quantity-input" data-material-id="${material.id}">
-          </div>
-        </div>
-      </label>
-    `;
-    container.appendChild(div);
-  });
-  
-  container.querySelectorAll('.material-quantity-input').forEach(input => {
-    const defaultValue = input.value;
-    
-    input.addEventListener('focus', function() {
-      this.value = '';
-    });
-    
-    input.addEventListener('blur', function() {
-      if (this.value.trim() === '') {
-        this.value = defaultValue;
-      }
-    });
-    
-    input.addEventListener('input', function() {
-      const materialId = this.getAttribute('data-material-id');
-      const checkbox = document.querySelector(`input[name="material_manutencao_${materialId}"]`);
-      const quantity = parseInt(this.value) || 0;
-      
-      checkbox.checked = quantity > 0;
-      
-      const materialItem = this.closest('.material-item');
-      materialItem.classList.toggle('selected', quantity > 0);
-    });
-  });
-}
-
-function removerMaterial(id) {
-  if (confirm('Tem certeza que deseja remover este material?')) {
-    materiais = materiais.filter(m => m.id !== id);
-    localStorage.setItem('materiais', JSON.stringify(materiais));
-    renderMateriais();
-    renderMateriaisSelecionaveis();
-    renderMateriaisManutencao();
-    showToast('Material removido com sucesso!', 'success');
-  }
-}
-
-function getMaterialsSelecionados(containerId) {
-  const selecionados = [];
-  const prefix = containerId === 'materiaisManutencao' ? 'material_manutencao_' : 'material_';
-  const qtdPrefix = containerId === 'materiaisManutencao' ? 'qtd_manutencao_' : 'qtd_';
-  const checkboxes = document.querySelectorAll(`input[name^="${prefix}"]:checked`);
-  
-  checkboxes.forEach(checkbox => {
-    const materialId = parseInt(checkbox.value);
-    const qtdInput = document.querySelector(`input[name="${qtdPrefix}${materialId}"]`);
-    const material = materiais.find(m => m.id === materialId);
-    
-    if (material && qtdInput) {
-      const quantidade = parseInt(qtdInput.value) || 0;
-      if (quantidade > 0) {
-        selecionados.push({
-          nome: material.nome,
-          quantidade: quantidade
+      // Add change events to quantity inputs for auto-selection
+      container.querySelectorAll('.material-quantity-input').forEach(input => {
+        input.addEventListener('input', function() {
+          const materialId = this.getAttribute('data-material-id');
+          const checkbox = document.querySelector(`input[name="material_${materialId}"]`);
+          const quantity = parseInt(this.value) || 0;
+          
+          // Auto-select if quantity > 0, unselect if quantity = 0
+          checkbox.checked = quantity > 0;
+          
+          // Update material item visual state
+          const materialItem = this.closest('.material-item');
+          if (quantity > 0) {
+            materialItem.classList.add('selected');
+          } else {
+            materialItem.classList.remove('selected');
+          }
         });
+      });
+    }
+
+    function renderMateriaisManutencao() {
+      const container = document.getElementById('materiaisManutencao');
+      container.innerHTML = '';
+      
+      materiais.forEach(material => {
+        const div = document.createElement('div');
+        div.className = 'material-item';
+        div.innerHTML = `
+          <input type="checkbox" name="material_manutencao_${material.id}" value="${material.id}" class="material-checkbox">
+          <div class="material-content">
+            <div class="material-info">
+              <div class="material-name">${material.nome}</div>
+              <div class="material-stock">Disponível: ${material.quantidade}</div>
+            </div>
+            <div class="material-quantity-container">
+              <span class="material-quantity-label">Qtd:</span>
+              <input type="number" name="qtd_manutencao_${material.id}" value=" " min="0" max="${material.quantidade}" 
+                     class="material-quantity-input" data-material-id="${material.id}">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Add change events to quantity inputs for auto-selection
+      container.querySelectorAll('.material-quantity-input').forEach(input => {
+        input.addEventListener('input', function() {
+          const materialId = this.getAttribute('data-material-id');
+          const checkbox = document.querySelector(`input[name="material_manutencao_${materialId}"]`);
+          const quantity = parseInt(this.value) || 0;
+          
+          // Auto-select if quantity > 0, unselect if quantity = 0
+          checkbox.checked = quantity > 0;
+          
+          // Update material item visual state
+          const materialItem = this.closest('.material-item');
+          if (quantity > 0) {
+            materialItem.classList.add('selected');
+          } else {
+            materialItem.classList.remove('selected');
+          }
+        });
+      });
+    }
+
+    function removerMaterial(id) {
+      if (confirm('Tem certeza que deseja remover este material?')) {
+        materiais = materiais.filter(m => m.id !== id);
+        localStorage.setItem('materiais', JSON.stringify(materiais));
+        renderMateriais();
+        renderMateriaisSelecionaveis();
+        renderMateriaisManutencao();
+        showToast('Material removido com sucesso!', 'success');
       }
     }
-  });
-  
-  return selecionados;
-}
+
+    function getMaterialsSelecionados(containerId) {
+      const selecionados = [];
+      const prefix = containerId === 'materiaisManutencao' ? 'material_manutencao_' : 'material_';
+      const qtdPrefix = containerId === 'materiaisManutencao' ? 'qtd_manutencao_' : 'qtd_';
+      const checkboxes = document.querySelectorAll(`input[name^="${prefix}"]:checked`);
+      
+      checkboxes.forEach(checkbox => {
+        const materialId = parseInt(checkbox.value);
+        const qtdInput = document.querySelector(`input[name="${qtdPrefix}${materialId}"]`);
+        const material = materiais.find(m => m.id === materialId);
+        
+        if (material && qtdInput) {
+          const quantidade = parseInt(qtdInput.value) || 0;
+          if (quantidade > 0) {
+            selecionados.push({
+              nome: material.nome,
+              quantidade: quantidade
+            });
+          }
+        }
+      });
+      
+      return selecionados;
+    }
 
     // History management
     function initializeHistorico() {
@@ -2219,14 +2301,6 @@ function getMaterialsSelecionados(containerId) {
     function updateContador() {
       const instalacoes = historico.filter(item => item.tipo === 'instalacao').length;
       document.getElementById('contadorInstalacoes').textContent = `${instalacoes} instalações este mês`;
-    }
-
-    function showLoading() {
-      document.getElementById('loading').classList.add('show');
-    }
-
-    function hideLoading() {
-      document.getElementById('loading').classList.remove('show');
     }
 
     function showToast(message, type = 'success') {
