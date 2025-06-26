@@ -801,38 +801,85 @@
       background: linear-gradient(135deg, var(--warning-color), #FBBF24);
     }
 
-    /* Search suggestions */
+    /* IMPROVED Search suggestions - POSITIONED ABOVE MAP */
+    .address-search-container {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
     .search-suggestions {
       position: absolute;
       top: 100%;
       left: 0;
       right: 0;
       background: var(--surface-color);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 12px;
       max-height: 200px;
       overflow-y: auto;
       z-index: 1000;
       display: none;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-top: 4px;
+      animation: slideDown 0.3s ease;
     }
 
     .search-suggestions.show {
       display: block;
     }
 
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .suggestion-item {
-      padding: 12px 16px;
+      padding: 16px 20px;
       cursor: pointer;
       border-bottom: 1px solid var(--border-color);
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      line-height: 1.4;
     }
 
     .suggestion-item:hover {
       background: var(--surface-hover);
+      transform: translateX(4px);
     }
 
     .suggestion-item:last-child {
       border-bottom: none;
+    }
+
+    .suggestion-item:first-child {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    /* Map hidden state for better UX */
+    .map-container.suggestions-active {
+      opacity: 0.3;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .map-container.suggestions-hidden {
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.3s ease;
     }
   </style>
 </head>
@@ -936,14 +983,19 @@
 
           <div class="field-spacing">
             <label class="form-label required">Localização</label>
-            <div id="mapInstalacao" class="map-container"></div>
-            <button type="button" id="usarLocalizacao" class="btn btn-secondary w-full mt-4">
-              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
-            </button>
-            <div class="mt-3">
+            
+            <!-- Address search ABOVE map -->
+            <div class="address-search-container">
               <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
               <div id="enderecoSuggestions" class="search-suggestions"></div>
             </div>
+            
+            <!-- Map container -->
+            <div id="mapInstalacao" class="map-container"></div>
+            
+            <button type="button" id="usarLocalizacao" class="btn btn-secondary w-full mt-4">
+              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
+            </button>
           </div>
 
           <div class="field-spacing">
@@ -1000,14 +1052,19 @@
 
           <div class="field-spacing">
             <label class="form-label required">Localização</label>
-            <div id="mapManutencao" class="map-container"></div>
-            <button type="button" id="usarLocalizacaoManutencao" class="btn btn-secondary w-full mt-4">
-              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
-            </button>
-            <div class="mt-3">
+            
+            <!-- Address search ABOVE map -->
+            <div class="address-search-container">
               <input id="enderecoManutencao" name="enderecoManutencao" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
               <div id="enderecoManutencaoSuggestions" class="search-suggestions"></div>
             </div>
+            
+            <!-- Map container -->
+            <div id="mapManutencao" class="map-container"></div>
+            
+            <button type="button" id="usarLocalizacaoManutencao" class="btn btn-secondary w-full mt-4">
+              <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
+            </button>
           </div>
 
           <div class="field-spacing">
@@ -1145,7 +1202,7 @@
     let currentFilter = 'todos';
 
     // Telegram group link
-    const TELEGRAM_GROUP_LINK = 'https://t.me/c/1989058391/38071';
+    const TELEGRAM_GROUP_LINK = 'https://t.me/+SEU_LINK_DO_GRUPO_AQUI';
 
     // Maximum history records to prevent localStorage overflow
     const MAX_HISTORY_RECORDS = 100;
@@ -1200,7 +1257,7 @@
       });
     }
 
-    // Address search functionality
+    // IMPROVED Address search functionality
     function initializeAddressSearch() {
       const enderecoInput = document.getElementById('endereco');
       const enderecoSuggestions = document.getElementById('enderecoSuggestions');
@@ -1209,15 +1266,16 @@
 
       setupAddressSearch(enderecoInput, enderecoSuggestions, map, (newMarker) => {
         marker = newMarker;
-      });
+      }, 'mapInstalacao');
 
       setupAddressSearch(enderecoManutencaoInput, enderecoManutencaoSuggestions, mapManutencao, (newMarker) => {
         markerManutencao = newMarker;
-      });
+      }, 'mapManutencao');
     }
 
-    function setupAddressSearch(input, suggestionsContainer, mapInstance, setMarker) {
+    function setupAddressSearch(input, suggestionsContainer, mapInstance, setMarker, mapContainerId) {
       let searchTimeout;
+      const mapContainer = document.getElementById(mapContainerId);
 
       input.addEventListener('input', function() {
         const query = this.value.trim();
@@ -1225,24 +1283,42 @@
         clearTimeout(searchTimeout);
         
         if (query.length < 3) {
-          suggestionsContainer.classList.remove('show');
+          hideSuggestions(suggestionsContainer, mapContainer);
           return;
         }
 
         searchTimeout = setTimeout(() => {
-          searchAddress(query, suggestionsContainer, mapInstance, setMarker, input);
+          searchAddress(query, suggestionsContainer, mapInstance, setMarker, input, mapContainer);
         }, 500);
+      });
+
+      input.addEventListener('focus', function() {
+        if (suggestionsContainer.children.length > 0) {
+          showSuggestions(suggestionsContainer, mapContainer);
+        }
       });
 
       // Hide suggestions when clicking outside
       document.addEventListener('click', function(e) {
         if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
-          suggestionsContainer.classList.remove('show');
+          hideSuggestions(suggestionsContainer, mapContainer);
         }
       });
     }
 
-    function searchAddress(query, suggestionsContainer, mapInstance, setMarker, inputElement) {
+    function showSuggestions(suggestionsContainer, mapContainer) {
+      suggestionsContainer.classList.add('show');
+      mapContainer.classList.add('suggestions-active');
+      mapContainer.classList.remove('suggestions-hidden');
+    }
+
+    function hideSuggestions(suggestionsContainer, mapContainer) {
+      suggestionsContainer.classList.remove('show');
+      mapContainer.classList.remove('suggestions-active');
+      mapContainer.classList.add('suggestions-hidden');
+    }
+
+    function searchAddress(query, suggestionsContainer, mapInstance, setMarker, inputElement, mapContainer) {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=br`;
       
       fetch(url)
@@ -1251,7 +1327,7 @@
           suggestionsContainer.innerHTML = '';
           
           if (data.length === 0) {
-            suggestionsContainer.classList.remove('show');
+            hideSuggestions(suggestionsContainer, mapContainer);
             return;
           }
 
@@ -1264,43 +1340,49 @@
               const lat = parseFloat(result.lat);
               const lng = parseFloat(result.lon);
               
-              // Update map
-              mapInstance.setView([lat, lng], 16);
-              
-              // Remove existing marker
-              if (inputElement.id === 'endereco' && marker) {
-                mapInstance.removeLayer(marker);
-              } else if (inputElement.id === 'enderecoManutencao' && markerManutencao) {
-                mapInstance.removeLayer(markerManutencao);
-              }
-              
-              // Add new marker
-              const newMarker = L.marker([lat, lng]).addTo(mapInstance);
-              setMarker(newMarker);
+              // Update map view and marker
+              updateMapWithLocation(lat, lng, mapInstance, setMarker, inputElement);
               
               // Extract street name and number
               const addressParts = result.display_name.split(',');
               const streetWithNumber = addressParts[0].trim();
               inputElement.value = streetWithNumber;
               
-              // Hide suggestions
-              suggestionsContainer.classList.remove('show');
+              // Hide suggestions and show map
+              hideSuggestions(suggestionsContainer, mapContainer);
             });
             
             suggestionsContainer.appendChild(item);
           });
           
-          suggestionsContainer.classList.add('show');
+          showSuggestions(suggestionsContainer, mapContainer);
         })
         .catch(error => {
           console.error('Erro na busca de endereço:', error);
-          suggestionsContainer.classList.remove('show');
+          hideSuggestions(suggestionsContainer, mapContainer);
         });
+    }
+
+    // Update map with location
+    function updateMapWithLocation(lat, lng, mapInstance, setMarker, inputElement) {
+      // Update map view
+      mapInstance.setView([lat, lng], 16);
+      
+      // Remove existing marker
+      if (inputElement.id === 'endereco' && marker) {
+        mapInstance.removeLayer(marker);
+      } else if (inputElement.id === 'enderecoManutencao' && markerManutencao) {
+        mapInstance.removeLayer(markerManutencao);
+      }
+      
+      // Add new marker
+      const newMarker = L.marker([lat, lng]).addTo(mapInstance);
+      setMarker(newMarker);
     }
 
     // Map initialization for installation
     function initializeMap() {
-      map = L.map('mapInstalacao').setView([-23.5505, -46.6333], 13);
+      map = L.map('mapInstalacao').setView([-23.117878, -47.255539], 13);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -1346,7 +1428,7 @@
 
     // Map initialization for maintenance
     function initializeMapManutencao() {
-      mapManutencao = L.map('mapManutencao').setView([-23.5505, -46.6333], 13);
+      mapManutencao = L.map('mapManutencao').setView([-23.117878, -47.255539], 13);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -1465,7 +1547,7 @@
       });
 
       document.getElementById('openGoogleMaps').addEventListener('click', function() {
-        window.open('https://goo.gl/maps/88VJ2ZpSiy4F2Qas7', '_blank');
+        window.open('https://maps.google.com', '_blank');
       });
     }
 
@@ -1610,58 +1692,58 @@
 
     // Copy data to clipboard with Google Maps link
     function copyToClipboard(data) {
-      let text = '';
-      const googleMapsLink = data.latitude && data.longitude ? 
-        `https://www.google.com/maps?q=${data.latitude},${data.longitude}` : '';
-      
-      if (data.tipo === 'instalacao') {
-        text = `🔧 NOVA ${data.tipoTrabalho.toUpperCase()}\n\n` +
-               `📅 Data: ${data.data}\n` +
-               `👤 Técnico: ${data.tecnico}\n` +
-               `🏠 Cliente: ${data.cliente}\n` +
-               `📡 CTO: ${data.cto}\n` +
-               `🔌 Porta: ${data.porta}\n` +
-               `📊 Sinal CTO: ${data.sinalCTO} dBm\n` +
-               `📊 Sinal Cliente: ${data.sinalCliente} dBm\n` +
-               `📍 Endereço: ${data.endereco}\n`;
-        
-        if (googleMapsLink) {
-          text += `🗺️ Localização: ${googleMapsLink}\n`;
-        }
-        
-        if (data.materiais && data.materiais.length > 0) {
-          text += `\n📦 Materiais:\n`;
-          data.materiais.forEach(material => {
-            text += `• ${material.nome} (${material.quantidade})\n`;
-          });
-        }
-      } else {
-        text = `🔧 NOVA MANUTENÇÃO\n\n` +
-               `📅 Data: ${data.data}\n` +
-               `👤 Técnico: ${data.tecnico}\n` +
-               `🏠 Cliente: ${data.cliente}\n` +
-               `❗ Problema: ${data.problema}\n` +
-               `✅ Solução: ${data.solucao}\n` +
-               `📍 Endereço: ${data.endereco}\n`;
-        
-        if (googleMapsLink) {
-          text += `🗺️ Localização: ${googleMapsLink}\n`;
-        }
-        
-        if (data.materiais && data.materiais.length > 0) {
-          text += `\n📦 Materiais Utilizados:\n`;
-          data.materiais.forEach(material => {
-            text += `• ${material.nome} (${material.quantidade})\n`;
-          });
-        }
-      }
-      
-      navigator.clipboard.writeText(text).then(() => {
-        console.log('Dados copiados para área de transferência');
-      }).catch(err => {
-        console.error('Erro ao copiar para área de transferência:', err);
+  let text = '';
+  const googleMapsLink = data.latitude && data.longitude
+    ? `https://maps.google.com/?q=${data.latitude},${data.longitude}`
+    : '';
+
+  if (data.tipo === 'instalacao') {
+    text = `📡 Registro de Instalação - IndaiaFibra\n\n` +
+           `🔧 Tipo de Trabalho: ${data.tipoTrabalho}\n` +
+           `👨‍🔧 Técnico: ${data.tecnico}\n` +
+           `🙍 Cliente: ${data.cliente}\n` +
+           `🧰 CTO: ${data.cto}\n` +
+           `🔌 Porta: ${data.porta}\n` +
+           `📶 Sinal CTO: ${data.sinalCTO} dBm\n` +
+           `📶 Sinal Cliente: ${data.sinalCliente} dBm\n`;
+
+    if (data.materiais && data.materiais.length > 0) {
+      text += `\n📦 Materiais Utilizados:\n`;
+      data.materiais.forEach(material => {
+        text += `• ${material.nome}: ${material.quantidade}\n`;
       });
     }
+
+    text += `\n📍 Endereço:\n${data.endereco}`;
+    if (googleMapsLink) {
+      text += ` ${googleMapsLink}`;
+    }
+
+  } else {
+    text = `🛠️ Registro de Manutenção - IndaiaFibra\n\n` +
+           `📅 Data: ${data.data}\n` +
+           `👨‍🔧 Técnico: ${data.tecnico}\n` +
+           `🙍 Cliente: ${data.cliente}\n` +
+           `❗ Problema: ${data.problema}\n` +
+           `✅ Solução: ${data.solucao}\n`;
+
+    if (data.materiais && data.materiais.length > 0) {
+      text += `\n📦 Materiais Utilizados:\n`;
+      data.materiais.forEach(material => {
+        text += `• ${material.nome}: ${material.quantidade}\n`;
+      });
+    }
+
+    text += `\n📍 Endereço:\n${data.endereco}`;
+    if (googleMapsLink) {
+      text += `\n ${googleMapsLink}`;
+    }
+  }
+
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Dados copiados para a área de transferência!', 'success'))
+    .catch(() => showToast('Erro ao copiar os dados.', 'error'));
+}
 
     // Open Telegram
     function openTelegram() {
@@ -1813,118 +1895,141 @@
       }
     }
 
-    function renderMateriaisSelecionaveis() {
-      const container = document.getElementById('materiaisSelecionaveis');
-      container.innerHTML = '';
+function renderMateriaisSelecionaveis() {
+  const container = document.getElementById('materiaisSelecionaveis');
+  container.innerHTML = '';
+  
+  materiais.forEach(material => {
+    const div = document.createElement('div');
+    div.className = 'material-item';
+    div.innerHTML = `
+      <label class="flex items-center cursor-pointer">
+        <input type="checkbox" name="material_${material.id}" value="${material.id}" class="mr-3">
+        <div class="flex-1">
+          <strong>${material.nome}</strong>
+          <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
+          <div class="flex items-center mt-2">
+            <span class="mr-2">Qtd:</span>
+            <input type="number" name="qtd_${material.id}" value="0" min="0" max="${material.quantidade}" 
+                   class="form-input material-quantity-input" data-material-id="${material.id}">
+          </div>
+        </div>
+      </label>
+    `;
+    container.appendChild(div);
+  });
+  
+  container.querySelectorAll('.material-quantity-input').forEach(input => {
+    const defaultValue = input.value;
+    
+    input.addEventListener('focus', function() {
+      this.value = '';
+    });
+    
+    input.addEventListener('blur', function() {
+      if (this.value.trim() === '') {
+        this.value = defaultValue;
+      }
+    });
+    
+    input.addEventListener('input', function() {
+      const materialId = this.getAttribute('data-material-id');
+      const checkbox = document.querySelector(`input[name="material_${materialId}"]`);
+      const quantity = parseInt(this.value) || 0;
       
-      materiais.forEach(material => {
-        const div = document.createElement('div');
-        div.className = 'material-item';
-        div.innerHTML = `
-          <label class="flex items-center cursor-pointer">
-            <input type="checkbox" name="material_${material.id}" value="${material.id}" class="mr-3">
-            <div class="flex-1">
-              <strong>${material.nome}</strong>
-              <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
-              <div class="flex items-center mt-2">
-                <span class="mr-2">Qtd:</span>
-                <input type="number" name="qtd_${material.id}" value="${material.quantidade}" min="1" max="${material.quantidade}" 
-                       class="form-input material-quantity-input" data-original="${material.quantidade}">
-              </div>
-            </div>
-          </label>
-        `;
-        container.appendChild(div);
-      });
-
-      // Add focus and blur events to quantity inputs
-      container.querySelectorAll('.material-quantity-input').forEach(input => {
-        input.addEventListener('focus', function() {
-          this.classList.add('editing');
-          this.value = '';
-        });
-
-        input.addEventListener('blur', function() {
-          this.classList.remove('editing');
-          if (!this.value || this.value === '') {
-            this.value = this.getAttribute('data-original');
-          }
-        });
-      });
-    }
-
-    function renderMateriaisManutencao() {
-      const container = document.getElementById('materiaisManutencao');
-      container.innerHTML = '';
+      checkbox.checked = quantity > 0;
       
-      materiais.forEach(material => {
-        const div = document.createElement('div');
-        div.className = 'material-item';
-        div.innerHTML = `
-          <label class="flex items-center cursor-pointer">
-            <input type="checkbox" name="material_manutencao_${material.id}" value="${material.id}" class="mr-3">
-            <div class="flex-1">
-              <strong>${material.nome}</strong>
-              <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
-              <div class="flex items-center mt-2">
-                <span class="mr-2">Qtd:</span>
-                <input type="number" name="qtd_manutencao_${material.id}" value="${material.quantidade}" min="1" max="${material.quantidade}" 
-                       class="form-input material-quantity-input" data-original="${material.quantidade}">
-              </div>
-            </div>
-          </label>
-        `;
-        container.appendChild(div);
-      });
+      const materialItem = this.closest('.material-item');
+      materialItem.classList.toggle('selected', quantity > 0);
+    });
+  });
+}
 
-      // Add focus and blur events to quantity inputs
-      container.querySelectorAll('.material-quantity-input').forEach(input => {
-        input.addEventListener('focus', function() {
-          this.classList.add('editing');
-          this.value = '';
+function renderMateriaisManutencao() {
+  const container = document.getElementById('materiaisManutencao');
+  container.innerHTML = '';
+  
+  materiais.forEach(material => {
+    const div = document.createElement('div');
+    div.className = 'material-item';
+    div.innerHTML = `
+      <label class="flex items-center cursor-pointer">
+        <input type="checkbox" name="material_manutencao_${material.id}" value="${material.id}" class="mr-3">
+        <div class="flex-1">
+          <strong>${material.nome}</strong>
+          <p class="text-sm" style="color: var(--text-secondary)">Disponível: ${material.quantidade}</p>
+          <div class="flex items-center mt-2">
+            <span class="mr-2">Qtd:</span>
+            <input type="number" name="qtd_manutencao_${material.id}" value="0" min="0" max="${material.quantidade}" 
+                   class="form-input material-quantity-input" data-material-id="${material.id}">
+          </div>
+        </div>
+      </label>
+    `;
+    container.appendChild(div);
+  });
+  
+  container.querySelectorAll('.material-quantity-input').forEach(input => {
+    const defaultValue = input.value;
+    
+    input.addEventListener('focus', function() {
+      this.value = '';
+    });
+    
+    input.addEventListener('blur', function() {
+      if (this.value.trim() === '') {
+        this.value = defaultValue;
+      }
+    });
+    
+    input.addEventListener('input', function() {
+      const materialId = this.getAttribute('data-material-id');
+      const checkbox = document.querySelector(`input[name="material_manutencao_${materialId}"]`);
+      const quantity = parseInt(this.value) || 0;
+      
+      checkbox.checked = quantity > 0;
+      
+      const materialItem = this.closest('.material-item');
+      materialItem.classList.toggle('selected', quantity > 0);
+    });
+  });
+}
+
+function removerMaterial(id) {
+  if (confirm('Tem certeza que deseja remover este material?')) {
+    materiais = materiais.filter(m => m.id !== id);
+    localStorage.setItem('materiais', JSON.stringify(materiais));
+    renderMateriais();
+    renderMateriaisSelecionaveis();
+    renderMateriaisManutencao();
+    showToast('Material removido com sucesso!', 'success');
+  }
+}
+
+function getMaterialsSelecionados(containerId) {
+  const selecionados = [];
+  const prefix = containerId === 'materiaisManutencao' ? 'material_manutencao_' : 'material_';
+  const qtdPrefix = containerId === 'materiaisManutencao' ? 'qtd_manutencao_' : 'qtd_';
+  const checkboxes = document.querySelectorAll(`input[name^="${prefix}"]:checked`);
+  
+  checkboxes.forEach(checkbox => {
+    const materialId = parseInt(checkbox.value);
+    const qtdInput = document.querySelector(`input[name="${qtdPrefix}${materialId}"]`);
+    const material = materiais.find(m => m.id === materialId);
+    
+    if (material && qtdInput) {
+      const quantidade = parseInt(qtdInput.value) || 0;
+      if (quantidade > 0) {
+        selecionados.push({
+          nome: material.nome,
+          quantidade: quantidade
         });
-
-        input.addEventListener('blur', function() {
-          this.classList.remove('editing');
-          if (!this.value || this.value === '') {
-            this.value = this.getAttribute('data-original');
-          }
-        });
-      });
-    }
-
-    function removerMaterial(id) {
-      if (confirm('Tem certeza que deseja remover este material?')) {
-        materiais = materiais.filter(m => m.id !== id);
-        localStorage.setItem('materiais', JSON.stringify(materiais));
-        renderMateriais();
-        renderMateriaisSelecionaveis();
-        renderMateriaisManutencao();
-        showToast('Material removido com sucesso!', 'success');
       }
     }
-
-    function getMaterialsSelecionados(containerId) {
-      const selecionados = [];
-      const prefix = containerId === 'materiaisManutencao' ? 'material_manutencao_' : 'material_';
-      const qtdPrefix = containerId === 'materiaisManutencao' ? 'qtd_manutencao_' : 'qtd_';
-      const checkboxes = document.querySelectorAll(`input[name^="${prefix}"]:checked`);
-      
-      checkboxes.forEach(checkbox => {
-        const materialId = parseInt(checkbox.value);
-        const qtdInput = document.querySelector(`input[name="${qtdPrefix}${materialId}"]`);
-        const material = materiais.find(m => m.id === materialId);
-        
-        if (material && qtdInput) {
-          selecionados.push({
-            nome: material.nome,
-            quantidade: parseInt(qtdInput.value)
-          });
-        }
-      });
-      
-      return selecionados;
-    }
+  });
+  
+  return selecionados;
+}
 
     // History management
     function initializeHistorico() {
