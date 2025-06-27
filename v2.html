@@ -950,6 +950,30 @@
       transition: opacity 0.3s ease;
     }
     
+    .editable-value {
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.editable-value:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hidden-input {
+  display: none;
+  width: 100px;
+  padding: 4px 8px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0 auto;
+}
+    
 
   </style>
 </head>
@@ -1035,17 +1059,23 @@
             </div>
           </div>
 
-          <div class="field-spacing">
-            <label for="sinalCTO" class="form-label">Sinal da CTO</label>
-            <input id="sinalCTO" name="sinalCTO" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
-            <p id="valorSinalCTO" class="text-sm text-center mt-2" style="color: var(--text-secondary)">-20,00 dBm</p>
-          </div>
+<div class="field-spacing">
+  <label for="sinalCTO" class="form-label">Sinal da CTO</label>
+  <input id="sinalCTO" name="sinalCTO" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
+  <div class="text-center mt-2">
+    <div id="valorSinalCTO" class="editable-value" onclick="makeEditable('valorSinalCTO', 'sinalCTO')">-20,00 dBm</div>
+    <input type="text" id="valorSinalCTOInput" class="hidden-input" onblur="saveValue('valorSinalCTO', 'sinalCTO')" onkeypress="handleKeyPress(event, 'valorSinalCTO', 'sinalCTO')">
+  </div>
+</div>
 
-          <div class="field-spacing">
-            <label for="sinalCliente" class="form-label">Sinal do Cliente</label>
-            <input id="sinalCliente" name="sinalCliente" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
-            <p id="valorSinalCliente" class="text-sm text-center mt-2" style="color: var(--text-secondary)">-20,00 dBm</p>
-          </div>
+<div class="field-spacing">
+  <label for="sinalCliente" class="form-label">Sinal do Cliente</label>
+  <input id="sinalCliente" name="sinalCliente" type="range" min="-30" max="-10" step="0.01" value="-20.00" class="range-slider">
+  <div class="text-center mt-2">
+    <div id="valorSinalCliente" class="editable-value" onclick="makeEditable('valorSinalCliente', 'sinalCliente')">-20,00 dBm</div>
+    <input type="text" id="valorSinalClienteInput" class="hidden-input" onblur="saveValue('valorSinalCliente', 'sinalCliente')" onkeypress="handleKeyPress(event, 'valorSinalCliente', 'sinalCliente')">
+  </div>
+</div>
 
 
 
@@ -1054,10 +1084,16 @@
             <div id="materiaisSelecionaveis" class="mt-3"></div>
           </div>
 
+
+
           <div class="field-spacing">
             <label class="form-label required">Localização</label>
             
-            
+                    <!-- Address search ABOVE map -->
+          <div class="address-search-container">
+            <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
+            <div id="enderecoSuggestions" class="search-suggestions"></div>
+          </div>  
             
             <!-- Map container with loading overlay -->
             <div id="mapInstalacao" class="map-container">
@@ -1071,11 +1107,7 @@
             </button>
           </div>
           
-          <!-- Address search ABOVE map -->
-          <div class="address-search-container">
-            <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
-            <div id="enderecoSuggestions" class="search-suggestions"></div>
-          </div>
+
 
 
           <button type="submit" class="btn btn-success w-full">
@@ -1631,20 +1663,24 @@
     
 
     // Range sliders
-    function initializeRangeSliders() {
-      const sinalCTO = document.getElementById('sinalCTO');
-      const sinalCliente = document.getElementById('sinalCliente');
-      const valorSinalCTO = document.getElementById('valorSinalCTO');
-      const valorSinalCliente = document.getElementById('valorSinalCliente');
+function initializeRangeSliders() {
+  const sinalCTO = document.getElementById('sinalCTO');
+  const sinalCliente = document.getElementById('sinalCliente');
+  const valorSinalCTO = document.getElementById('valorSinalCTO');
+  const valorSinalCliente = document.getElementById('valorSinalCliente');
 
-      sinalCTO.addEventListener('input', function() {
-        valorSinalCTO.textContent = parseFloat(this.value).toFixed(2) + ' dBm';
-      });
+  sinalCTO.addEventListener('input', function() {
+    valorSinalCTO.textContent = parseFloat(this.value).toFixed(2).replace('.', ',') + ' dBm';
+  });
 
-      sinalCliente.addEventListener('input', function() {
-        valorSinalCliente.textContent = parseFloat(this.value).toFixed(2) + ' dBm';
-      });
-    }
+  sinalCliente.addEventListener('input', function() {
+    valorSinalCliente.textContent = parseFloat(this.value).toFixed(2).replace('.', ',') + ' dBm';
+  });
+
+  // Inicializar os valores
+  valorSinalCTO.textContent = parseFloat(sinalCTO.value).toFixed(2).replace('.', ',') + ' dBm';
+  valorSinalCliente.textContent = parseFloat(sinalCliente.value).toFixed(2).replace('.', ',') + ' dBm';
+}
 
     // Form handlers
     function initializeFormHandlers() {
@@ -2350,6 +2386,63 @@
     if ('ontouchstart' in window) {
       document.addEventListener('touchstart', function() {}, { passive: true });
     }
+   
+   // Função para tornar o valor editável
+function makeEditable(valueId, sliderId) {
+  const valueElement = document.getElementById(valueId);
+  const inputElement = document.getElementById(valueId + 'Input');
+  
+  // Obter o valor numérico do texto atual
+  const currentText = valueElement.textContent;
+  const numericValue = parseFloat(currentText.replace(',', '.').replace(' dBm', ''));
+  
+  // Configurar e mostrar o input
+  inputElement.value = numericValue.toFixed(2);
+  inputElement.style.display = 'block';
+  valueElement.style.display = 'none';
+  
+  // Selecionar o texto no input
+  setTimeout(() => {
+    inputElement.select();
+  }, 10);
+}
+
+// Função para salvar o valor editado
+function saveValue(valueId, sliderId) {
+  const valueElement = document.getElementById(valueId);
+  const inputElement = document.getElementById(valueId + 'Input');
+  const slider = document.getElementById(sliderId);
+  
+  // Obter e validar o novo valor
+  let newValue = parseFloat(inputElement.value);
+  
+  if (isNaN(newValue)) {
+    newValue = -20.00;
+  } else if (newValue < -30) {
+    newValue = -30;
+  } else if (newValue > -10) {
+    newValue = -10;
+  }
+  
+  // Atualizar o slider e o valor exibido
+  slider.value = newValue.toFixed(2);
+  valueElement.textContent = newValue.toFixed(2).replace('.', ',') + ' dBm';
+  
+  // Restaurar a exibição
+  inputElement.style.display = 'none';
+  valueElement.style.display = 'block';
+  
+  // Disparar evento de atualização
+  slider.dispatchEvent(new Event('input'));
+}
+
+// Função para lidar com a tecla Enter
+function handleKeyPress(event, valueId, sliderId) {
+  if (event.key === 'Enter') {
+    saveValue(valueId, sliderId);
+  }
+} 
+    
   </script>
 </body>
 </html>
