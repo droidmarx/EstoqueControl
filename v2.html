@@ -1047,14 +1047,17 @@
             <p id="valorSinalCliente" class="text-sm text-center mt-2" style="color: var(--text-secondary)">-20,00 dBm</p>
           </div>
 
+
+
+          <div class="field-spacing">
+            <label class="form-label">Materiais para esta instalação</label>
+            <div id="materiaisSelecionaveis" class="mt-3"></div>
+          </div>
+
           <div class="field-spacing">
             <label class="form-label required">Localização</label>
             
-            <!-- Address search ABOVE map -->
-            <div class="address-search-container">
-              <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
-              <div id="enderecoSuggestions" class="search-suggestions"></div>
-            </div>
+            
             
             <!-- Map container with loading overlay -->
             <div id="mapInstalacao" class="map-container">
@@ -1067,11 +1070,13 @@
               <i class="fas fa-map-marker-alt mr-2"></i> Usar minha localização atual
             </button>
           </div>
-
-          <div class="field-spacing">
-            <label class="form-label">Materiais para esta instalação</label>
-            <div id="materiaisSelecionaveis" class="mt-3"></div>
+          
+          <!-- Address search ABOVE map -->
+          <div class="address-search-container">
+            <input id="endereco" name="endereco" type="text" class="form-input" placeholder="Digite o nome da rua para buscar no mapa">
+            <div id="enderecoSuggestions" class="search-suggestions"></div>
           </div>
+
 
           <button type="submit" class="btn btn-success w-full">
             <i class="fab fa-telegram-plane mr-2"></i>
@@ -1120,6 +1125,12 @@
             <p class="error-message">Por favor descreva a solução aplicada.</p>
           </div>
 
+
+          <div class="field-spacing">
+            <label class="form-label">Materiais Utilizados</label>
+            <div id="materiaisManutencao" class="mt-3"></div>
+          </div>
+
           <div class="field-spacing">
             <label class="form-label required">Localização</label>
             
@@ -1141,10 +1152,7 @@
             </button>
           </div>
 
-          <div class="field-spacing">
-            <label class="form-label">Materiais Utilizados</label>
-            <div id="materiaisManutencao" class="mt-3"></div>
-          </div>
+
 
           <button type="submit" class="btn btn-success w-full">
             <i class="fab fa-telegram-plane mr-2"></i>
@@ -1269,7 +1277,7 @@
     // Global variables
     let map, marker;
     let mapManutencao, markerManutencao;
-    let mapaCTOs;
+    
     let materiais = JSON.parse(localStorage.getItem('materiais')) || [];
     let historico = JSON.parse(localStorage.getItem('historico')) || [];
     let contadorMensal = parseInt(localStorage.getItem('contadorMensal')) || 0;
@@ -1286,7 +1294,7 @@
       initializeNavigation();
       initializeMap();
       initializeMapManutencao();
-      initializeMapaCTOs();
+      
       initializeRangeSliders();
       initializeFormHandlers();
       initializeMateriais();
@@ -1562,8 +1570,8 @@
             const lng = position.coords.longitude;
             
             // Update both maps
-            map.setView([lat, lng], 16);
-            mapManutencao.setView([lat, lng], 16);
+            map.setView([lat, lng], 15);
+            mapManutencao.setView([lat, lng], 15);
             
             // Remove existing markers
             if (marker) {
@@ -1616,31 +1624,11 @@
       }
     }
 
-    // CTOs Map initialization
-    function initializeMapaCTOs() {
-      mapaCTOs = L.map('mapaCTOs').setView([-23.5505, -46.6333], 13);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(mapaCTOs);
-
-      // Add sample CTOs
-      const ctos = [
-        { name: 'CTO-001', lat: -23.5505, lng: -46.6333 },
-        { name: 'CTO-002', lat: -23.5515, lng: -46.6343 },
-        { name: 'CTO-003', lat: -23.5495, lng: -46.6323 }
-      ];
-
-      ctos.forEach(cto => {
-        L.marker([cto.lat, cto.lng])
-          .addTo(mapaCTOs)
-          .bindPopup(`<strong>${cto.name}</strong><br>Clique para mais detalhes`);
-      });
-
+    // GoogleMaps CTOs
       document.getElementById('openGoogleMaps').addEventListener('click', function() {
-        window.open('https://maps.google.com', '_blank');
+        window.open('https://goo.gl/maps/88VJ2ZpSiy4F2Qas7', '_blank');
       });
-    }
+    
 
     // Range sliders
     function initializeRangeSliders() {
