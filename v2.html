@@ -973,7 +973,24 @@
   text-align: center;
   margin: 0 auto;
 }
-    
+
+.signal-alert {
+  color: var(--error-color) !important;
+  font-weight: 600;
+}  
+
+/* Adicione esta regra */
+.range-slider {
+  --thumb-color: var(--secondary-color); /* Cor padrão (azul) */
+}
+
+.range-slider::-webkit-slider-thumb {
+  background: var(--thumb-color);
+}
+
+.range-slider::-moz-range-thumb {
+  background: var(--thumb-color);
+}
 
   </style>
 </head>
@@ -1662,24 +1679,66 @@
       });
     
 
-    // Range sliders
+// Atualize a função initializeRangeSliders
 function initializeRangeSliders() {
   const sinalCTO = document.getElementById('sinalCTO');
   const sinalCliente = document.getElementById('sinalCliente');
   const valorSinalCTO = document.getElementById('valorSinalCTO');
   const valorSinalCliente = document.getElementById('valorSinalCliente');
 
-  sinalCTO.addEventListener('input', function() {
-    valorSinalCTO.textContent = parseFloat(this.value).toFixed(2).replace('.', ',') + ' dBm';
-  });
+  function updateThumbColor(slider) {
+    const value = parseFloat(slider.value);
+    const normalizedValue = Math.abs(value + 20) / 10; // Normaliza para 0-1 (0 = centro, 1 = extremidade)
+    
+    // Calcula a intensidade do vermelho (0-255)
+    const red = Math.floor(16 + (239 - 16) * normalizedValue);
+    const green = Math.floor(185 - (185 - 68) * normalizedValue);
+    const blue = Math.floor(129 - (129 - 68) * normalizedValue);
+    
+    slider.style.setProperty('--thumb-color', `rgb(${red}, ${green}, ${blue})`);
+  }
 
-  sinalCliente.addEventListener('input', function() {
-    valorSinalCliente.textContent = parseFloat(this.value).toFixed(2).replace('.', ',') + ' dBm';
-  });
+  function updateSignalUI(slider, displayElement) {
+    const value = parseFloat(slider.value).toFixed(2).replace('.', ',');
+    displayElement.textContent = value + ' dBm';
+    updateThumbColor(slider);
+  }
 
-  // Inicializar os valores
-  valorSinalCTO.textContent = parseFloat(sinalCTO.value).toFixed(2).replace('.', ',') + ' dBm';
-  valorSinalCliente.textContent = parseFloat(sinalCliente.value).toFixed(2).replace('.', ',') + ' dBm';
+  sinalCTO.addEventListener('input', () => updateSignalUI(sinalCTO, valorSinalCTO));
+  sinalCliente.addEventListener('input', () => updateSignalUI(sinalCliente, valorSinalCliente));
+
+  // Atualizar cores iniciais
+  updateSignalUI(sinalCTO, valorSinalCTO);
+  updateSignalUI(sinalCliente, valorSinalCliente);
+
+  // Atualizar a função saveValue
+  function saveValue(valueId, sliderId) {
+    const valueElement = document.getElementById(valueId);
+    const inputElement = document.getElementById(valueId + 'Input');
+    const slider = document.getElementById(sliderId);
+    
+    // Obter e validar o novo valor
+    let newValue = parseFloat(inputElement.value);
+    
+    if (isNaN(newValue)) {
+      newValue = -20.00;
+    } else if (newValue < -30) {
+      newValue = -30;
+    } else if (newValue > -10) {
+      newValue = -10;
+    }
+    
+    // Atualizar o slider e o valor exibido
+    slider.value = newValue.toFixed(2);
+    updateSignalUI(slider, valueElement);
+    
+    // Restaurar a exibição
+    inputElement.style.display = 'none';
+    valueElement.style.display = 'block';
+    
+    // Disparar evento de atualização
+    slider.dispatchEvent(new Event('input'));
+  }
 }
 
     // Form handlers
@@ -1819,7 +1878,7 @@ function initializeRangeSliders() {
            `🙍 Cliente: ${data.cliente}\n` +
            `🧰 CTO: ${data.cto}\n` +
            `🔌 Porta: ${data.porta}\n` +
-           `📶 Sinal CTO: ${data.sinalCTO} dBm\n` +
+           `📶 Sinal CTO : ${data.sinalCTO} dBm\n` +
            `📶 Sinal Cliente: ${data.sinalCliente} dBm\n`;
 
     if (data.materiais && data.materiais.length > 0) {
